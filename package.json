@@ -1,0 +1,29 @@
+{
+    "name": "game-stats-fetcher",
+    "version": "1.0.1",
+    "main": "dist/GameStatsFetcher.js",
+    "types": "dist/types/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "dev": "nodemon ts-node src/GameStatsFetcher.ts",
+        "prepare": "npm run build",
+        "build": "tsc",
+        "prepublishOnly": "npm run build"
+    },
+    "keywords": [
+        "gamestats",
+        "steam",
+        "riot",
+        "activision"
+    ],
+    "author": "VectoDE (Tim Hauke)",
+    "license": "CC0-1.0",
+    "dependencies": {
+        "axios": "^1.12.2"
+    },
+    "devDependencies": {
+        "typescript": "^5.9.2"
+    }
+}

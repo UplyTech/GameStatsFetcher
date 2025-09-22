@@ -1,0 +1,7 @@
+package-lock.json
+node_modules/
+dist/
+game-stats-fetcher-1.0.0.tgz
+
+#Ignore vscode AI rules
+.github\instructions\codacy.instructions.md
