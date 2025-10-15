@@ -11,7 +11,7 @@ npm install game-stats-fetcher
 ## Usage
 
 ```ts
-import { GameStatsFetcher } from "gamestats-fetcher";
+import { GameStatsFetcher } from "game-stats-fetcher";
 
 const gs = new GameStatsFetcher({
   steamApiKey: "STEAM_KEY",
