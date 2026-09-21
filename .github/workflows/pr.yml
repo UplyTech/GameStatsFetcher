@@ -26,7 +26,7 @@ jobs:
     steps:
       # The release notes are generated from the merged commits. A pull request
       # called "fixes" produces a release note called "fixes".
-      - uses: amannn/action-semantic-pull-request@v5
+      - uses: amannn/action-semantic-pull-request@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
