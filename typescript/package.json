@@ -1,0 +1,111 @@
+{
+  "name": "@uplytech/game-stats-fetcher",
+  "version": "3.2.0",
+  "description": "One client for every esports title. Players, ranks, matches, leaderboards and the esports circuit behind them - normalised across 40+ real game APIs and 8 esports data providers, with caching, per-provider rate limiting and typed errors.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src tests examples --ext .ts",
+    "typecheck": "tsc --noEmit",
+    "registry": "node scripts/generate-registry.mjs",
+    "registry:check": "node scripts/generate-registry.mjs --check",
+    "prepublishOnly": "npm run lint && npm run typecheck && npm run test && npm run build",
+    "vectors": "node scripts/generate-vectors.mjs",
+    "vectors:check": "node scripts/generate-vectors.mjs --check"
+  },
+  "keywords": [
+    "esports",
+    "gamestats",
+    "game-api",
+    "player-stats",
+    "match-history",
+    "leaderboard",
+    "steam",
+    "riot-api",
+    "blizzard",
+    "cs2",
+    "valorant",
+    "league-of-legends",
+    "dota2",
+    "overwatch",
+    "apex-legends",
+    "rocket-league",
+    "fortnite",
+    "pubg",
+    "rainbow-six-siege",
+    "call-of-duty",
+    "starcraft",
+    "smash-bros",
+    "tekken",
+    "street-fighter",
+    "faceit",
+    "pandascore",
+    "startgg",
+    "liquipedia",
+    "discord-bot",
+    "uplytech"
+  ],
+  "author": "UplyTech (Tim Hauke) <dev@uplytech.de>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UplyTech/Game-Stats-Fetcher.git",
+    "directory": "typescript"
+  },
+  "bugs": {
+    "url": "https://github.com/UplyTech/Game-Stats-Fetcher/issues"
+  },
+  "homepage": "https://github.com/UplyTech/Game-Stats-Fetcher#readme",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "peerDependencies": {
+    "ioredis": "^5.4.1"
+  },
+  "peerDependenciesMeta": {
+    "ioredis": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "@vitest/coverage-v8": "^1.6.0",
+    "eslint": "^8.57.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.5.4",
+    "vite-node": "^6.0.0",
+    "vitest": "^1.6.0"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "formatVersion": 1,
+  "packageVersion": "3.2.0",
+  "note": "Values that must not drift between the editions. A TTL that differs means two deployments show a rank of a different age for the same player.",
+  "version": "3.2.0",
+  "ttl": {
+    "metadata": 3600,
+    "resolvePlayer": 86400,
+    "player": 300,
+    "playerStats": 180,
+    "rank": 60,
+    "matchHistory": 60,
+    "match": 86400,
+    "leaderboard": 300,
+    "esportsMatchesLive": 30,
+    "esportsMatches": 300,
+    "esportsTournaments": 1800,
+    "esportsTeams": 3600,
+    "esportsPlayers": 3600,
+    "standings": 600,
+    "earnings": 43200
+  },
+  "steamAppIds": {
+    "cs2": 730,
+    "dota2": 570,
+    "team-fortress-2": 440,
+    "rust": 252490,
+    "rocket-league": 252950,
+    "apex-legends": 1172470,
+    "pubg": 578080,
+    "naraka-bladepoint": 1203220,
+    "war-thunder": 236390,
+    "dead-by-daylight": 381210,
+    "path-of-exile": 238960
+  },
+  "permille": 1000,
+  "maxPageSize": 500,
+  "defaultTtlSeconds": 60,
+  "defaultTimeoutMs": 15000,
+  "defaultRateLimit": {
+    "rps": 5,
+    "burst": 10
+  },
+  "defaultUserAgent": "GameStatsFetcher/3.2.0 (+https://github.com/uplytech/game-stats-fetcher)"
+}

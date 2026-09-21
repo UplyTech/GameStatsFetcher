@@ -1,0 +1,268 @@
+# Hand-maintained spelling vocabulary. The generated half is in
+# .github/cspell-registry.txt, which is built from shared/registry - a new title
+# or provider needs nothing here.
+#
+# What belongs here is everything that cannot be derived: the field names other
+# people's APIs chose, the proper nouns of the games themselves, the handles the
+# fixtures use, and the handful of words this repository spells deliberately.
+#
+# Adding a word is a small decision with a long tail. The question to ask is
+# "would a reader be right to think this is a typo?" - if yes, it belongs in the
+# code differently, not here.
+
+# ---------------------------------------------------------------------------
+# Field names and method names other people's APIs chose.
+#
+# Steam, Hi-Rez, PandaScore, MediaWiki and the rest name their JSON fields in
+# run-together lowercase. These appear as string literals in the mapping layer
+# and in test fixtures, and they are not ours to rename.
+# ---------------------------------------------------------------------------
+accountid
+apikey
+apiname
+appinfo
+avatarfull
+avatarmedium
+battlelog
+bodyshots
+categorymembers
+cmlimit
+cmtitle
+communityvisibilitystate
+completiontime
+createsession
+csrs
+currenttier
+currenttierpatched
+currentwar
+damagedealt
+damagetaken
+friendslist
+gameextrainfo
+gameid
+gameinfo
+gamemode
+gamertag
+getchampionranks
+getchampions
+getdataused
+getgodranks
+getgods
+getleaderboard
+getleagueleaderboard
+getmatchdetails
+getmatchhistory
+getmatchidsbyqueue
+getplayer
+getplayeridbyname
+headshot
+headshots
+highestrating
+hiscore
+IDOTA
+lastlogoff
+leagueid
+legshots
+loccountrycode
+mapname
+maprotation
+matchhistorymember
+matchid
+matchlists
+matchtime
+matchtype
+namecard
+networth
+newrating
+oldrating
+pageid
+perfs
+personaname
+personastate
+playerid
+playerstats
+primaryclanid
+prizepool
+profilestate
+profileurl
+recentgames
+srlimit
+srsearch
+startgametime
+statgroup
+steamcommunity
+steamid
+steamids
+subsession
+teamname
+timecreated
+unlocktime
+upcomingchests
+vanityurl
+videogame
+warlog
+winstreak
+
+# ---------------------------------------------------------------------------
+# Product, host and route names that are not registry entries.
+#
+# Slugs other services use for the same games, and the names of APIs this
+# package talks to without listing them as providers of their own.
+# ---------------------------------------------------------------------------
+ageofempires
+albiononline
+apexlegends
+arenaofvalor
+battlenet
+Battletag
+callofduty
+codmw
+companyofheroes
+crossplay
+deadbydaylight
+easportsfc
+emea
+escapefromtarkov
+gamestats
+gamestatserror
+guildwars
+Honkai
+honorofkings
+kakao
+leagueoflegends
+legendsofruneterra
+marvelrivalsapi
+mobilelegends
+pandascores
+pathofexile
+pubgmobile
+rainbowsix
+riotgames
+rocketleague
+simracing
+simsession
+steamcommunity
+teamfighttactics
+teamfortress
+totd
+Videogames
+warthunder
+worldoftanks
+worldofwarcraft
+worldofwarships
+XIVAPI's
+
+# ---------------------------------------------------------------------------
+# The games' own vocabulary: skills, modes, ranks, classes, currencies.
+#
+# Old School RuneScape skills, Diablo terms, Team Fortress classes, osu! modes.
+# A reader who plays the game knows these; a dictionary never will.
+# ---------------------------------------------------------------------------
+Anhur
+beatmap
+beatmaps
+beatmapset
+bedwars
+bodvar
+Demoman
+Dropshot
+Firemaking
+Genshin
+Herblore
+Hitpoints
+mvps
+Nephalem
+Pyro
+quickplay
+Runecraft
+serie
+Silvermoon
+skywars
+taiko
+Trackmaster
+ubers
+Zorkmids
+Zulrah
+
+# ---------------------------------------------------------------------------
+# People and handles the fixtures use.
+#
+# Real professional players and well-known accounts, because a fixture with a
+# real handle is a fixture somebody can check against the live API.
+# ---------------------------------------------------------------------------
+Arruda
+Arslan
+Beasty
+Boomie
+Chribba
+Dendi
+drnykterstein
+Firstkiller
+Fnatic
+Gabe
+gabelogannewell
+gaben
+Hauke
+JCVL
+Jstn
+Michal
+Nisha
+Nykterstein
+Ojcvl
+ppjcvl
+Rabscuttle
+ropz
+Sundstein
+Zapman
+Zezima
+
+# ---------------------------------------------------------------------------
+# Deliberate misspellings.
+#
+# The fuzzy-lookup tests exist to prove that "valorent" finds Valorant. Spelling
+# them correctly would delete the test.
+# ---------------------------------------------------------------------------
+leage
+leagu
+overwatc
+valorent
+
+# ---------------------------------------------------------------------------
+# Words this repository spells deliberately.
+#
+# British forms, coinages the prose uses more than once, and the names of test
+# helpers. If one of these appears exactly once, it is probably not worth a
+# dictionary entry.
+# ---------------------------------------------------------------------------
+accum
+byebyes
+dapm
+irating
+newi
+oldi
+papercut
+parameterises
+renminbi
+sublicensable
+undash
+undashed
+underived
+unparseable
+unthrottled
+
+# ---------------------------------------------------------------------------
+# Tooling and configuration keys.
+# ---------------------------------------------------------------------------
+addopts
+compressobj
+jsonlib
+testpaths
+usefixtures
+WBITS
+
+# ---------------------------------------------------------------------------
+# Deliberate noise in tests: strings chosen to be meaningless.
+# ---------------------------------------------------------------------------
+PGCR
+PYLQGRJCUV
+zzzzzzzzzzqqqq

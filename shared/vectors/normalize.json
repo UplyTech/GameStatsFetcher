@@ -1,0 +1,567 @@
+{
+  "formatVersion": 1,
+  "packageVersion": "3.2.0",
+  "note": "Pure normalisation functions. Both editions must produce these values exactly - permille rounding in particular, because JavaScript rounds halves up and Python's round() is banker's rounding.",
+  "num": [
+    {
+      "args": [
+        0
+      ],
+      "value": 0
+    },
+    {
+      "args": [
+        1
+      ],
+      "value": 1
+    },
+    {
+      "args": [
+        -1
+      ],
+      "value": -1
+    },
+    {
+      "args": [
+        1.5
+      ],
+      "value": 1.5
+    },
+    {
+      "args": [
+        "42"
+      ],
+      "value": 42
+    },
+    {
+      "args": [
+        "3.5"
+      ],
+      "value": 3.5
+    },
+    {
+      "args": [
+        ""
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        null
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        null
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        true
+      ],
+      "value": 1
+    },
+    {
+      "args": [
+        false
+      ],
+      "value": 0
+    },
+    {
+      "args": [
+        "abc"
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        {}
+      ],
+      "value": null
+    }
+  ],
+  "int": [
+    {
+      "args": [
+        3.9
+      ],
+      "value": 3
+    },
+    {
+      "args": [
+        -3.9
+      ],
+      "value": -3
+    },
+    {
+      "args": [
+        "7.2"
+      ],
+      "value": 7
+    },
+    {
+      "args": [
+        0
+      ],
+      "value": 0
+    },
+    {
+      "args": [
+        null
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        "abc"
+      ],
+      "value": null
+    }
+  ],
+  "str": [
+    {
+      "args": [
+        "  hello  "
+      ],
+      "value": "hello"
+    },
+    {
+      "args": [
+        "   "
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        ""
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        null
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        42
+      ],
+      "value": "42"
+    },
+    {
+      "args": [
+        0
+      ],
+      "value": "0"
+    }
+  ],
+  "bool": [
+    {
+      "args": [
+        true
+      ],
+      "value": true
+    },
+    {
+      "args": [
+        false
+      ],
+      "value": false
+    },
+    {
+      "args": [
+        "true"
+      ],
+      "value": true
+    },
+    {
+      "args": [
+        "false"
+      ],
+      "value": false
+    },
+    {
+      "args": [
+        1
+      ],
+      "value": true
+    },
+    {
+      "args": [
+        0
+      ],
+      "value": false
+    },
+    {
+      "args": [
+        "1"
+      ],
+      "value": true
+    },
+    {
+      "args": [
+        "0"
+      ],
+      "value": false
+    },
+    {
+      "args": [
+        "maybe"
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        null
+      ],
+      "value": null
+    }
+  ],
+  "ts": [
+    {
+      "args": [
+        1700000000000
+      ],
+      "value": 1700000000000
+    },
+    {
+      "args": [
+        1700000000
+      ],
+      "value": 1700000000000
+    },
+    {
+      "args": [
+        "2024-01-01T00:00:00.000Z"
+      ],
+      "value": 1704067200000
+    },
+    {
+      "args": [
+        "2024-01-01T00:00:00Z"
+      ],
+      "value": 1704067200000
+    },
+    {
+      "args": [
+        "1700000000"
+      ],
+      "value": 1700000000000
+    },
+    {
+      "args": [
+        0
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        -5
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        "not a date"
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        null
+      ],
+      "value": null
+    }
+  ],
+  "permille": [
+    {
+      "args": [
+        1,
+        2
+      ],
+      "value": 500
+    },
+    {
+      "args": [
+        1,
+        3
+      ],
+      "value": 333
+    },
+    {
+      "args": [
+        2,
+        3
+      ],
+      "value": 667
+    },
+    {
+      "args": [
+        1,
+        0
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        0,
+        5
+      ],
+      "value": 0
+    },
+    {
+      "args": [
+        null,
+        10
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        10,
+        null
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        1,
+        8
+      ],
+      "value": 125
+    },
+    {
+      "args": [
+        3,
+        8
+      ],
+      "value": 375
+    },
+    {
+      "args": [
+        1,
+        16
+      ],
+      "value": 63
+    },
+    {
+      "args": [
+        3,
+        16
+      ],
+      "value": 188
+    }
+  ],
+  "winRate": [
+    {
+      "args": [
+        5,
+        5
+      ],
+      "value": 500
+    },
+    {
+      "args": [
+        5,
+        4,
+        1
+      ],
+      "value": 500
+    },
+    {
+      "args": [
+        0,
+        0
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        null,
+        5
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        3,
+        0
+      ],
+      "value": 1000
+    },
+    {
+      "args": [
+        1,
+        2
+      ],
+      "value": 333
+    }
+  ],
+  "kd": [
+    {
+      "args": [
+        10,
+        0
+      ],
+      "value": 10000
+    },
+    {
+      "args": [
+        10,
+        5
+      ],
+      "value": 2000
+    },
+    {
+      "args": [
+        3,
+        4
+      ],
+      "value": 750
+    },
+    {
+      "args": [
+        0,
+        0
+      ],
+      "value": 0
+    },
+    {
+      "args": [
+        null,
+        4
+      ],
+      "value": null
+    }
+  ],
+  "clamp": [
+    {
+      "args": [
+        5,
+        1,
+        100
+      ],
+      "value": 5
+    },
+    {
+      "args": [
+        0,
+        1,
+        100
+      ],
+      "value": 1
+    },
+    {
+      "args": [
+        1000,
+        1,
+        100
+      ],
+      "value": 100
+    }
+  ],
+  "toMinorUnits": [
+    {
+      "args": [
+        12.34
+      ],
+      "value": 1234
+    },
+    {
+      "args": [
+        1000000
+      ],
+      "value": 100000000
+    },
+    {
+      "args": [
+        0.005
+      ],
+      "value": 1
+    },
+    {
+      "args": [
+        null
+      ],
+      "value": null
+    }
+  ],
+  "sum": [
+    {
+      "args": [
+        [
+          1,
+          null,
+          2,
+          null
+        ]
+      ],
+      "value": 3
+    },
+    {
+      "args": [
+        [
+          null,
+          null
+        ]
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        []
+      ],
+      "value": null
+    },
+    {
+      "args": [
+        [
+          0
+        ]
+      ],
+      "value": 0
+    }
+  ],
+  "matchResult": [
+    {
+      "args": [
+        true
+      ],
+      "value": "win"
+    },
+    {
+      "args": [
+        false
+      ],
+      "value": "loss"
+    },
+    {
+      "args": [
+        "true"
+      ],
+      "value": "win"
+    },
+    {
+      "args": [
+        true,
+        true
+      ],
+      "value": "draw"
+    },
+    {
+      "args": [
+        null
+      ],
+      "value": "unknown"
+    },
+    {
+      "args": [
+        null
+      ],
+      "value": "unknown"
+    }
+  ]
+}

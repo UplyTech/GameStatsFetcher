@@ -1,0 +1,101 @@
+{
+  "formatVersion": 1,
+  "packageVersion": "3.2.0",
+  "note": "The one status vocabulary, and the provider-capability table. Both editions map every provider's spelling onto the same six values.",
+  "capabilityProviders": {
+    "getEsportsMatches": [
+      "pandascore",
+      "abios",
+      "startgg",
+      "octane",
+      "opendota"
+    ],
+    "getEsportsTournaments": [
+      "pandascore",
+      "startgg",
+      "octane",
+      "toornament",
+      "liquipedia"
+    ],
+    "getEsportsTeams": [
+      "pandascore",
+      "abios",
+      "octane",
+      "opendota"
+    ],
+    "getEsportsPlayers": [
+      "pandascore",
+      "abios",
+      "octane",
+      "opendota"
+    ],
+    "getStandings": [
+      "pandascore",
+      "startgg",
+      "challonge"
+    ],
+    "getEarnings": [
+      "esports-earnings"
+    ]
+  },
+  "esportsProvidersFor": [
+    {
+      "args": [
+        [
+          "steam",
+          "faceit",
+          "pandascore",
+          "liquipedia"
+        ],
+        "getEsportsMatches"
+      ],
+      "value": [
+        "pandascore"
+      ]
+    },
+    {
+      "args": [
+        [
+          "startgg",
+          "liquipedia",
+          "esports-earnings"
+        ],
+        "getEsportsTeams"
+      ],
+      "value": []
+    },
+    {
+      "args": [
+        [
+          "startgg",
+          "liquipedia",
+          "esports-earnings"
+        ],
+        "getStandings"
+      ],
+      "value": [
+        "startgg"
+      ]
+    },
+    {
+      "args": [
+        [
+          "deadlock-api",
+          "liquipedia"
+        ],
+        "getEsportsTeams"
+      ],
+      "value": []
+    },
+    {
+      "args": [
+        [
+          "riot",
+          "pandascore"
+        ],
+        "getPlayer"
+      ],
+      "value": null
+    }
+  ]
+}

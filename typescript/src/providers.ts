@@ -1,0 +1,868 @@
+/**
+ * Every upstream API this package speaks to.
+ *
+ * A provider entry is not documentation - it is what the runtime uses. The
+ * `rps`/`burst` pair feeds the token bucket, `keyName` and `docsUrl` produce
+ * the `MissingCredentialError` message, and `auth` decides how the credential
+ * is attached. Getting a number wrong here gets an application throttled, so
+ * the limits are set from each provider's published quota and rounded down.
+ *
+ * Providers are grouped by who runs them, because that is what decides how much
+ * a caller can rely on them:
+ *
+ * - **first-party** - the publisher's own API. Stable, documented, and the one
+ *   whose terms of service actually govern what you may do with the data.
+ * - **community** - run by volunteers or a small company. Frequently better
+ *   than the official one (OpenDota against Valve's match API is the standard
+ *   example), but it can disappear.
+ * - **esports-data** - commercial coverage of the professional circuit across
+ *   many titles at once.
+ * - **tournament-platform** - the brackets themselves. For the fighting games
+ *   this is the only real source there is.
+ */
+
+import type { ProviderDescriptor } from "./types.js";
+import { UnknownProviderError } from "./errors.js";
+
+const PROVIDER_LIST: readonly ProviderDescriptor[] = [
+  // -------------------------------------------------------------------------
+  // First-party
+  // -------------------------------------------------------------------------
+  {
+    id: "steam",
+    label: "Steam Web API",
+    kind: "first-party",
+    baseUrl: "https://api.steampowered.com",
+    auth: "query-key",
+    keyName: "steam",
+    docsUrl: "https://steamcommunity.com/dev/apikey",
+    rps: 5,
+    burst: 10,
+    requiresUserAgent: false,
+    notes:
+      "100k calls/day per key. Most player endpoints return an empty object rather than 403 when a profile is private.",
+  },
+  {
+    id: "riot",
+    label: "Riot Games API",
+    kind: "first-party",
+    baseUrl: "https://api.riotgames.com",
+    auth: "header-key",
+    keyName: "riot",
+    docsUrl: "https://developer.riotgames.com",
+    // A development key allows 20/s and 100 per 2 minutes. 15/s leaves room for
+    // the second limit, which the bucket cannot express on its own.
+    rps: 15,
+    burst: 20,
+    requiresUserAgent: false,
+    notes:
+      "Development keys expire every 24 h. Routing is split: account lookups use the regional cluster (europe/americas/asia/sea), everything else the platform host (euw1, na1, ...).",
+  },
+  {
+    id: "blizzard",
+    label: "Blizzard Battle.net API",
+    kind: "first-party",
+    baseUrl: "https://api.blizzard.com",
+    auth: "oauth2-client-credentials",
+    keyName: "blizzard",
+    docsUrl: "https://develop.battle.net/access/clients",
+    rps: 20,
+    burst: 40,
+    requiresUserAgent: false,
+    notes:
+      "Pass the credential as `clientId:clientSecret`. 36000 requests/hour. Tokens are fetched and cached automatically.",
+  },
+  {
+    id: "bungie",
+    label: "Bungie.net API",
+    kind: "first-party",
+    baseUrl: "https://www.bungie.net/Platform",
+    auth: "header-key",
+    keyName: "bungie",
+    docsUrl: "https://www.bungie.net/en/Application",
+    rps: 20,
+    burst: 25,
+    requiresUserAgent: false,
+    notes: "Destiny 2. Components are opt-in per request and the payloads are large.",
+  },
+  {
+    id: "pubg",
+    label: "PUBG Developer API",
+    kind: "first-party",
+    baseUrl: "https://api.pubg.com",
+    auth: "bearer",
+    keyName: "pubg",
+    docsUrl: "https://developer.pubg.com",
+    // Documented as 10 requests per minute for a standard key.
+    rps: 0.16,
+    burst: 5,
+    requiresUserAgent: false,
+    notes:
+      "Match telemetry is served from a separate CDN URL found inside the match payload and is not rate limited.",
+  },
+  {
+    id: "supercell-clash-royale",
+    label: "Clash Royale API",
+    kind: "first-party",
+    baseUrl: "https://api.clashroyale.com/v1",
+    auth: "bearer",
+    keyName: "clashRoyale",
+    docsUrl: "https://developer.clashroyale.com",
+    rps: 10,
+    burst: 20,
+    requiresUserAgent: false,
+    notes:
+      "Tokens are bound to the IP addresses you register them for. A key that works locally will 403 from a server.",
+  },
+  {
+    id: "supercell-clash-of-clans",
+    label: "Clash of Clans API",
+    kind: "first-party",
+    baseUrl: "https://api.clashofclans.com/v1",
+    auth: "bearer",
+    keyName: "clashOfClans",
+    docsUrl: "https://developer.clashofclans.com",
+    rps: 10,
+    burst: 20,
+    requiresUserAgent: false,
+    notes: "IP-bound tokens, same as Clash Royale.",
+  },
+  {
+    id: "supercell-brawl-stars",
+    label: "Brawl Stars API",
+    kind: "first-party",
+    baseUrl: "https://api.brawlstars.com/v1",
+    auth: "bearer",
+    keyName: "brawlStars",
+    docsUrl: "https://developer.brawlstars.com",
+    rps: 10,
+    burst: 20,
+    requiresUserAgent: false,
+    notes: "IP-bound tokens, same as the other two Supercell APIs.",
+  },
+  {
+    id: "wargaming",
+    label: "Wargaming.net Public API",
+    kind: "first-party",
+    baseUrl: "https://api.worldoftanks.eu",
+    auth: "query-key",
+    keyName: "wargaming",
+    docsUrl: "https://developers.wargaming.net/applications",
+    rps: 10,
+    burst: 20,
+    requiresUserAgent: false,
+    notes:
+      "One application id, several hosts: worldoftanks.eu/.com/.asia and worldofwarships.*. The host encodes both the game and the region.",
+  },
+  {
+    id: "hirez",
+    label: "Hi-Rez Studios API",
+    kind: "first-party",
+    baseUrl: "https://api.smitegame.com/smiteapi.svc",
+    auth: "signed-session",
+    keyName: "hirez",
+    docsUrl: "https://www.hirezstudios.com/developers",
+    rps: 2,
+    burst: 5,
+    requiresUserAgent: false,
+    notes:
+      "Pass the credential as `devId:authKey`. Every call needs an MD5 signature and an open session; both are handled here. 7500 calls/day.",
+  },
+  {
+    id: "iracing",
+    label: "iRacing Data API",
+    kind: "first-party",
+    baseUrl: "https://members-ng.iracing.com",
+    auth: "cookie-session",
+    keyName: "iracing",
+    docsUrl: "https://members-ng.iracing.com/data/doc",
+    rps: 1,
+    burst: 3,
+    requiresUserAgent: true,
+    notes:
+      "Pass the credential as `email:password`. The password must be hashed as base64(sha256(password + lowercase(email))), which this package does for you. Responses are S3 links, followed automatically.",
+  },
+  {
+    id: "guild-wars-2",
+    label: "Guild Wars 2 API",
+    kind: "first-party",
+    baseUrl: "https://api.guildwars2.com/v2",
+    auth: "bearer",
+    keyName: "guildwars2",
+    docsUrl: "https://wiki.guildwars2.com/wiki/API:Main",
+    rps: 5,
+    burst: 10,
+    requiresUserAgent: false,
+    notes: "PvP endpoints need a key with the `pvp` scope; the static ones need none.",
+  },
+  {
+    id: "jagex",
+    label: "RuneScape Hiscores",
+    kind: "first-party",
+    baseUrl: "https://secure.runescape.com",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://runescape.wiki/w/Application_programming_interface",
+    // Jagex publishes no number. 2/s is the rate the community tooling has
+    // settled on and has not been blocked for; rounded down from there.
+    rps: 2,
+    burst: 4,
+    requiresUserAgent: true,
+    notes:
+      "Serves both games from one host: `m=hiscore_oldschool` is Old School, `m=hiscore` is RuneScape. No key. The ranked pages are HTML and are not read - this package does not scrape.",
+  },
+  {
+    id: "eve-esi",
+    label: "EVE Swagger Interface",
+    kind: "first-party",
+    baseUrl: "https://esi.evetech.net/latest",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://esi.evetech.net/ui/",
+    // CCP asks for an error-rate budget rather than a request rate: 100 errors
+    // per minute before a block. 10/s is well inside what their own guidance
+    // calls reasonable for public endpoints.
+    rps: 10,
+    burst: 20,
+    requiresUserAgent: true,
+    notes:
+      "Public endpoints only - character, corporation, alliance and server status. Anything private needs that character's OAuth token and is out of scope. CCP asks every caller to identify itself, so a descriptive User-Agent is required rather than optional.",
+  },
+  {
+    id: "path-of-exile",
+    label: "Path of Exile API",
+    kind: "first-party",
+    baseUrl: "https://api.pathofexile.com",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://www.pathofexile.com/developer/docs",
+    rps: 1,
+    burst: 3,
+    requiresUserAgent: true,
+    notes:
+      "Race ladders only. GGG rate limits by descriptive User-Agent and will block a generic one.",
+  },
+  {
+    id: "albion",
+    label: "Albion Online Game Info API",
+    kind: "first-party",
+    baseUrl: "https://gameinfo.albiononline.com/api/gameinfo",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://www.albiononline.com",
+    rps: 2,
+    burst: 5,
+    requiresUserAgent: false,
+    notes: "Separate hosts per server: gameinfo (EU), gameinfo-ams, gameinfo-sgp.",
+  },
+  {
+    id: "relic",
+    label: "Relic Community API",
+    kind: "first-party",
+    baseUrl: "https://aoe-api.reliclink.com/community",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://aoe-api.reliclink.com",
+    rps: 2,
+    burst: 5,
+    requiresUserAgent: false,
+    notes:
+      "Serves Age of Empires II DE, Age of Empires IV and Company of Heroes 3 from one schema, keyed by title parameter.",
+  },
+  {
+    id: "osu",
+    label: "osu! API v2",
+    kind: "first-party",
+    baseUrl: "https://osu.ppy.sh/api/v2",
+    auth: "oauth2-client-credentials",
+    keyName: "osu",
+    docsUrl: "https://osu.ppy.sh/docs/index.html",
+    rps: 10,
+    burst: 20,
+    requiresUserAgent: false,
+    notes: "Pass the credential as `clientId:clientSecret`. Guideline is 60 requests/minute.",
+  },
+  {
+    id: "hypixel",
+    label: "Hypixel API",
+    kind: "first-party",
+    baseUrl: "https://api.hypixel.net/v2",
+    auth: "header-key",
+    keyName: "hypixel",
+    docsUrl: "https://developer.hypixel.net",
+    rps: 5,
+    burst: 10,
+    requiresUserAgent: false,
+    notes:
+      "Keyed by Minecraft UUID, not by name. Name-to-UUID resolution goes through Mojang, which this package does for you.",
+  },
+  {
+    id: "brawlhalla",
+    label: "Brawlhalla API",
+    kind: "first-party",
+    baseUrl: "https://api.brawlhalla.com",
+    auth: "query-key",
+    keyName: "brawlhalla",
+    docsUrl: "https://dev.brawlhalla.com",
+    rps: 3,
+    burst: 6,
+    requiresUserAgent: false,
+    notes: "Keys are handed out on request by Blue Mammoth.",
+  },
+  {
+    id: "marvel-rivals",
+    label: "Marvel Rivals API",
+    kind: "community",
+    baseUrl: "https://marvelrivalsapi.com/api/v1",
+    auth: "header-key",
+    keyName: "marvelRivals",
+    docsUrl: "https://marvelrivalsapi.com/docs",
+    rps: 2,
+    burst: 5,
+    requiresUserAgent: false,
+    notes: "Player data is only available once the account has been indexed at least once.",
+  },
+
+  // -------------------------------------------------------------------------
+  // Community
+  // -------------------------------------------------------------------------
+  {
+    id: "opendota",
+    label: "OpenDota API",
+    kind: "community",
+    baseUrl: "https://api.opendota.com/api",
+    auth: "query-key",
+    optionalAuth: true,
+    keyName: "opendota",
+    docsUrl: "https://docs.opendota.com",
+    // 60 calls/minute without a key.
+    rps: 1,
+    burst: 5,
+    requiresUserAgent: false,
+    notes:
+      "Works without a key. Far richer than Valve's own match API, and the only practical way to get parsed match data.",
+  },
+  {
+    id: "stratz",
+    label: "STRATZ GraphQL API",
+    kind: "community",
+    baseUrl: "https://api.stratz.com/graphql",
+    auth: "bearer",
+    keyName: "stratz",
+    docsUrl: "https://stratz.com/api",
+    rps: 2,
+    burst: 5,
+    requiresUserAgent: true,
+    notes:
+      "GraphQL. Requires the `STRATZ_API` User-Agent for the free tier; this package sets it.",
+  },
+  {
+    id: "faceit",
+    label: "FACEIT Data API",
+    kind: "community",
+    baseUrl: "https://open.faceit.com/data/v4",
+    auth: "bearer",
+    keyName: "faceit",
+    docsUrl: "https://developers.faceit.com/apps",
+    rps: 8,
+    burst: 16,
+    requiresUserAgent: false,
+    notes:
+      "Use a server-side key, not a client one. Covers CS2, Dota 2, Valorant, LoL, Rocket League and Apex from one schema.",
+  },
+  {
+    id: "tracker",
+    label: "Tracker Network API",
+    kind: "community",
+    baseUrl: "https://public-api.tracker.gg/v2",
+    auth: "header-key",
+    keyName: "tracker",
+    docsUrl: "https://tracker.gg/developers/apps",
+    rps: 1,
+    burst: 3,
+    requiresUserAgent: false,
+    notes:
+      "The only workable source for Rainbow Six Siege, Call of Duty and Battlefield player stats. Keys are approved per application.",
+  },
+  {
+    id: "overfast",
+    label: "OverFast API",
+    kind: "community",
+    baseUrl: "https://overfast-api.tekrop.fr",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://overfast-api.tekrop.fr/docs",
+    rps: 2,
+    burst: 5,
+    requiresUserAgent: false,
+    notes:
+      "Scrapes the official Overwatch career pages. Battletag hashes become dashes: Player#1234 is Player-1234.",
+  },
+  {
+    id: "henrikdev",
+    label: "HenrikDev Valorant API",
+    kind: "community",
+    baseUrl: "https://api.henrikdev.xyz/valorant",
+    auth: "header-key",
+    keyName: "henrikdev",
+    docsUrl: "https://docs.henrikdev.xyz",
+    rps: 0.5,
+    burst: 3,
+    requiresUserAgent: false,
+    notes:
+      "Gives MMR and full match detail that Riot's production API gates behind an approved application. Keys are free but tiered.",
+  },
+  {
+    id: "apex-legends-api",
+    label: "ApexLegendsAPI (mozambiquehe.re)",
+    kind: "community",
+    baseUrl: "https://api.mozambiquehe.re",
+    auth: "query-key",
+    keyName: "apex",
+    docsUrl: "https://apexlegendsapi.com",
+    rps: 1,
+    burst: 3,
+    requiresUserAgent: false,
+    notes: "EA has no public Apex API; this is the established substitute.",
+  },
+  {
+    id: "fortnite-api",
+    label: "Fortnite-API.com",
+    kind: "community",
+    baseUrl: "https://fortnite-api.com",
+    auth: "header-key",
+    keyName: "fortnite",
+    docsUrl: "https://dash.fortnite-api.com",
+    rps: 3,
+    burst: 6,
+    requiresUserAgent: false,
+    notes:
+      "Stats need a key; cosmetics and map data do not. Accounts with stats hidden in-game return 403 no matter the key.",
+  },
+  {
+    id: "halodotapi",
+    label: "HaloDotAPI",
+    kind: "community",
+    baseUrl: "https://halo.api.stdlib.com/infinite@1.6.0",
+    auth: "bearer",
+    keyName: "halo",
+    docsUrl: "https://autocode.com/lib/halo/infinite",
+    rps: 1,
+    burst: 3,
+    requiresUserAgent: false,
+    notes: "343 publishes no public API. This is the established third-party one.",
+  },
+  {
+    id: "ballchasing",
+    label: "Ballchasing.com API",
+    kind: "community",
+    baseUrl: "https://ballchasing.com/api",
+    auth: "header-key",
+    keyName: "ballchasing",
+    docsUrl: "https://ballchasing.com/doc/api",
+    rps: 2,
+    burst: 4,
+    requiresUserAgent: false,
+    notes:
+      "Replay-derived, so it only knows the matches somebody uploaded. Psyonix publishes no player API at all.",
+  },
+  {
+    id: "octane",
+    label: "Octane.gg API",
+    kind: "esports-data",
+    baseUrl: "https://zsr.octane.gg",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://zsr.octane.gg/",
+    rps: 2,
+    burst: 5,
+    requiresUserAgent: false,
+    notes: "The reference database for Rocket League esports. No key, no quota published.",
+  },
+  {
+    id: "sc2pulse",
+    label: "SC2Pulse",
+    kind: "community",
+    baseUrl: "https://sc2pulse.nephest.com/sc2/api",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://sc2pulse.nephest.com/sc2/doc/api",
+    rps: 2,
+    burst: 5,
+    requiresUserAgent: false,
+    notes:
+      "Cross-region StarCraft II ladder that Blizzard's own API cannot express: one player, all their accounts.",
+  },
+  {
+    id: "w3champions",
+    label: "W3Champions",
+    kind: "community",
+    baseUrl: "https://website-backend.w3champions.com/api",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://w3champions.com",
+    rps: 2,
+    burst: 5,
+    requiresUserAgent: false,
+    notes: "The competitive Warcraft III ladder. Blizzard runs no equivalent.",
+  },
+  {
+    id: "aoe4world",
+    label: "AoE4World",
+    kind: "community",
+    baseUrl: "https://aoe4world.com/api/v0",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://aoe4world.com/api",
+    rps: 2,
+    burst: 5,
+    requiresUserAgent: true,
+    notes: "Friendlier than the raw Relic endpoints and adds civilisation breakdowns.",
+  },
+  {
+    id: "raiderio",
+    label: "Raider.IO",
+    kind: "community",
+    baseUrl: "https://raider.io/api/v1",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://raider.io/api",
+    rps: 3,
+    burst: 6,
+    requiresUserAgent: false,
+    notes: "Mythic+ scores and rankings that the Blizzard API does not expose.",
+  },
+  {
+    id: "logstf",
+    label: "logs.tf",
+    kind: "community",
+    baseUrl: "https://logs.tf/api/v1",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://logs.tf/about",
+    rps: 1,
+    burst: 3,
+    requiresUserAgent: false,
+    notes: "Competitive Team Fortress 2 log archive. Keyed by SteamID64.",
+  },
+  {
+    id: "scoresaber",
+    label: "ScoreSaber",
+    kind: "community",
+    baseUrl: "https://scoresaber.com/api",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://docs.scoresaber.com",
+    rps: 4,
+    burst: 8,
+    requiresUserAgent: false,
+    notes: "Beat Saber ranked ladder, keyed by Steam or Oculus id.",
+  },
+  {
+    id: "beatleader",
+    label: "BeatLeader",
+    kind: "community",
+    baseUrl: "https://api.beatleader.xyz",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://api.beatleader.xyz/swagger",
+    rps: 4,
+    burst: 8,
+    requiresUserAgent: false,
+    notes: "The second Beat Saber ladder, with replay data ScoreSaber does not keep.",
+  },
+  {
+    id: "deadlock-api",
+    label: "Deadlock API",
+    kind: "community",
+    baseUrl: "https://api.deadlock-api.com/v1",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://deadlock-api.com",
+    rps: 2,
+    burst: 5,
+    requiresUserAgent: false,
+    notes: "Keyed by Steam account id. The game is in closed testing, so the schema moves.",
+  },
+  {
+    id: "the-finals-api",
+    label: "The Finals Leaderboard API",
+    kind: "community",
+    baseUrl: "https://api.the-finals-leaderboard.com/v1",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://api.the-finals-leaderboard.com",
+    rps: 2,
+    burst: 5,
+    requiresUserAgent: false,
+    notes: "Leaderboard-shaped: you look a player up inside a season's ladder.",
+  },
+  {
+    id: "heroesprofile",
+    label: "Heroes Profile",
+    kind: "community",
+    baseUrl: "https://api.heroesprofile.com/api",
+    auth: "query-key",
+    keyName: "heroesprofile",
+    docsUrl: "https://api.heroesprofile.com/apidocs",
+    rps: 1,
+    burst: 3,
+    requiresUserAgent: false,
+    notes: "Heroes of the Storm. Blizzard never shipped a HotS profile API.",
+  },
+  {
+    id: "chess-com",
+    label: "Chess.com Published-Data API",
+    kind: "community",
+    baseUrl: "https://api.chess.com/pub",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://www.chess.com/news/view/published-data-api",
+    rps: 3,
+    burst: 6,
+    requiresUserAgent: true,
+    notes: "No key, but serial requests only - parallel ones get 429 immediately.",
+  },
+  {
+    id: "lichess",
+    label: "Lichess API",
+    kind: "community",
+    baseUrl: "https://lichess.org/api",
+    auth: "bearer",
+    optionalAuth: true,
+    keyName: "lichess",
+    docsUrl: "https://lichess.org/api",
+    rps: 2,
+    burst: 5,
+    requiresUserAgent: false,
+    notes:
+      "Works without a token. Game exports stream NDJSON rather than returning a JSON array.",
+  },
+  {
+    id: "trackmania-io",
+    label: "trackmania.io",
+    kind: "community",
+    baseUrl: "https://trackmania.io/api",
+    auth: "header-key",
+    keyName: "trackmania",
+    optionalAuth: true,
+    docsUrl: "https://openplanet.dev/tmio/api",
+    rps: 1,
+    burst: 3,
+    requiresUserAgent: true,
+    notes:
+      "Requires a User-Agent naming your application and a contact address, and will block you without one.",
+  },
+  {
+    id: "mojang",
+    label: "Mojang Account API",
+    kind: "first-party",
+    baseUrl: "https://api.mojang.com",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://wiki.vg/Mojang_API",
+    rps: 1,
+    burst: 3,
+    requiresUserAgent: false,
+    notes: "Used only to turn a Minecraft name into the UUID Hypixel needs.",
+  },
+
+  // -------------------------------------------------------------------------
+  // Esports data
+  // -------------------------------------------------------------------------
+  {
+    id: "pandascore",
+    label: "PandaScore",
+    kind: "esports-data",
+    baseUrl: "https://api.pandascore.co",
+    auth: "bearer",
+    keyName: "pandascore",
+    docsUrl: "https://developers.pandascore.co",
+    rps: 1,
+    burst: 5,
+    requiresUserAgent: false,
+    notes:
+      "Commercial. The broadest single source for professional fixtures - it is what makes the titles with no player API still usable here.",
+  },
+  {
+    id: "abios",
+    label: "Abios Gaming (Atlas)",
+    kind: "esports-data",
+    baseUrl: "https://atlas.abiosgaming.com/v3",
+    auth: "header-key",
+    keyName: "abios",
+    docsUrl: "https://docs.abiosgaming.com",
+    rps: 2,
+    burst: 5,
+    requiresUserAgent: false,
+    notes: "Commercial. Pass the credential as `clientId:secret`.",
+  },
+  {
+    id: "esports-earnings",
+    label: "Esports Earnings API",
+    kind: "esports-data",
+    baseUrl: "https://api.esportsearnings.com/v0",
+    auth: "query-key",
+    keyName: "esportsEarnings",
+    docsUrl: "https://www.esportsearnings.com/dev",
+    // The documentation asks for at most one request per second, explicitly.
+    rps: 1,
+    burst: 1,
+    requiresUserAgent: false,
+    notes:
+      "Prize money for every title that has ever paid any. The one-per-second limit is a condition of use, not a guess.",
+  },
+  {
+    id: "liquipedia",
+    label: "Liquipedia (MediaWiki API)",
+    kind: "esports-data",
+    baseUrl: "https://liquipedia.net",
+    auth: "none",
+    keyName: null,
+    docsUrl: "https://liquipedia.net/commons/Liquipedia:API_Terms_of_Use",
+    // The terms of use ask for at most one request every two seconds.
+    rps: 0.5,
+    burst: 1,
+    requiresUserAgent: true,
+    notes:
+      "Requires a User-Agent with a contact address and 30-day caching of parsed results. Covers titles no structured API touches; the trade-off is that you get wikitext.",
+  },
+
+  // -------------------------------------------------------------------------
+  // Tournament platforms
+  // -------------------------------------------------------------------------
+  {
+    id: "startgg",
+    label: "start.gg GraphQL API",
+    kind: "tournament-platform",
+    baseUrl: "https://api.start.gg/gql/alpha",
+    auth: "bearer",
+    keyName: "startgg",
+    docsUrl: "https://developer.start.gg",
+    // 80 requests per 60 seconds.
+    rps: 1.3,
+    burst: 5,
+    requiresUserAgent: false,
+    notes:
+      "For the fighting games this is not a supplement, it is the record: sets, entrants, placements and seeding all live here.",
+  },
+  {
+    id: "toornament",
+    label: "Toornament API",
+    kind: "tournament-platform",
+    baseUrl: "https://api.toornament.com/viewer/v2",
+    auth: "oauth2-client-credentials",
+    keyName: "toornament",
+    docsUrl: "https://developer.toornament.com",
+    rps: 2,
+    burst: 5,
+    requiresUserAgent: false,
+    notes:
+      "Pass the credential as `apiKey:clientId:clientSecret`. Grassroots and mid-tier events across every title.",
+  },
+  {
+    id: "challonge",
+    label: "Challonge API",
+    kind: "tournament-platform",
+    baseUrl: "https://api.challonge.com/v1",
+    auth: "query-key",
+    keyName: "challonge",
+    docsUrl: "https://api.challonge.com/v1/documents",
+    rps: 2,
+    burst: 5,
+    requiresUserAgent: false,
+    notes: "Community brackets. Title-agnostic by design - it does not know what game it is.",
+  },
+];
+
+/**
+ * Which provider can answer which esports question.
+ *
+ * Not every esports provider serves every capability, and the gaps are real
+ * rather than unimplemented: start.gg has brackets and placements but no
+ * concept of a roster for a 1v1 fighting game, and Liquipedia has an event
+ * index with nothing structured beneath it.
+ *
+ * This table is consumed twice, which is what keeps the registry honest. The
+ * title registry intersects each title's declared esports capabilities with it,
+ * so a title cannot claim something none of its providers can do; and the
+ * esports layer uses it to *skip* a provider rather than fail on it - CS2 lists
+ * FACEIT before PandaScore, and treating "FACEIT has no fixture feed" as "CS2
+ * cannot list fixtures" would be wrong twice over.
+ */
+export const ESPORTS_CAPABILITY_PROVIDERS: Readonly<Record<string, readonly string[]>> = {
+  getEsportsMatches: ["pandascore", "abios", "startgg", "octane", "opendota"],
+  getEsportsTournaments: ["pandascore", "startgg", "octane", "toornament", "liquipedia"],
+  getEsportsTeams: ["pandascore", "abios", "octane", "opendota"],
+  getEsportsPlayers: ["pandascore", "abios", "octane", "opendota"],
+  getStandings: ["pandascore", "startgg", "challonge"],
+  getEarnings: ["esports-earnings"],
+};
+
+/**
+ * The providers from `providerIds` that could serve `capability`, best first.
+ *
+ * Returns `null` for a capability that is not an esports one, so callers can
+ * tell "no provider can do this" from "this is not the table's business".
+ */
+export function esportsProvidersFor(
+  providerIds: readonly string[],
+  capability: string,
+): readonly string[] | null {
+  const able = ESPORTS_CAPABILITY_PROVIDERS[capability];
+  if (!able) return null;
+  return providerIds.filter((id) => able.includes(id));
+}
+
+/** Indexed once at load; the registry is immutable apart from `registerProvider`. */
+const PROVIDERS = new Map<string, ProviderDescriptor>(
+  PROVIDER_LIST.map((provider) => [provider.id, provider]),
+);
+
+/** Every provider, in declaration order. */
+export function listProviders(): readonly ProviderDescriptor[] {
+  return [...PROVIDERS.values()];
+}
+
+/** Look one up, or `undefined`. */
+export function findProvider(id: string): ProviderDescriptor | undefined {
+  return PROVIDERS.get(id);
+}
+
+/** Look one up, or throw. Used on every path where a missing id is a bug. */
+export function getProvider(id: string): ProviderDescriptor {
+  const provider = PROVIDERS.get(id);
+  if (!provider) throw new UnknownProviderError(id);
+  return provider;
+}
+
+/** Providers of one kind. */
+export function providersByKind(kind: ProviderDescriptor["kind"]): readonly ProviderDescriptor[] {
+  return listProviders().filter((provider) => provider.kind === kind);
+}
+
+/**
+ * Add a provider at runtime.
+ *
+ * The seam for a private or regional API this package does not ship - a league
+ * operator's own stats service, say. The id must be new; silently replacing a
+ * built-in provider would change the terms of service a caller is operating
+ * under without them noticing.
+ */
+export function registerProvider(descriptor: ProviderDescriptor): void {
+  if (PROVIDERS.has(descriptor.id)) {
+    throw new Error(
+      `provider "${descriptor.id}" is already registered - pick a different id`,
+    );
+  }
+  PROVIDERS.set(descriptor.id, descriptor);
+}
+
+/** The `{ rps, burst }` map the rate limiter is built from. */
+export function rateLimitTable(): Record<string, { rps: number; burst: number }> {
+  const table: Record<string, { rps: number; burst: number }> = {};
+  for (const provider of PROVIDERS.values()) {
+    table[provider.id] = { rps: provider.rps, burst: provider.burst };
+  }
+  return table;
+}

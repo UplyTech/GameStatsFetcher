@@ -1,0 +1,143 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "game-stats-fetcher"
+version = "3.2.0"
+description = "One client for every esports title. Players, ranks, matches, leaderboards and the professional circuit behind them - normalised across 83 titles and 51 real game APIs."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "UplyTech (Tim Hauke)", email = "dev@uplytech.de" }]
+maintainers = [{ name = "UplyTech", email = "dev@uplytech.de" }]
+keywords = [
+    "esports",
+    "gamestats",
+    "game-api",
+    "player-stats",
+    "match-history",
+    "leaderboard",
+    "steam",
+    "riot-api",
+    "blizzard",
+    "cs2",
+    "valorant",
+    "league-of-legends",
+    "dota2",
+    "overwatch",
+    "apex-legends",
+    "rocket-league",
+    "fortnite",
+    "pubg",
+    "faceit",
+    "pandascore",
+    "startgg",
+    "liquipedia",
+    "discord-bot",
+    "uplytech",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Games/Entertainment",
+    "Topic :: Software Development :: Libraries",
+    "Typing :: Typed",
+]
+# Zero mandatory dependencies is a hard requirement of the package standard.
+# The default transport is built on urllib from the standard library; install
+# the `http` extra for httpx and real connection pooling.
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/uplytech/game-stats-fetcher"
+Repository = "https://github.com/uplytech/game-stats-fetcher"
+Changelog = "https://github.com/uplytech/game-stats-fetcher/blob/main/CHANGELOG.md"
+Issues = "https://github.com/uplytech/game-stats-fetcher/issues"
+
+[project.optional-dependencies]
+# Real connection pooling and HTTP/2. Recommended for anything long-running.
+http = ["httpx>=0.27"]
+# A cache shared between processes.
+redis = ["redis>=5.0"]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "pytest-cov>=5.0",
+    "mypy>=1.11",
+    "ruff>=0.6",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gamestatsfetcher"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "tests", "examples", "README.md", "LICENSE", "CHANGELOG.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q --strict-markers"
+asyncio_mode = "auto"
+
+[tool.coverage.run]
+branch = true
+source = ["gamestatsfetcher"]
+
+[tool.coverage.report]
+# A floor, not the gate. One number over 6,700 statements averages two very
+# different kinds of code together: `scripts/coverage_gate.py` splits them and
+# holds the core to 90 % and the mapping layer to 40 %, which is the check worth
+# passing. This value only catches a catastrophe - a suite that stopped running.
+# See CONTRIBUTING.md for why the split is deliberate.
+fail_under = 55
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "\\.\\.\\.",
+]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_unreachable = true
+files = ["src/gamestatsfetcher"]
+
+[[tool.mypy.overrides]]
+# Optional dependencies, absent in the default install.
+module = ["httpx.*", "redis.*"]
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 95
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM", "RET", "ARG"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["ARG"]
+# The stand-in Discord objects keep the parameters the real API would need.
+"examples/*" = ["ARG"]
+# ARG002 flags an unused method argument, which is what implementing an
+# interface looks like. `NullCache.set` takes a value it deliberately drops;
+# `TitleClient` declares fourteen methods whose base implementations raise, so
+# every parameter is unused there by construction; a title client that overrides
+# `get_metadata` for a game with exactly one kind of metadata still has to
+# accept `kind`. Renaming them to `_kind` would make the signature - and the
+# generated documentation - worse in order to quiet a linter.
+"src/gamestatsfetcher/cache.py" = ["ARG002"]
+"src/gamestatsfetcher/title_client.py" = ["ARG002"]
+"src/gamestatsfetcher/games/*" = ["ARG002"]

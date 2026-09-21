@@ -1,0 +1,68 @@
+name: Bug report
+description: Something computed the wrong answer, or a call failed that should not have
+title: "fix: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Say which **provider** and which **title**, and paste the normalised output you got. A provider changing its response shape is the most common cause, and naming it is most of the diagnosis.
+
+        **Never paste an API key.** If a key is needed to reproduce, say so and we will use ours.
+
+  - type: dropdown
+    id: edition
+    attributes:
+      label: Edition
+      options:
+        - Python (game-stats-fetcher)
+        - TypeScript (@uplytech/game-stats-fetcher)
+        - Both
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: "`gamestatsfetcher.__version__` or the version in your package.json"
+    validations:
+      required: true
+
+  - type: textarea
+    id: configuration
+    attributes:
+      label: The configuration
+      description: How you built the object, in a form somebody can paste and run.
+      render: json
+    validations:
+      required: true
+
+  - type: textarea
+    id: call
+    attributes:
+      label: The call
+      description: The call itself, with every argument.
+      render: python
+    validations:
+      required: true
+
+  - type: textarea
+    id: expectation
+    attributes:
+      label: What you expected, and what you got
+      placeholder: |
+        Expected: ...
+        Got:      ...
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Before submitting
+      options:
+        - label: This is about what the library computes, not about how it is used - see the boundaries in CONTRIBUTING.md.
+          required: true
+        - label: I am not reporting a security problem. Those go to security@uplytech.de, see SECURITY.md.
+          required: true

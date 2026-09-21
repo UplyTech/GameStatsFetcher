@@ -1,0 +1,16 @@
+node_modules
+coverage
+tests
+examples
+scripts
+*.log
+.DS_Store
+.env
+.env.local
+.vscode
+.idea
+.tsup
+.eslintrc.cjs
+tsconfig.json
+tsup.config.ts
+vitest.config.ts

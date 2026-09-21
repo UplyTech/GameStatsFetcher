@@ -1,0 +1,249 @@
+{
+  "formatVersion": 1,
+  "packageVersion": "3.2.0",
+  "note": "Identifier conversions. A player whose Steam id converts differently in a Python bot and a Node service is two different people to a database.",
+  "isSteamId64": [
+    {
+      "args": [
+        "76561197960287930"
+      ],
+      "value": true
+    },
+    {
+      "args": [
+        "22202"
+      ],
+      "value": false
+    },
+    {
+      "args": [
+        "7656119796028793"
+      ],
+      "value": false
+    },
+    {
+      "args": [
+        ""
+      ],
+      "value": false
+    }
+  ],
+  "toSteamId64": [
+    {
+      "args": [
+        "76561197960287930"
+      ],
+      "value": "76561197960287930"
+    },
+    {
+      "args": [
+        "[U:1:22202]"
+      ],
+      "value": "76561197960287930"
+    },
+    {
+      "args": [
+        "U:1:22202"
+      ],
+      "value": "76561197960287930"
+    },
+    {
+      "args": [
+        "STEAM_0:0:11101"
+      ],
+      "value": "76561197960287930"
+    },
+    {
+      "args": [
+        "22202"
+      ],
+      "value": "76561197960287930"
+    },
+    {
+      "args": [
+        "1"
+      ],
+      "value": "76561197960265729"
+    },
+    {
+      "args": [
+        "7656119796028793000"
+      ],
+      "error": "ValidationError"
+    },
+    {
+      "args": [
+        "gaben"
+      ],
+      "error": "ValidationError"
+    },
+    {
+      "args": [
+        ""
+      ],
+      "error": "ValidationError"
+    }
+  ],
+  "toSteamAccountId": [
+    {
+      "args": [
+        "76561197960287930"
+      ],
+      "value": "22202"
+    },
+    {
+      "args": [
+        "STEAM_0:0:11101"
+      ],
+      "value": "22202"
+    }
+  ],
+  "toSteamId2": [
+    {
+      "args": [
+        "76561197960287930"
+      ],
+      "value": "STEAM_0:0:11101"
+    },
+    {
+      "args": [
+        "22203"
+      ],
+      "value": "STEAM_0:1:11101"
+    }
+  ],
+  "toSteamId3": [
+    {
+      "args": [
+        "76561197960287930"
+      ],
+      "value": "[U:1:22202]"
+    }
+  ],
+  "parseRiotId": [
+    {
+      "args": [
+        "Faker#KR1"
+      ],
+      "value": {
+        "gameName": "Faker",
+        "tagLine": "KR1"
+      }
+    },
+    {
+      "args": [
+        "no#1 fan#EUW"
+      ],
+      "value": {
+        "gameName": "no#1 fan",
+        "tagLine": "EUW"
+      }
+    },
+    {
+      "args": [
+        "Faker"
+      ],
+      "error": "ValidationError"
+    },
+    {
+      "args": [
+        "Faker#"
+      ],
+      "error": "ValidationError"
+    },
+    {
+      "args": [
+        "#KR1"
+      ],
+      "error": "ValidationError"
+    }
+  ],
+  "toBattleTagPath": [
+    {
+      "args": [
+        "Player#1234"
+      ],
+      "value": "Player-1234"
+    },
+    {
+      "args": [
+        "Player-1234"
+      ],
+      "value": "Player-1234"
+    },
+    {
+      "args": [
+        "Player"
+      ],
+      "error": "ValidationError"
+    }
+  ],
+  "normaliseSupercellTag": [
+    {
+      "args": [
+        "2ppOjcvl"
+      ],
+      "value": "#2PP0JCVL"
+    },
+    {
+      "args": [
+        "#2PP0JCVL"
+      ],
+      "value": "#2PP0JCVL"
+    },
+    {
+      "args": [
+        "  #2pp  "
+      ],
+      "value": "#2PP"
+    },
+    {
+      "args": [
+        "#ABC"
+      ],
+      "error": "ValidationError"
+    },
+    {
+      "args": [
+        ""
+      ],
+      "error": "ValidationError"
+    }
+  ],
+  "encodeSupercellTag": [
+    {
+      "args": [
+        "#2PP"
+      ],
+      "value": "%232PP"
+    }
+  ],
+  "dashUuid": [
+    {
+      "args": [
+        "069a79f444e94726a5befca90e38aaf5"
+      ],
+      "value": "069a79f4-44e9-4726-a5be-fca90e38aaf5"
+    },
+    {
+      "args": [
+        "069a79f4-44e9-4726-a5be-fca90e38aaf5"
+      ],
+      "value": "069a79f4-44e9-4726-a5be-fca90e38aaf5"
+    },
+    {
+      "args": [
+        "nope"
+      ],
+      "error": "ValidationError"
+    }
+  ],
+  "undashUuid": [
+    {
+      "args": [
+        "069a79f4-44e9-4726-A5BE-fca90e38aaf5"
+      ],
+      "value": "069a79f444e94726a5befca90e38aaf5"
+    }
+  ]
+}

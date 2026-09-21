@@ -1,0 +1,21 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+
+  // knip reports what nobody imports. For a library that needs explaining: the
+  // entry point is by definition imported by nobody inside the repository, only
+  // by callers outside it. That is why it is listed as an entry and not treated
+  // as a finding. The same goes for the examples and the generator scripts,
+  // which are run rather than imported.
+  //
+  // This file is .jsonc rather than .json on purpose: knip validates its config
+  // against a schema that rejects unknown keys, so the "//" comment key this
+  // used to carry made every run fail with `unrecognized_keys: //` - invisibly,
+  // because the step is continue-on-error.
+  "entry": ["src/index.ts", "examples/*.ts", "scripts/*.mjs"],
+  "project": ["src/**/*.ts", "tests/**/*.ts"],
+  // Neither is imported by anything: `@vitest/coverage-v8` is loaded by vitest
+  // when --coverage is passed, and `vite-node` is how the examples are run
+  // (`npx vite-node examples/basic.ts`, and .github/scripts/check-examples.mjs).
+  "ignoreDependencies": ["@vitest/coverage-v8", "vite-node"],
+  "ignoreExportsUsedInFile": true
+}

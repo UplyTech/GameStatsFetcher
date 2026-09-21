@@ -1,0 +1,3140 @@
+{
+  "formatVersion": 1,
+  "packageVersion": "3.2.0",
+  "count": 87,
+  "titles": [
+    {
+      "id": "cs2",
+      "name": "Counter-Strike 2",
+      "aliases": [
+        "cs",
+        "csgo",
+        "cs:go",
+        "counter-strike",
+        "counterstrike",
+        "cs-go"
+      ],
+      "genre": "tactical-shooter",
+      "publisher": "Valve",
+      "releaseYear": 2023,
+      "status": "active",
+      "providers": [
+        "steam",
+        "faceit",
+        "pandascore",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getLeaderboard",
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getEsportsTeams",
+        "getEsportsPlayers",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "steamId",
+        "name"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "dota2",
+      "name": "Dota 2",
+      "aliases": [
+        "dota",
+        "dota-2"
+      ],
+      "genre": "moba",
+      "publisher": "Valve",
+      "releaseYear": 2013,
+      "status": "active",
+      "providers": [
+        "opendota",
+        "stratz",
+        "steam",
+        "faceit",
+        "pandascore",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getLeaderboard",
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getEsportsTeams",
+        "getEsportsPlayers",
+        "getStandings",
+        "getEarnings",
+        "getMetadata"
+      ],
+      "identifiers": [
+        "steamId",
+        "accountId",
+        "name"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "team-fortress-2",
+      "name": "Team Fortress 2",
+      "aliases": [
+        "tf2",
+        "team-fortress"
+      ],
+      "genre": "fps",
+      "publisher": "Valve",
+      "releaseYear": 2007,
+      "status": "legacy",
+      "providers": [
+        "steam",
+        "logstf",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getMatchHistory",
+        "getMatch",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "steamId",
+        "name"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "deadlock",
+      "name": "Deadlock",
+      "aliases": [
+        "neon-prime",
+        "citadel"
+      ],
+      "genre": "moba",
+      "publisher": "Valve",
+      "releaseYear": 2024,
+      "status": "emerging",
+      "providers": [
+        "deadlock-api",
+        "liquipedia"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getLeaderboard",
+        "getEsportsTournaments"
+      ],
+      "identifiers": [
+        "steamId",
+        "accountId"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "league-of-legends",
+      "name": "League of Legends",
+      "aliases": [
+        "lol",
+        "league"
+      ],
+      "genre": "moba",
+      "publisher": "Riot Games",
+      "releaseYear": 2009,
+      "status": "active",
+      "providers": [
+        "riot",
+        "pandascore",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getLeaderboard",
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getEsportsTeams",
+        "getEsportsPlayers",
+        "getStandings",
+        "getEarnings",
+        "getMetadata"
+      ],
+      "identifiers": [
+        "puuid",
+        "gameName",
+        "tagLine",
+        "name"
+      ],
+      "regions": [
+        "br1",
+        "eun1",
+        "euw1",
+        "jp1",
+        "kr",
+        "la1",
+        "la2",
+        "na1",
+        "oc1",
+        "tr1",
+        "ru",
+        "ph2",
+        "sg2",
+        "th2",
+        "tw2",
+        "vn2"
+      ],
+      "platforms": [
+        "riot"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "teamfight-tactics",
+      "name": "Teamfight Tactics",
+      "aliases": [
+        "tft"
+      ],
+      "genre": "auto-battler",
+      "publisher": "Riot Games",
+      "releaseYear": 2019,
+      "status": "active",
+      "providers": [
+        "riot",
+        "pandascore",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getLeaderboard",
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getEsportsTeams",
+        "getEsportsPlayers",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "puuid",
+        "gameName",
+        "tagLine",
+        "name"
+      ],
+      "regions": [
+        "br1",
+        "eun1",
+        "euw1",
+        "jp1",
+        "kr",
+        "la1",
+        "la2",
+        "na1",
+        "oc1",
+        "tr1",
+        "ru",
+        "ph2",
+        "sg2",
+        "th2",
+        "tw2",
+        "vn2"
+      ],
+      "platforms": [
+        "riot"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "valorant",
+      "name": "VALORANT",
+      "aliases": [
+        "val"
+      ],
+      "genre": "tactical-shooter",
+      "publisher": "Riot Games",
+      "releaseYear": 2020,
+      "status": "active",
+      "providers": [
+        "riot",
+        "henrikdev",
+        "tracker",
+        "faceit",
+        "pandascore",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getLeaderboard",
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getEsportsTeams",
+        "getEsportsPlayers",
+        "getStandings",
+        "getEarnings",
+        "getMetadata"
+      ],
+      "identifiers": [
+        "puuid",
+        "gameName",
+        "tagLine"
+      ],
+      "regions": [
+        "eu",
+        "na",
+        "ap",
+        "kr",
+        "latam",
+        "br"
+      ],
+      "platforms": [
+        "riot"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "legends-of-runeterra",
+      "name": "Legends of Runeterra",
+      "aliases": [
+        "lor",
+        "runeterra"
+      ],
+      "genre": "card",
+      "publisher": "Riot Games",
+      "releaseYear": 2020,
+      "status": "legacy",
+      "providers": [
+        "riot",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getRank",
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "puuid",
+        "gameName",
+        "tagLine"
+      ],
+      "regions": [
+        "americas",
+        "europe",
+        "asia",
+        "sea"
+      ],
+      "platforms": [
+        "riot"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "wild-rift",
+      "name": "League of Legends: Wild Rift",
+      "aliases": [
+        "wildrift",
+        "lolm",
+        "wr"
+      ],
+      "genre": "moba",
+      "publisher": "Riot Games",
+      "releaseYear": 2020,
+      "status": "active",
+      "providers": [
+        "pandascore",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getEsportsTeams",
+        "getEsportsPlayers",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "android",
+        "ios"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "overwatch-2",
+      "name": "Overwatch 2",
+      "aliases": [
+        "ow",
+        "ow2",
+        "overwatch"
+      ],
+      "genre": "hero-shooter",
+      "publisher": "Blizzard Entertainment",
+      "releaseYear": 2022,
+      "status": "active",
+      "providers": [
+        "overfast",
+        "pandascore",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getEsportsTeams",
+        "getEsportsPlayers",
+        "getStandings",
+        "getEarnings",
+        "getMetadata"
+      ],
+      "identifiers": [
+        "battleTag",
+        "name"
+      ],
+      "regions": [
+        "eu",
+        "us",
+        "asia"
+      ],
+      "platforms": [
+        "battlenet",
+        "xbox",
+        "playstation",
+        "nintendo"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "starcraft-2",
+      "name": "StarCraft II",
+      "aliases": [
+        "sc2",
+        "starcraft-ii"
+      ],
+      "genre": "rts",
+      "publisher": "Blizzard Entertainment",
+      "releaseYear": 2010,
+      "status": "active",
+      "providers": [
+        "sc2pulse",
+        "blizzard",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getMatchHistory",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "battleTag",
+        "name",
+        "accountId"
+      ],
+      "regions": [
+        "us",
+        "eu",
+        "kr",
+        "tw"
+      ],
+      "platforms": [
+        "battlenet"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "starcraft-brood-war",
+      "name": "StarCraft: Brood War",
+      "aliases": [
+        "bw",
+        "brood-war",
+        "starcraft-1",
+        "sc-bw"
+      ],
+      "genre": "rts",
+      "publisher": "Blizzard Entertainment",
+      "releaseYear": 1998,
+      "status": "legacy",
+      "providers": [
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "battlenet"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "warcraft-3",
+      "name": "Warcraft III",
+      "aliases": [
+        "wc3",
+        "warcraft-iii",
+        "w3",
+        "reforged"
+      ],
+      "genre": "rts",
+      "publisher": "Blizzard Entertainment",
+      "releaseYear": 2002,
+      "status": "legacy",
+      "providers": [
+        "w3champions",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getMatchHistory",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "battleTag",
+        "name"
+      ],
+      "regions": [
+        "eu",
+        "us",
+        "kr"
+      ],
+      "platforms": [
+        "battlenet"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "hearthstone",
+      "name": "Hearthstone",
+      "aliases": [
+        "hs"
+      ],
+      "genre": "card",
+      "publisher": "Blizzard Entertainment",
+      "releaseYear": 2014,
+      "status": "active",
+      "providers": [
+        "blizzard",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getMetadata",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [
+        "us",
+        "eu",
+        "kr"
+      ],
+      "platforms": [
+        "battlenet",
+        "android",
+        "ios"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "heroes-of-the-storm",
+      "name": "Heroes of the Storm",
+      "aliases": [
+        "hots",
+        "heroes"
+      ],
+      "genre": "moba",
+      "publisher": "Blizzard Entertainment",
+      "releaseYear": 2015,
+      "status": "legacy",
+      "providers": [
+        "heroesprofile",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "battleTag",
+        "name"
+      ],
+      "regions": [
+        "us",
+        "eu",
+        "kr"
+      ],
+      "platforms": [
+        "battlenet"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "world-of-warcraft",
+      "name": "World of Warcraft",
+      "aliases": [
+        "wow"
+      ],
+      "genre": "mmo",
+      "publisher": "Blizzard Entertainment",
+      "releaseYear": 2004,
+      "status": "active",
+      "providers": [
+        "blizzard",
+        "raiderio",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "name",
+        "region"
+      ],
+      "regions": [
+        "us",
+        "eu",
+        "kr",
+        "tw",
+        "cn"
+      ],
+      "platforms": [
+        "battlenet"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "destiny-2",
+      "name": "Destiny 2",
+      "aliases": [
+        "destiny",
+        "d2"
+      ],
+      "genre": "fps",
+      "publisher": "Bungie",
+      "releaseYear": 2017,
+      "status": "active",
+      "providers": [
+        "bungie",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "membershipId",
+        "name",
+        "platform"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation",
+        "epic"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "halo-infinite",
+      "name": "Halo Infinite",
+      "aliases": [
+        "halo",
+        "hi"
+      ],
+      "genre": "fps",
+      "publisher": "Xbox Game Studios",
+      "releaseYear": 2021,
+      "status": "active",
+      "providers": [
+        "halodotapi",
+        "tracker",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "name"
+      ],
+      "regions": [],
+      "platforms": [
+        "xbox",
+        "steam"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "splatoon-3",
+      "name": "Splatoon 3",
+      "aliases": [
+        "splatoon",
+        "splat3"
+      ],
+      "genre": "tactical-shooter",
+      "publisher": "Nintendo",
+      "releaseYear": 2022,
+      "status": "active",
+      "providers": [
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "nintendo"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "pokemon-unite",
+      "name": "Pokémon UNITE",
+      "aliases": [
+        "unite",
+        "pokemon-unite"
+      ],
+      "genre": "moba",
+      "publisher": "The Pokémon Company",
+      "releaseYear": 2021,
+      "status": "active",
+      "providers": [
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "nintendo",
+        "android",
+        "ios"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "gran-turismo-7",
+      "name": "Gran Turismo 7",
+      "aliases": [
+        "gt7",
+        "gran-turismo"
+      ],
+      "genre": "racing",
+      "publisher": "Sony Interactive Entertainment",
+      "releaseYear": 2022,
+      "status": "active",
+      "providers": [
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "playstation"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "apex-legends",
+      "name": "Apex Legends",
+      "aliases": [
+        "apex"
+      ],
+      "genre": "battle-royale",
+      "publisher": "Electronic Arts",
+      "releaseYear": 2019,
+      "status": "active",
+      "providers": [
+        "apex-legends-api",
+        "tracker",
+        "faceit",
+        "pandascore",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getEsportsTeams",
+        "getEsportsPlayers",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "name",
+        "platform",
+        "accountId"
+      ],
+      "regions": [],
+      "platforms": [
+        "origin",
+        "steam",
+        "xbox",
+        "playstation",
+        "nintendo"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "call-of-duty",
+      "name": "Call of Duty",
+      "aliases": [
+        "cod",
+        "warzone",
+        "modern-warfare",
+        "black-ops",
+        "cdl"
+      ],
+      "genre": "fps",
+      "publisher": "Activision",
+      "releaseYear": 2003,
+      "status": "active",
+      "providers": [
+        "tracker",
+        "pandascore",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getEsportsTeams",
+        "getEsportsPlayers",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "name",
+        "platform"
+      ],
+      "regions": [],
+      "platforms": [
+        "battlenet",
+        "steam",
+        "xbox",
+        "playstation"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "battlefield",
+      "name": "Battlefield",
+      "aliases": [
+        "bf",
+        "bf2042",
+        "battlefield-2042"
+      ],
+      "genre": "fps",
+      "publisher": "Electronic Arts",
+      "releaseYear": 2002,
+      "status": "legacy",
+      "providers": [
+        "tracker",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "name",
+        "platform"
+      ],
+      "regions": [],
+      "platforms": [
+        "origin",
+        "steam",
+        "xbox",
+        "playstation"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "ea-fc",
+      "name": "EA Sports FC",
+      "aliases": [
+        "fifa",
+        "fc25",
+        "fc24",
+        "ea-sports-fc",
+        "fifa-online"
+      ],
+      "genre": "sports",
+      "publisher": "Electronic Arts",
+      "releaseYear": 1993,
+      "status": "active",
+      "providers": [
+        "pandascore",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getEsportsTeams",
+        "getEsportsPlayers",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "origin",
+        "steam",
+        "xbox",
+        "playstation"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "madden-nfl",
+      "name": "Madden NFL",
+      "aliases": [
+        "madden"
+      ],
+      "genre": "sports",
+      "publisher": "Electronic Arts",
+      "releaseYear": 1988,
+      "status": "active",
+      "providers": [
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "xbox",
+        "playstation"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "rainbow-six-siege",
+      "name": "Tom Clancy's Rainbow Six Siege",
+      "aliases": [
+        "r6",
+        "r6s",
+        "siege",
+        "rainbow-six"
+      ],
+      "genre": "tactical-shooter",
+      "publisher": "Ubisoft",
+      "releaseYear": 2015,
+      "status": "active",
+      "providers": [
+        "tracker",
+        "pandascore",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getEsportsTeams",
+        "getEsportsPlayers",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "name",
+        "ubisoftId",
+        "platform"
+      ],
+      "regions": [
+        "emea",
+        "ncsa",
+        "apac"
+      ],
+      "platforms": [
+        "ubisoft",
+        "steam",
+        "xbox",
+        "playstation"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "fortnite",
+      "name": "Fortnite",
+      "aliases": [
+        "fn",
+        "fortnite-br"
+      ],
+      "genre": "battle-royale",
+      "publisher": "Epic Games",
+      "releaseYear": 2017,
+      "status": "active",
+      "providers": [
+        "fortnite-api",
+        "tracker",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getEarnings",
+        "getMetadata"
+      ],
+      "identifiers": [
+        "name",
+        "epicId",
+        "platform"
+      ],
+      "regions": [
+        "eu",
+        "na-east",
+        "na-west",
+        "na-central",
+        "oce",
+        "asia",
+        "brazil",
+        "me"
+      ],
+      "platforms": [
+        "epic",
+        "steam",
+        "xbox",
+        "playstation",
+        "nintendo",
+        "android",
+        "ios"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "fall-guys",
+      "name": "Fall Guys",
+      "aliases": [
+        "fallguys"
+      ],
+      "genre": "party",
+      "publisher": "Epic Games",
+      "releaseYear": 2020,
+      "status": "active",
+      "providers": [
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "epic",
+        "steam",
+        "xbox",
+        "playstation",
+        "nintendo"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "rocket-league",
+      "name": "Rocket League",
+      "aliases": [
+        "rl",
+        "rlcs"
+      ],
+      "genre": "sports",
+      "publisher": "Psyonix",
+      "releaseYear": 2015,
+      "status": "active",
+      "providers": [
+        "ballchasing",
+        "octane",
+        "tracker",
+        "pandascore",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getLeaderboard",
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getEsportsTeams",
+        "getEsportsPlayers",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "steamId",
+        "epicId",
+        "name",
+        "platform"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "epic",
+        "xbox",
+        "playstation",
+        "nintendo"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "pubg",
+      "name": "PUBG: Battlegrounds",
+      "aliases": [
+        "pubg-pc",
+        "playerunknowns-battlegrounds",
+        "battlegrounds"
+      ],
+      "genre": "battle-royale",
+      "publisher": "Krafton",
+      "releaseYear": 2017,
+      "status": "active",
+      "providers": [
+        "pubg",
+        "pandascore",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getLeaderboard",
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getEsportsTeams",
+        "getEsportsPlayers",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "name",
+        "accountId",
+        "platform"
+      ],
+      "regions": [
+        "steam",
+        "kakao",
+        "psn",
+        "xbox",
+        "stadia",
+        "console"
+      ],
+      "platforms": [
+        "steam",
+        "kakao",
+        "xbox",
+        "playstation"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "pubg-mobile",
+      "name": "PUBG Mobile",
+      "aliases": [
+        "pubgm",
+        "bgmi"
+      ],
+      "genre": "battle-royale",
+      "publisher": "Krafton",
+      "releaseYear": 2018,
+      "status": "active",
+      "providers": [
+        "pandascore",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getEsportsTeams",
+        "getEsportsPlayers",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "android",
+        "ios"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "naraka-bladepoint",
+      "name": "Naraka: Bladepoint",
+      "aliases": [
+        "naraka"
+      ],
+      "genre": "battle-royale",
+      "publisher": "NetEase",
+      "releaseYear": 2021,
+      "status": "active",
+      "providers": [
+        "steam",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "steamId"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "marvel-rivals",
+      "name": "Marvel Rivals",
+      "aliases": [
+        "rivals",
+        "mr"
+      ],
+      "genre": "hero-shooter",
+      "publisher": "NetEase",
+      "releaseYear": 2024,
+      "status": "emerging",
+      "providers": [
+        "marvel-rivals",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "name",
+        "accountId"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "the-finals",
+      "name": "The Finals",
+      "aliases": [
+        "finals",
+        "thefinals"
+      ],
+      "genre": "fps",
+      "publisher": "Nexon",
+      "releaseYear": 2023,
+      "status": "emerging",
+      "providers": [
+        "the-finals-api",
+        "liquipedia"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getRank",
+        "getLeaderboard",
+        "getEsportsTournaments"
+      ],
+      "identifiers": [
+        "name",
+        "steamId",
+        "epicId"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "splitgate",
+      "name": "Splitgate",
+      "aliases": [
+        "splitgate-2"
+      ],
+      "genre": "fps",
+      "publisher": "1047 Games",
+      "releaseYear": 2019,
+      "status": "emerging",
+      "providers": [
+        "tracker",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "name",
+        "platform"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "escape-from-tarkov",
+      "name": "Escape from Tarkov: Arena",
+      "aliases": [
+        "tarkov",
+        "eft",
+        "tarkov-arena"
+      ],
+      "genre": "fps",
+      "publisher": "Battlestate Games",
+      "releaseYear": 2023,
+      "status": "emerging",
+      "providers": [
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "web"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "quake-champions",
+      "name": "Quake Champions",
+      "aliases": [
+        "quake",
+        "qc"
+      ],
+      "genre": "fps",
+      "publisher": "Bethesda Softworks",
+      "releaseYear": 2017,
+      "status": "legacy",
+      "providers": [
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "steam"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "crossfire",
+      "name": "CrossFire",
+      "aliases": [
+        "cf",
+        "crossfire-cfs"
+      ],
+      "genre": "fps",
+      "publisher": "Smilegate",
+      "releaseYear": 2007,
+      "status": "active",
+      "providers": [
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "web"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "point-blank",
+      "name": "Point Blank",
+      "aliases": [
+        "pb"
+      ],
+      "genre": "fps",
+      "publisher": "Zepetto",
+      "releaseYear": 2008,
+      "status": "legacy",
+      "providers": [
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "web"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "rust",
+      "name": "Rust",
+      "aliases": [],
+      "genre": "sandbox",
+      "publisher": "Facepunch Studios",
+      "releaseYear": 2018,
+      "status": "active",
+      "providers": [
+        "steam",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "steamId",
+        "name"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "dead-by-daylight",
+      "name": "Dead by Daylight",
+      "aliases": [
+        "dbd"
+      ],
+      "genre": "party",
+      "publisher": "Behaviour Interactive",
+      "releaseYear": 2016,
+      "status": "active",
+      "providers": [
+        "steam",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "steamId",
+        "name"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation",
+        "nintendo"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "smite",
+      "name": "SMITE",
+      "aliases": [
+        "smite-2"
+      ],
+      "genre": "moba",
+      "publisher": "Hi-Rez Studios",
+      "releaseYear": 2014,
+      "status": "active",
+      "providers": [
+        "hirez",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getEarnings",
+        "getMetadata"
+      ],
+      "identifiers": [
+        "name",
+        "accountId",
+        "platform"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation",
+        "nintendo"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "paladins",
+      "name": "Paladins",
+      "aliases": [],
+      "genre": "hero-shooter",
+      "publisher": "Hi-Rez Studios",
+      "releaseYear": 2016,
+      "status": "legacy",
+      "providers": [
+        "hirez",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getEarnings",
+        "getMetadata"
+      ],
+      "identifiers": [
+        "name",
+        "accountId",
+        "platform"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation",
+        "nintendo"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "clash-royale",
+      "name": "Clash Royale",
+      "aliases": [
+        "cr"
+      ],
+      "genre": "card",
+      "publisher": "Supercell",
+      "releaseYear": 2016,
+      "status": "active",
+      "providers": [
+        "supercell-clash-royale",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getEarnings",
+        "getMetadata"
+      ],
+      "identifiers": [
+        "playerTag"
+      ],
+      "regions": [],
+      "platforms": [
+        "android",
+        "ios"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "clash-of-clans",
+      "name": "Clash of Clans",
+      "aliases": [
+        "coc"
+      ],
+      "genre": "rts",
+      "publisher": "Supercell",
+      "releaseYear": 2012,
+      "status": "active",
+      "providers": [
+        "supercell-clash-of-clans",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "playerTag"
+      ],
+      "regions": [],
+      "platforms": [
+        "android",
+        "ios"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "brawl-stars",
+      "name": "Brawl Stars",
+      "aliases": [
+        "bs",
+        "brawlstars"
+      ],
+      "genre": "hero-shooter",
+      "publisher": "Supercell",
+      "releaseYear": 2018,
+      "status": "active",
+      "providers": [
+        "supercell-brawl-stars",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getEarnings",
+        "getMetadata"
+      ],
+      "identifiers": [
+        "playerTag"
+      ],
+      "regions": [],
+      "platforms": [
+        "android",
+        "ios"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "mobile-legends",
+      "name": "Mobile Legends: Bang Bang",
+      "aliases": [
+        "mlbb",
+        "ml",
+        "mobile-legends-bang-bang"
+      ],
+      "genre": "moba",
+      "publisher": "Moonton",
+      "releaseYear": 2016,
+      "status": "active",
+      "providers": [
+        "pandascore",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getEsportsTeams",
+        "getEsportsPlayers",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "android",
+        "ios"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "honor-of-kings",
+      "name": "Honor of Kings",
+      "aliases": [
+        "hok",
+        "kings-of-glory",
+        "wangzhe"
+      ],
+      "genre": "moba",
+      "publisher": "Tencent",
+      "releaseYear": 2015,
+      "status": "active",
+      "providers": [
+        "pandascore",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getEsportsTeams",
+        "getEsportsPlayers",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "android",
+        "ios"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "arena-of-valor",
+      "name": "Arena of Valor",
+      "aliases": [
+        "aov"
+      ],
+      "genre": "moba",
+      "publisher": "Tencent",
+      "releaseYear": 2016,
+      "status": "legacy",
+      "providers": [
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "android",
+        "ios",
+        "nintendo"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "free-fire",
+      "name": "Garena Free Fire",
+      "aliases": [
+        "ff",
+        "freefire"
+      ],
+      "genre": "battle-royale",
+      "publisher": "Garena",
+      "releaseYear": 2017,
+      "status": "active",
+      "providers": [
+        "pandascore",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getEsportsTeams",
+        "getEsportsPlayers",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "android",
+        "ios"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "street-fighter-6",
+      "name": "Street Fighter 6",
+      "aliases": [
+        "sf6",
+        "street-fighter"
+      ],
+      "genre": "fighting",
+      "publisher": "Capcom",
+      "releaseYear": 2023,
+      "status": "active",
+      "providers": [
+        "startgg",
+        "pandascore",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getEsportsTeams",
+        "getEsportsPlayers",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "tekken-8",
+      "name": "Tekken 8",
+      "aliases": [
+        "tekken",
+        "t8"
+      ],
+      "genre": "fighting",
+      "publisher": "Bandai Namco",
+      "releaseYear": 2024,
+      "status": "active",
+      "providers": [
+        "startgg",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "super-smash-bros-ultimate",
+      "name": "Super Smash Bros. Ultimate",
+      "aliases": [
+        "ssbu",
+        "smash-ultimate",
+        "ultimate"
+      ],
+      "genre": "fighting",
+      "publisher": "Nintendo",
+      "releaseYear": 2018,
+      "status": "active",
+      "providers": [
+        "startgg",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "nintendo"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "super-smash-bros-melee",
+      "name": "Super Smash Bros. Melee",
+      "aliases": [
+        "melee",
+        "ssbm"
+      ],
+      "genre": "fighting",
+      "publisher": "Nintendo",
+      "releaseYear": 2001,
+      "status": "active",
+      "providers": [
+        "startgg",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "nintendo"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "mortal-kombat-1",
+      "name": "Mortal Kombat 1",
+      "aliases": [
+        "mk1",
+        "mortal-kombat"
+      ],
+      "genre": "fighting",
+      "publisher": "Warner Bros. Games",
+      "releaseYear": 2023,
+      "status": "active",
+      "providers": [
+        "startgg",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation",
+        "nintendo"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "guilty-gear-strive",
+      "name": "Guilty Gear -Strive-",
+      "aliases": [
+        "ggst",
+        "strive",
+        "guilty-gear"
+      ],
+      "genre": "fighting",
+      "publisher": "Arc System Works",
+      "releaseYear": 2021,
+      "status": "active",
+      "providers": [
+        "startgg",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "dragon-ball-fighterz",
+      "name": "Dragon Ball FighterZ",
+      "aliases": [
+        "dbfz"
+      ],
+      "genre": "fighting",
+      "publisher": "Bandai Namco",
+      "releaseYear": 2018,
+      "status": "active",
+      "providers": [
+        "startgg",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation",
+        "nintendo"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "king-of-fighters-15",
+      "name": "The King of Fighters XV",
+      "aliases": [
+        "kof15",
+        "kofxv",
+        "kof"
+      ],
+      "genre": "fighting",
+      "publisher": "SNK",
+      "releaseYear": 2022,
+      "status": "active",
+      "providers": [
+        "startgg",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "granblue-fantasy-versus-rising",
+      "name": "Granblue Fantasy Versus: Rising",
+      "aliases": [
+        "gbvsr",
+        "granblue"
+      ],
+      "genre": "fighting",
+      "publisher": "Cygames",
+      "releaseYear": 2023,
+      "status": "active",
+      "providers": [
+        "startgg",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getStandings",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "playstation"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "brawlhalla",
+      "name": "Brawlhalla",
+      "aliases": [],
+      "genre": "fighting",
+      "publisher": "Ubisoft",
+      "releaseYear": 2017,
+      "status": "active",
+      "providers": [
+        "brawlhalla",
+        "startgg",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getEsportsMatches",
+        "getEsportsTournaments",
+        "getStandings",
+        "getEarnings",
+        "getMetadata"
+      ],
+      "identifiers": [
+        "steamId",
+        "accountId",
+        "name"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation",
+        "nintendo"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "iracing",
+      "name": "iRacing",
+      "aliases": [
+        "ir"
+      ],
+      "genre": "racing",
+      "publisher": "iRacing.com Motorsport Simulations",
+      "releaseYear": 2008,
+      "status": "active",
+      "providers": [
+        "iracing",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "accountId",
+        "name"
+      ],
+      "regions": [],
+      "platforms": [
+        "web"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "trackmania",
+      "name": "Trackmania",
+      "aliases": [
+        "tm",
+        "trackmania-2020"
+      ],
+      "genre": "racing",
+      "publisher": "Ubisoft Nadeo",
+      "releaseYear": 2020,
+      "status": "active",
+      "providers": [
+        "trackmania-io",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "accountId",
+        "name"
+      ],
+      "regions": [],
+      "platforms": [
+        "ubisoft",
+        "epic",
+        "steam"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "f1",
+      "name": "F1 (EA Sports)",
+      "aliases": [
+        "f1-esports",
+        "formula-1",
+        "f1-24",
+        "f1-25"
+      ],
+      "genre": "racing",
+      "publisher": "Electronic Arts",
+      "releaseYear": 2010,
+      "status": "active",
+      "providers": [
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "assetto-corsa-competizione",
+      "name": "Assetto Corsa Competizione",
+      "aliases": [
+        "acc",
+        "assetto-corsa"
+      ],
+      "genre": "racing",
+      "publisher": "505 Games",
+      "releaseYear": 2018,
+      "status": "active",
+      "providers": [
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "nba-2k",
+      "name": "NBA 2K",
+      "aliases": [
+        "2k",
+        "nba2k",
+        "nba-2k-league"
+      ],
+      "genre": "sports",
+      "publisher": "2K Games",
+      "releaseYear": 1999,
+      "status": "active",
+      "providers": [
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "efootball",
+      "name": "eFootball",
+      "aliases": [
+        "pes",
+        "pro-evolution-soccer",
+        "winning-eleven"
+      ],
+      "genre": "sports",
+      "publisher": "Konami",
+      "releaseYear": 1995,
+      "status": "active",
+      "providers": [
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation",
+        "android",
+        "ios"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "age-of-empires-2",
+      "name": "Age of Empires II: Definitive Edition",
+      "aliases": [
+        "aoe2",
+        "aoe2de",
+        "age-of-empires-ii"
+      ],
+      "genre": "rts",
+      "publisher": "Xbox Game Studios",
+      "releaseYear": 1999,
+      "status": "active",
+      "providers": [
+        "relic",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getMatchHistory",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "steamId",
+        "name",
+        "accountId"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "age-of-empires-4",
+      "name": "Age of Empires IV",
+      "aliases": [
+        "aoe4",
+        "age-of-empires-iv"
+      ],
+      "genre": "rts",
+      "publisher": "Xbox Game Studios",
+      "releaseYear": 2021,
+      "status": "active",
+      "providers": [
+        "aoe4world",
+        "relic",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "steamId",
+        "name",
+        "accountId"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "company-of-heroes-3",
+      "name": "Company of Heroes 3",
+      "aliases": [
+        "coh3",
+        "company-of-heroes"
+      ],
+      "genre": "rts",
+      "publisher": "Sega",
+      "releaseYear": 2023,
+      "status": "active",
+      "providers": [
+        "relic",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getMatchHistory",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "steamId",
+        "name"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "magic-the-gathering-arena",
+      "name": "Magic: The Gathering Arena",
+      "aliases": [
+        "mtga",
+        "mtg-arena",
+        "magic"
+      ],
+      "genre": "card",
+      "publisher": "Wizards of the Coast",
+      "releaseYear": 2018,
+      "status": "active",
+      "providers": [
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "web"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "gwent",
+      "name": "Gwent: The Witcher Card Game",
+      "aliases": [
+        "gwent-witcher"
+      ],
+      "genre": "card",
+      "publisher": "CD Projekt",
+      "releaseYear": 2018,
+      "status": "legacy",
+      "providers": [
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "web",
+        "android",
+        "ios"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "shadowverse",
+      "name": "Shadowverse",
+      "aliases": [
+        "sv",
+        "shadowverse-worlds-beyond"
+      ],
+      "genre": "card",
+      "publisher": "Cygames",
+      "releaseYear": 2016,
+      "status": "active",
+      "providers": [
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "android",
+        "ios"
+      ],
+      "dedicatedClient": false
+    },
+    {
+      "id": "world-of-tanks",
+      "name": "World of Tanks",
+      "aliases": [
+        "wot"
+      ],
+      "genre": "vehicle-combat",
+      "publisher": "Wargaming",
+      "releaseYear": 2010,
+      "status": "active",
+      "providers": [
+        "wargaming",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getEarnings",
+        "getMetadata"
+      ],
+      "identifiers": [
+        "name",
+        "accountId"
+      ],
+      "regions": [
+        "eu",
+        "na",
+        "asia"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "world-of-warships",
+      "name": "World of Warships",
+      "aliases": [
+        "wows"
+      ],
+      "genre": "vehicle-combat",
+      "publisher": "Wargaming",
+      "releaseYear": 2015,
+      "status": "active",
+      "providers": [
+        "wargaming",
+        "liquipedia"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getMetadata"
+      ],
+      "identifiers": [
+        "name",
+        "accountId"
+      ],
+      "regions": [
+        "eu",
+        "na",
+        "asia"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "war-thunder",
+      "name": "War Thunder",
+      "aliases": [
+        "wt"
+      ],
+      "genre": "vehicle-combat",
+      "publisher": "Gaijin Entertainment",
+      "releaseYear": 2012,
+      "status": "active",
+      "providers": [
+        "steam",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "steamId"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "guild-wars-2",
+      "name": "Guild Wars 2",
+      "aliases": [
+        "gw2"
+      ],
+      "genre": "mmo",
+      "publisher": "ArenaNet",
+      "releaseYear": 2012,
+      "status": "active",
+      "providers": [
+        "guild-wars-2",
+        "liquipedia"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getMatchHistory",
+        "getEsportsTournaments"
+      ],
+      "identifiers": [
+        "accountId",
+        "name"
+      ],
+      "regions": [],
+      "platforms": [
+        "web",
+        "steam"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "path-of-exile",
+      "name": "Path of Exile",
+      "aliases": [
+        "poe",
+        "path-of-exile-2"
+      ],
+      "genre": "mmo",
+      "publisher": "Grinding Gear Games",
+      "releaseYear": 2013,
+      "status": "active",
+      "providers": [
+        "path-of-exile",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getEarnings",
+        "getMetadata"
+      ],
+      "identifiers": [
+        "name"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "xbox",
+        "playstation",
+        "epic"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "albion-online",
+      "name": "Albion Online",
+      "aliases": [
+        "albion",
+        "ao"
+      ],
+      "genre": "mmo",
+      "publisher": "Sandbox Interactive",
+      "releaseYear": 2017,
+      "status": "active",
+      "providers": [
+        "albion",
+        "liquipedia"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getMatchHistory",
+        "getEsportsTournaments"
+      ],
+      "identifiers": [
+        "name",
+        "accountId"
+      ],
+      "regions": [
+        "europe",
+        "americas",
+        "asia"
+      ],
+      "platforms": [
+        "web",
+        "steam",
+        "android",
+        "ios"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "old-school-runescape",
+      "name": "Old School RuneScape",
+      "aliases": [
+        "osrs",
+        "old-school",
+        "runescape-oldschool",
+        "2007scape"
+      ],
+      "genre": "mmo",
+      "publisher": "Jagex",
+      "releaseYear": 2013,
+      "status": "active",
+      "providers": [
+        "jagex"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank"
+      ],
+      "identifiers": [
+        "name"
+      ],
+      "regions": [],
+      "platforms": [
+        "web",
+        "android",
+        "ios"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "runescape",
+      "name": "RuneScape",
+      "aliases": [
+        "rs3",
+        "runescape-3"
+      ],
+      "genre": "mmo",
+      "publisher": "Jagex",
+      "releaseYear": 2001,
+      "status": "active",
+      "providers": [
+        "jagex"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank"
+      ],
+      "identifiers": [
+        "name"
+      ],
+      "regions": [],
+      "platforms": [
+        "web",
+        "android",
+        "ios"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "eve-online",
+      "name": "EVE Online",
+      "aliases": [
+        "eve"
+      ],
+      "genre": "mmo",
+      "publisher": "CCP Games",
+      "releaseYear": 2003,
+      "status": "active",
+      "providers": [
+        "eve-esi"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMetadata"
+      ],
+      "identifiers": [
+        "name",
+        "accountId"
+      ],
+      "regions": [],
+      "platforms": [
+        "web"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "diablo-3",
+      "name": "Diablo III",
+      "aliases": [
+        "d3",
+        "diablo-iii"
+      ],
+      "genre": "action-rpg",
+      "publisher": "Blizzard Entertainment",
+      "releaseYear": 2012,
+      "status": "active",
+      "providers": [
+        "blizzard"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getMetadata"
+      ],
+      "identifiers": [
+        "battleTag"
+      ],
+      "regions": [
+        "us",
+        "eu",
+        "kr",
+        "tw"
+      ],
+      "platforms": [
+        "battlenet"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "osu",
+      "name": "osu!",
+      "aliases": [
+        "osu!",
+        "osu-standard",
+        "osu-mania"
+      ],
+      "genre": "rhythm",
+      "publisher": "ppy",
+      "releaseYear": 2007,
+      "status": "active",
+      "providers": [
+        "osu",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "name",
+        "accountId"
+      ],
+      "regions": [],
+      "platforms": [
+        "web"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "beat-saber",
+      "name": "Beat Saber",
+      "aliases": [
+        "bs-vr",
+        "beatsaber"
+      ],
+      "genre": "rhythm",
+      "publisher": "Beat Games",
+      "releaseYear": 2018,
+      "status": "active",
+      "providers": [
+        "scoresaber",
+        "beatleader",
+        "liquipedia"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getEsportsTournaments"
+      ],
+      "identifiers": [
+        "steamId",
+        "accountId",
+        "name"
+      ],
+      "regions": [],
+      "platforms": [
+        "steam",
+        "web"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "chess",
+      "name": "Chess",
+      "aliases": [
+        "chess-com",
+        "lichess",
+        "schach"
+      ],
+      "genre": "mind-sport",
+      "publisher": "Chess.com / Lichess",
+      "releaseYear": 1475,
+      "status": "active",
+      "providers": [
+        "chess-com",
+        "lichess",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getMatchHistory",
+        "getMatch",
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "name"
+      ],
+      "regions": [],
+      "platforms": [
+        "web"
+      ],
+      "dedicatedClient": true
+    },
+    {
+      "id": "minecraft",
+      "name": "Minecraft",
+      "aliases": [
+        "mc",
+        "hypixel",
+        "mcc"
+      ],
+      "genre": "sandbox",
+      "publisher": "Mojang Studios",
+      "releaseYear": 2011,
+      "status": "active",
+      "providers": [
+        "hypixel",
+        "mojang",
+        "liquipedia",
+        "esports-earnings"
+      ],
+      "capabilities": [
+        "resolvePlayer",
+        "getPlayer",
+        "getPlayerStats",
+        "getRank",
+        "getLeaderboard",
+        "getEsportsTournaments",
+        "getEarnings"
+      ],
+      "identifiers": [
+        "name",
+        "accountId"
+      ],
+      "regions": [],
+      "platforms": [
+        "web"
+      ],
+      "dedicatedClient": true
+    }
+  ]
+}
