@@ -42,3 +42,9 @@ python/CHANGELOG.md
 
 # Ignore vscode AI rules
 .github/instructions/codacy.instructions.md
+
+# CI scratch space and release staging (own-runner workflows)
+.ci-tmp/
+release/
+release-notes.md
+scorecard.json

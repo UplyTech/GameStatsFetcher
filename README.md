@@ -5,6 +5,7 @@
 > **87 titles**, **53 real APIs**, one set of types.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/UplyTech/GameStatsFetcher/badge)](https://scorecard.dev/viewer/?uri=github.com/UplyTech/GameStatsFetcher)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](./typescript)
 [![Python](https://img.shields.io/badge/python-%3E%3D3.10-brightgreen)](./python)
 [![Titles](https://img.shields.io/badge/titles-87-blue)](./shared/registry/titles.json)
@@ -124,6 +125,18 @@ The machine-readable version is [`shared/registry/titles.json`](./shared/registr
 npm install @uplytech/game-stats-fetcher     # Node ≥ 20
 pip install game-stats-fetcher               # Python ≥ 3.10
 ```
+
+> **Not published to a registry (yet).** `game-stats-fetcher` is not on PyPI and `@uplytech/game-stats-fetcher` is not
+> on npm. The commands above work once a version has been published; until then
+> install the signed artefacts from the
+> [GitHub releases](https://github.com/UplyTech/GameStatsFetcher/releases) (wheel, sdist and npm
+> tarball), after verifying them as described under
+> [Security and OpenSSF](#security-and-openssf):
+>
+> ```bash
+> pip install ./game_stats_fetcher-<version>-py3-none-any.whl
+> npm install ./uplytech-game-stats-fetcher-<version>.tgz
+> ```
 
 **Zero mandatory dependencies in both.** Node uses built-in `fetch`; Python's
 default transport is `urllib` from the standard library. Two optional extras
@@ -546,6 +559,27 @@ reachable.
 - [Shared registry](./shared/registry/README.md) — the generated coverage data
 - [Shared vectors](./shared/vectors/README.md) — the generated behaviour contract
 - [Contributing](./CONTRIBUTING.md) · [Security](./SECURITY.md) · [Changelog](./CHANGELOG.md)
+
+## Security and OpenSSF
+
+- **CI**: the workflows run on GitHub-hosted runners (this repository is public); every action is pinned to a full commit SHA.
+- **OpenSSF Scorecard**: runs weekly (`scorecard.yml`) and publishes its result; the badge above shows the current score.
+- **CodeQL** runs on push and weekly (`codeql.yml`).
+- **OpenSSF Best Practices badge** (bestpractices.dev): pending owner registration.
+- **Supply chain**: actions pinned to commit SHAs, tool images pinned by tag, Dependabot for npm, pip, Docker and GitHub Actions (weekly, minor and patch grouped), gitleaks and OSV scans on a schedule, [SECURITY.md](./SECURITY.md) with private reporting.
+- **Not achievable here**: branch protection and required reviews are repository settings (owner side); with a single maintainer the Scorecard checks for code review and contributors stay low.
+
+### Releases and how to verify them
+
+A release is created from a `v*` tag by `release.yml`. It builds the npm tarball, the wheel and the sdist, writes `SHA256SUMS` and an in-toto SLSA provenance statement (`provenance.intoto.json`), signs every file with the UplyTech release key (`<file>.sig`, base64 of an ECDSA P-256 / SHA-256 signature) and attaches everything to the GitHub release. Nothing is pushed to npm or PyPI. The public key is [`release-signing.pub`](./release-signing.pub).
+
+```bash
+base64 -d <file>.sig > <file>.sig.der
+openssl dgst -sha256 -verify release-signing.pub -signature <file>.sig.der <file>
+sha256sum -c SHA256SUMS --ignore-missing
+```
+
+The signing key is the organisation secret `RELEASE_SIGNING_KEY`; the release job fails when it is empty instead of publishing unsigned files.
 
 ## License
 

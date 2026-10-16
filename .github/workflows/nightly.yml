@@ -32,7 +32,7 @@ jobs:
           - { runtime: python, version: "3.14" }
           - { runtime: node, version: "24" }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - if: matrix.runtime == 'python'
         uses: ./.github/actions/setup-python
@@ -65,7 +65,7 @@ jobs:
     continue-on-error: true
     timeout-minutes: 90
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: ./.github/actions/setup-python
 
       - name: mutmut
@@ -88,7 +88,7 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: ./.github/actions/setup-python
         with:
           install: "false"
