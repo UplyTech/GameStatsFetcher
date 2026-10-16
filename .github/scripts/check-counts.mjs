@@ -84,6 +84,11 @@ const CLAIMS = [
   ["typescript/README.md", "the summary provider count", /\d+ titles, (\d+) real APIs/, FACTS.providers],
   ["typescript/README.md", "the lookup rationale", /because there are (\d+) and because/, FACTS.titles],
 
+  ["python/pyproject.toml", "the package description title count", /normalised across (\d+) titles and \d+ real/, FACTS.titles],
+  ["python/pyproject.toml", "the package description provider count", /normalised across \d+ titles and (\d+) real/, FACTS.providers],
+  ["typescript/package.json", "the package description title count", /normalised across (\d+) titles and \d+ real/, FACTS.titles],
+  ["typescript/package.json", "the package description provider count", /normalised across \d+ titles and (\d+) real/, FACTS.providers],
+
   ["CONTRIBUTING.md", "the contract suite size", /walks the same (\d+) titles/, FACTS.titles],
 ];
 

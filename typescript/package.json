@@ -1,7 +1,7 @@
 {
   "name": "@uplytech/game-stats-fetcher",
   "version": "3.2.0",
-  "description": "One client for every esports title. Players, ranks, matches, leaderboards and the esports circuit behind them - normalised across 40+ real game APIs and 8 esports data providers, with caching, per-provider rate limiting and typed errors.",
+  "description": "One client for every esports title. Players, ranks, matches, leaderboards and the esports circuit behind them - normalised across 87 titles and 53 real game and esports data APIs, with caching, per-provider rate limiting and typed errors.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
