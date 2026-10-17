@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 A change to the coverage — a title added, a capability gained or lost, a rate
 limit tightened — shows up as a diff in `shared/registry/` and is recorded here.
 
+## [Unreleased]
+
+### Changed
+
+- **Licence: MIT.** `LICENSE` was CC0 1.0 while `package.json`, `pyproject.toml` and the README said MIT; the file now matches the manifests. Notice: `Copyright (c) 2021-present UplyTech`.
+- PyPI distribution name `uplytech-game-stats-fetcher` (was `game-stats-fetcher`); the import name is unchanged. npm stays `@uplytech/game-stats-fetcher`.
+- Releases publish to npm and PyPI with Trusted Publishing (OIDC, no registry token) and npm provenance, after the signed GitHub release. Each registry is switched on with a repository variable once its Trusted Publisher exists. Every artefact also gets a GitHub build attestation.
+- CI runs on GitHub-hosted runners, since the repository is public and the organisation runner serves private repositories only. Pull requests are validated again (read-only token, no secrets); CodeQL, dependency review and a published OpenSSF Scorecard are part of the checks.
+- Repository links point to `github.com/UplyTech/GameStatsFetcher`.
+
 ## [3.2.0] - 2026-09-09
 
 Nothing an upstream sends can now escape as an exception you cannot catch.

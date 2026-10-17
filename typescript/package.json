@@ -70,17 +70,17 @@
     "discord-bot",
     "uplytech"
   ],
-  "author": "UplyTech (Tim Hauke) <dev@uplytech.de>",
+  "author": "UplyTech <dev@uplytech.de>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/UplyTech/Game-Stats-Fetcher.git",
+    "url": "git+https://github.com/UplyTech/GameStatsFetcher.git",
     "directory": "typescript"
   },
   "bugs": {
-    "url": "https://github.com/UplyTech/Game-Stats-Fetcher/issues"
+    "url": "https://github.com/UplyTech/GameStatsFetcher/issues"
   },
-  "homepage": "https://github.com/UplyTech/Game-Stats-Fetcher#readme",
+  "homepage": "https://github.com/UplyTech/GameStatsFetcher#readme",
   "engines": {
     "node": ">=20.0.0"
   },
