@@ -3,7 +3,7 @@
 > One client for every game that publishes one. 87 titles, 53 real APIs, one set of types.
 
 [![npm version](https://badge.fury.io/js/%40uplytech%2Fgame-stats-fetcher.svg)](https://www.npmjs.com/package/@uplytech/game-stats-fetcher)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org)
 
 The overview, the coverage table and the design reasoning live in the
@@ -293,4 +293,4 @@ npm run registry:check  # fail if it is out of date
 
 ## License
 
-[MIT](./LICENSE) — UplyTech.
+Apache License 2.0. See [LICENSE](../LICENSE) and [NOTICE](../NOTICE). Copyright 2021-present UplyTech.

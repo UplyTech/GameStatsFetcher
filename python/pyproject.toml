@@ -7,7 +7,7 @@ name = "uplytech-game-stats-fetcher"
 version = "3.2.0"
 description = "One client for every esports title. Players, ranks, matches, leaderboards and the professional circuit behind them - normalised across 87 titles and 53 real game APIs."
 readme = "README.md"
-license = { text = "MIT" }
+license = { text = "Apache-2.0" }
 requires-python = ">=3.10"
 authors = [{ name = "UplyTech", email = "dev@uplytech.de" }]
 maintainers = [{ name = "UplyTech", email = "dev@uplytech.de" }]
@@ -41,7 +41,7 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Framework :: AsyncIO",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
@@ -80,7 +80,7 @@ dev = [
 packages = ["src/gamestatsfetcher"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src", "tests", "examples", "README.md", "LICENSE", "CHANGELOG.md"]
+include = ["src", "tests", "examples", "README.md", "LICENSE", "NOTICE", "CHANGELOG.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

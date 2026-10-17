@@ -12,7 +12,7 @@ limit tightened — shows up as a diff in `shared/registry/` and is recorded her
 
 ### Changed
 
-- **Licence: MIT.** `LICENSE` was CC0 1.0 while `package.json`, `pyproject.toml` and the README said MIT; the file now matches the manifests. Notice: `Copyright (c) 2021-present UplyTech`.
+- **Licence: Apache License 2.0** (was CC0 1.0 in `LICENSE` and MIT in the manifests). `LICENSE` carries the full Apache text, `NOTICE` the attribution `Copyright 2021-present UplyTech (Tim Hauke, Itzehoe, Germany)` (UplyTech has existed as a community since 2021); both ship in the npm package, the wheel and the sdist. Author fields name UplyTech only.
 - PyPI distribution name `uplytech-game-stats-fetcher` (was `game-stats-fetcher`); the import name is unchanged. npm stays `@uplytech/game-stats-fetcher`.
 - Releases publish to npm and PyPI with Trusted Publishing (OIDC, no registry token) and npm provenance, after the signed GitHub release. Each registry is switched on with a repository variable once its Trusted Publisher exists. Every artefact also gets a GitHub build attestation.
 - CI runs on GitHub-hosted runners, since the repository is public and the organisation runner serves private repositories only. Pull requests are validated again (read-only token, no secrets); CodeQL, dependency review and a published OpenSSF Scorecard are part of the checks.

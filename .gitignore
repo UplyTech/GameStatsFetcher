@@ -36,8 +36,10 @@ python/htmlcov/
 
 # generated copies of the repository-root files (kept so the published artefact carries them)
 typescript/LICENSE
+typescript/NOTICE
 typescript/CHANGELOG.md
 python/LICENSE
+python/NOTICE
 python/CHANGELOG.md
 
 # Ignore vscode AI rules

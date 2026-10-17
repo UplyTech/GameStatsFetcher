@@ -4,7 +4,7 @@
 > the professional circuit behind them — normalised across **87 titles**,
 > **53 real APIs**, one set of types.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
 [![Python](https://img.shields.io/badge/python-%3E%3D3.10-brightgreen)](https://www.python.org/)
 [![Titles](https://img.shields.io/badge/titles-87-blue)](../shared/registry/titles.json)
 [![Providers](https://img.shields.io/badge/providers-53-blue)](../shared/registry/providers.json)
@@ -444,4 +444,6 @@ Everything public is re-exported from the package root and listed in `__all__`.
 
 ## License
 
-MIT — see [LICENSE](./LICENSE).
+Apache License 2.0. See [LICENSE](../LICENSE) and [NOTICE](../NOTICE).
+
+Copyright 2021-present UplyTech.
