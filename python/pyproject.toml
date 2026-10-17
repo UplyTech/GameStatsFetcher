@@ -3,13 +3,13 @@ requires = ["hatchling>=1.25"]
 build-backend = "hatchling.build"
 
 [project]
-name = "game-stats-fetcher"
+name = "uplytech-game-stats-fetcher"
 version = "3.2.0"
 description = "One client for every esports title. Players, ranks, matches, leaderboards and the professional circuit behind them - normalised across 87 titles and 53 real game APIs."
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.10"
-authors = [{ name = "UplyTech (Tim Hauke)", email = "dev@uplytech.de" }]
+authors = [{ name = "UplyTech", email = "dev@uplytech.de" }]
 maintainers = [{ name = "UplyTech", email = "dev@uplytech.de" }]
 keywords = [
     "esports",
@@ -58,10 +58,10 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://github.com/uplytech/game-stats-fetcher"
-Repository = "https://github.com/uplytech/game-stats-fetcher"
-Changelog = "https://github.com/uplytech/game-stats-fetcher/blob/main/CHANGELOG.md"
-Issues = "https://github.com/uplytech/game-stats-fetcher/issues"
+Homepage = "https://github.com/UplyTech/GameStatsFetcher"
+Repository = "https://github.com/UplyTech/GameStatsFetcher"
+Changelog = "https://github.com/UplyTech/GameStatsFetcher/blob/main/CHANGELOG.md"
+Issues = "https://github.com/UplyTech/GameStatsFetcher/issues"
 
 [project.optional-dependencies]
 # Real connection pooling and HTTP/2. Recommended for anything long-running.

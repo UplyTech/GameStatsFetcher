@@ -19,7 +19,7 @@ agree to the last digit. See [Two editions, one answer](#two-editions-one-answer
 ## Install
 
 ```bash
-pip install game-stats-fetcher
+pip install uplytech-game-stats-fetcher
 ```
 
 **Zero mandatory dependencies.** The default transport is built on `urllib` from
