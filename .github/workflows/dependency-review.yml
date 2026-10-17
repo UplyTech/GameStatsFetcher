@@ -1,13 +1,15 @@
 name: Dependency review
 
-# A pull request that adds a dependency is reviewed for it before it is merged,
-# not after it is released. security.yml checks the dependency list on main;
-# this checks it at the point where somebody would change it, which is the only
-# point where changing it back is cheap.
+# A pull request that adds a dependency with a known advisory fails here.
+# Public repository: runs on GitHub-hosted runners (free for public repositories;
+# the organisation runner serves private repositories only). Pull
+# requests are validated with a read-only token and without secrets; there is
+# no pull_request_target anywhere. Tools run in pinned official images (see
+# .github/scripts/ci-docker.sh).
 
 on:
   pull_request:
-    branches: [main, develop]
+    branches: [main]
 
 permissions:
   contents: read
@@ -16,17 +18,12 @@ jobs:
   review:
     name: Review
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
-      - uses: actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48 # v4
+      - uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5
         with:
           fail-on-severity: high
-          # MIT in, MIT out. A copyleft dependency in a library that other
-          # people ship inside their own products is a licensing problem for
-          # them, not for us - which is exactly why it has to be caught here.
-          allow-licenses: MIT, ISC, BSD-2-Clause, BSD-3-Clause, Apache-2.0, 0BSD, CC0-1.0, Python-2.0, PSF-2.0, Unlicense, BlueOak-1.0.0
-          comment-summary-in-pr: on-failure

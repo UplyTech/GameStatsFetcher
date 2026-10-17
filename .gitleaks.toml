@@ -1,0 +1,11 @@
+# Reviewed false positives: the tests for the secret redaction feed it fake keys
+# on purpose ("sk-live-abcdef123456" is not a credential).
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Fake keys in the redaction tests"
+paths = [
+  '''typescript/tests/http\.test\.ts''',
+  '''python/tests/test_http\.py''',
+]
