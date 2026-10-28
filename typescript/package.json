@@ -83,7 +83,7 @@
   },
   "homepage": "https://github.com/UplyTech/GameStatsFetcher#readme",
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.12"
   },
   "peerDependencies": {
     "ioredis": "^5.4.1"

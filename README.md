@@ -6,7 +6,7 @@
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/UplyTech/GameStatsFetcher/badge)](https://scorecard.dev/viewer/?uri=github.com/UplyTech/GameStatsFetcher)
-[![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](./typescript)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D22.12-brightgreen)](./typescript)
 [![Python](https://img.shields.io/badge/python-%3E%3D3.10-brightgreen)](./python)
 [![Titles](https://img.shields.io/badge/titles-87-blue)](./shared/registry/titles.json)
 [![Providers](https://img.shields.io/badge/providers-53-blue)](./shared/registry/providers.json)
@@ -122,7 +122,7 @@ The machine-readable version is [`shared/registry/titles.json`](./shared/registr
 ## Install
 
 ```bash
-npm install @uplytech/game-stats-fetcher  # Node ≥ 20
+npm install @uplytech/game-stats-fetcher  # Node ≥ 22.12
 pip install uplytech-game-stats-fetcher  # Python ≥ 3.10
 ```
 

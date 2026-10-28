@@ -4,7 +4,7 @@
 
 [![npm version](https://img.shields.io/npm/v/%40uplytech%2Fgame-stats-fetcher)](https://www.npmjs.com/package/@uplytech/game-stats-fetcher)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](../LICENSE)
-[![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D22.12-brightgreen)](https://nodejs.org)
 
 The overview, the coverage table and the design reasoning live in the
 [repository README](../README.md). This file is the API.
@@ -17,7 +17,7 @@ The overview, the coverage table and the design reasoning live in the
 npm install @uplytech/game-stats-fetcher
 ```
 
-Node 20+. No mandatory dependencies. `ioredis` is an optional peer, needed only
+Node 22.12+. No mandatory dependencies. `ioredis` is an optional peer, needed only
 for the Redis cache driver.
 
 ```typescript
