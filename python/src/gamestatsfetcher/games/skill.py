@@ -511,79 +511,10 @@ class ChessClient(TitleClient):
 
         if ref.provider_id == "lichess":
             games = await providers.lichess(self.runtime).get_games(ref.id, max_games=limit)
-            summaries = []
-            for game in games:
-                players = game.get("players") or {}
-                side = next(
-                    (
-                        colour
-                        for colour in ("white", "black")
-                        if str(
-                            ((players.get(colour) or {}).get("user") or {}).get("id", "")
-                        ).lower()
-                        == ref.id
-                    ),
-                    None,
-                )
-                winner = as_str(game.get("winner"))
-                created = as_int(game.get("createdAt"))
-                last_move = as_int(game.get("lastMoveAt"))
-                summaries.append(
-                    MatchSummary(
-                        match_id=str(game.get("id") or ""),
-                        title_id=self.title.id,
-                        mode=as_str(game.get("perf") or game.get("speed")),
-                        started_at=ts(created),
-                        duration_seconds=(
-                            round((last_move - created) / 1_000)
-                            if created and last_move
-                            else None
-                        ),
-                        result=(match_result(winner == side) if winner else MatchResult.DRAW),
-                        player_stats=participant_stats(
-                            extra={
-                                "colour": side,
-                                "opening": as_str((game.get("opening") or {}).get("name")),
-                                "moves": as_int(game.get("turns")),
-                            }
-                        ),
-                        raw=game,
-                    )
-                )
-            return summaries
+            return [_lichess_summary(game, ref.id, self.title.id) for game in games]
 
         games = await providers.chess_com(self.runtime).get_recent_games(ref.id, limit)
-        summaries = []
-        for game in games:
-            white = game.get("white") or {}
-            black = game.get("black") or {}
-            is_white = str(white.get("username", "")).lower() == ref.id
-            mine = white if is_white else black
-            outcome = as_str(mine.get("result"))
-            summaries.append(
-                MatchSummary(
-                    match_id=str(game.get("uuid") or game.get("url") or ""),
-                    title_id=self.title.id,
-                    mode=as_str(game.get("time_class")),
-                    started_at=ts(game.get("end_time")),
-                    result=(
-                        MatchResult.WIN
-                        if outcome == "win"
-                        else MatchResult.DRAW
-                        if outcome in ("agreed", "repetition", "stalemate", "insufficient")
-                        else MatchResult.LOSS
-                    ),
-                    player_stats=participant_stats(
-                        extra={
-                            "colour": "white" if is_white else "black",
-                            "rating": as_int(mine.get("rating")),
-                            "eco": as_str(game.get("eco")),
-                        }
-                    ),
-                    raw=game,
-                )
-            )
-        return summaries
+        return [_chess_com_summary(game, ref.id, self.title.id) for game in games]
 
     async def get_match(self, match_id: str, context: PlayerRef | None = None) -> Any:
         self.require("getMatch")
@@ -634,6 +565,69 @@ class ChessClient(TitleClient):
                 )
             )
         return entries
+
+
+def _lichess_summary(game: dict[str, Any], player_id: str, title_id: str) -> MatchSummary:
+    players = game.get("players") or {}
+    side = next(
+        (
+            colour
+            for colour in ("white", "black")
+            if str(((players.get(colour) or {}).get("user") or {}).get("id", "")).lower()
+            == player_id
+        ),
+        None,
+    )
+    winner = as_str(game.get("winner"))
+    created = as_int(game.get("createdAt"))
+    last_move = as_int(game.get("lastMoveAt"))
+    return MatchSummary(
+        match_id=str(game.get("id") or ""),
+        title_id=title_id,
+        mode=as_str(game.get("perf") or game.get("speed")),
+        started_at=ts(created),
+        duration_seconds=(
+            round((last_move - created) / 1_000) if created and last_move else None
+        ),
+        result=(match_result(winner == side) if winner else MatchResult.DRAW),
+        player_stats=participant_stats(
+            extra={
+                "colour": side,
+                "opening": as_str((game.get("opening") or {}).get("name")),
+                "moves": as_int(game.get("turns")),
+            }
+        ),
+        raw=game,
+    )
+
+
+def _chess_com_summary(game: dict[str, Any], player_id: str, title_id: str) -> MatchSummary:
+    white = game.get("white") or {}
+    black = game.get("black") or {}
+    is_white = str(white.get("username", "")).lower() == player_id
+    mine = white if is_white else black
+    outcome = as_str(mine.get("result"))
+    return MatchSummary(
+        match_id=str(game.get("uuid") or game.get("url") or ""),
+        title_id=title_id,
+        mode=as_str(game.get("time_class")),
+        started_at=ts(game.get("end_time")),
+        result=(
+            MatchResult.WIN
+            if outcome == "win"
+            else MatchResult.DRAW
+            if outcome in ("agreed", "repetition", "stalemate", "insufficient")
+            else MatchResult.LOSS
+        ),
+        player_stats=participant_stats(
+            extra={
+                "colour": "white" if is_white else "black",
+                "rating": as_int(mine.get("rating")),
+                "eco": as_str(game.get("eco")),
+            }
+        ),
+        raw=game,
+    )
 
 
 class MinecraftClient(TitleClient):

@@ -240,47 +240,15 @@ class RocketLeagueClient(TitleClient):
         self.require("getMatch")
         replay = await providers.ballchasing(self.runtime).get_replay(match_id)
 
-        participants: list[MatchParticipant] = []
-        for side in ("blue", "orange"):
-            team = replay.get(side) or {}
-            for player in as_list(team.get("players")):
-                core = ((player.get("stats") or {}).get("core")) or {}
-                participants.append(
-                    MatchParticipant(
-                        player_id=str(
-                            (player.get("id") or {}).get("id") or player.get("name") or ""
-                        ),
-                        display_name=as_str(player.get("name")),
-                        team_id=side,
-                        character=as_str(player.get("car_name")),
-                        stats=participant_stats(
-                            score=as_int(core.get("score")),
-                            extra={
-                                "goals": as_int(core.get("goals")),
-                                "assists": as_int(core.get("assists")),
-                                "saves": as_int(core.get("saves")),
-                                "shots": as_int(core.get("shots")),
-                                "mvp": 1 if player.get("mvp") is True else 0,
-                                "shootingPercentage": num(core.get("shooting_percentage")),
-                            },
-                        ),
-                        raw=player,
-                    )
-                )
+        participants = [
+            _rl_participant(player, side)
+            for side in ("blue", "orange")
+            for player in as_list((replay.get(side) or {}).get("players"))
+        ]
 
         blue = as_int((replay.get("blue") or {}).get("goals"))
         orange = as_int((replay.get("orange") or {}).get("goals"))
-        mine = None
-        if context:
-            wanted = (context.display_name or context.id).lower()
-            mine = next(
-                (
-                    participant
-                    for participant in participants
-                    if (participant.display_name or "").lower() == wanted
-                ),
-                None,
-            )
+        mine = _rl_find(participants, context)
 
         result = MatchResult.UNKNOWN
         if mine and blue is not None and orange is not None:
@@ -337,3 +305,37 @@ class RocketLeagueClient(TitleClient):
             )
             for index, row in enumerate(rows)
         ]
+
+
+def _rl_participant(player: dict[str, Any], side: str) -> MatchParticipant:
+    core = ((player.get("stats") or {}).get("core")) or {}
+    return MatchParticipant(
+        player_id=str((player.get("id") or {}).get("id") or player.get("name") or ""),
+        display_name=as_str(player.get("name")),
+        team_id=side,
+        character=as_str(player.get("car_name")),
+        stats=participant_stats(
+            score=as_int(core.get("score")),
+            extra={
+                "goals": as_int(core.get("goals")),
+                "assists": as_int(core.get("assists")),
+                "saves": as_int(core.get("saves")),
+                "shots": as_int(core.get("shots")),
+                "mvp": 1 if player.get("mvp") is True else 0,
+                "shootingPercentage": num(core.get("shooting_percentage")),
+            },
+        ),
+        raw=player,
+    )
+
+
+def _rl_find(
+    participants: list[MatchParticipant], context: PlayerRef | None
+) -> MatchParticipant | None:
+    if not context:
+        return None
+    wanted = (context.display_name or context.id).lower()
+    return next(
+        (one for one in participants if (one.display_name or "").lower() == wanted),
+        None,
+    )

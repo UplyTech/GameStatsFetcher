@@ -666,32 +666,8 @@ class PubgClient(TitleClient):
             result=summary.result,
             player_stats=summary.player_stats,
             raw=summary.raw,
-            teams=tuple(
-                MatchTeam(
-                    id=str(roster.get("id") or ""),
-                    won=(roster.get("attributes") or {}).get("won") in (True, "true"),
-                    score=as_int(
-                        ((roster.get("attributes") or {}).get("stats") or {}).get("rank")
-                    ),
-                )
-                for roster in rosters
-            ),
-            participants=tuple(
-                MatchParticipant(
-                    player_id=str(
-                        ((row.get("attributes") or {}).get("stats") or {}).get("playerId")
-                        or ""
-                    ),
-                    display_name=as_str(
-                        ((row.get("attributes") or {}).get("stats") or {}).get("name")
-                    ),
-                    stats=_pubg_participant_stats(
-                        (row.get("attributes") or {}).get("stats") or {}
-                    ),
-                    raw=row,
-                )
-                for row in participants
-            ),
+            teams=tuple(_pubg_team(roster) for roster in rosters),
+            participants=tuple(_pubg_participant(row) for row in participants),
         )
 
     async def get_leaderboard(
@@ -750,6 +726,25 @@ class PubgClient(TitleClient):
             player_stats=_pubg_participant_stats(stats) if mine else None,
             raw=match,
         )
+
+
+def _pubg_team(roster: dict[str, Any]) -> MatchTeam:
+    attributes = roster.get("attributes") or {}
+    return MatchTeam(
+        id=str(roster.get("id") or ""),
+        won=attributes.get("won") in (True, "true"),
+        score=as_int((attributes.get("stats") or {}).get("rank")),
+    )
+
+
+def _pubg_participant(row: dict[str, Any]) -> MatchParticipant:
+    stats = (row.get("attributes") or {}).get("stats") or {}
+    return MatchParticipant(
+        player_id=str(stats.get("playerId") or ""),
+        display_name=as_str(stats.get("name")),
+        stats=_pubg_participant_stats(stats),
+        raw=row,
+    )
 
 
 def _pubg_participant_stats(stats: dict[str, Any]) -> Any:
@@ -882,50 +877,39 @@ class HaloInfiniteClient(TitleClient):
             map=as_str((details.get("map") or {}).get("name")),
             started_at=ts(match.get("played_at")),
             duration_seconds=as_int((match.get("duration") or {}).get("seconds")),
-            teams=tuple(
-                MatchTeam(
-                    id=str(team.get("id") or ""),
-                    name=as_str((team.get("details") or {}).get("name")),
-                    won=str(team.get("outcome") or "").lower() == "win",
-                    score=as_int(team.get("score")),
-                    rounds_won=as_int(team.get("rounds_won")),
-                )
-                for team in as_list(match.get("teams"))
-            ),
+            teams=tuple(_halo_team(team) for team in as_list(match.get("teams"))),
             participants=tuple(
-                MatchParticipant(
-                    player_id=str(player.get("id") or player.get("gamertag") or ""),
-                    display_name=as_str(player.get("gamertag")),
-                    team_id=as_str((player.get("team") or {}).get("id")),
-                    stats=participant_stats(
-                        kills=as_int(
-                            (
-                                ((player.get("stats") or {}).get("core") or {}).get("summary")
-                                or {}
-                            ).get("kills")
-                        ),
-                        deaths=as_int(
-                            (
-                                ((player.get("stats") or {}).get("core") or {}).get("summary")
-                                or {}
-                            ).get("deaths")
-                        ),
-                        assists=as_int(
-                            (
-                                ((player.get("stats") or {}).get("core") or {}).get("summary")
-                                or {}
-                            ).get("assists")
-                        ),
-                        score=as_int(
-                            ((player.get("stats") or {}).get("core") or {}).get("score")
-                        ),
-                    ),
-                    raw=player,
-                )
-                for player in as_list(match.get("players"))
+                _halo_participant(player) for player in as_list(match.get("players"))
             ),
             raw=match,
         )
+
+
+def _halo_team(team: dict[str, Any]) -> MatchTeam:
+    return MatchTeam(
+        id=str(team.get("id") or ""),
+        name=as_str((team.get("details") or {}).get("name")),
+        won=str(team.get("outcome") or "").lower() == "win",
+        score=as_int(team.get("score")),
+        rounds_won=as_int(team.get("rounds_won")),
+    )
+
+
+def _halo_participant(player: dict[str, Any]) -> MatchParticipant:
+    core = (player.get("stats") or {}).get("core") or {}
+    summary = core.get("summary") or {}
+    return MatchParticipant(
+        player_id=str(player.get("id") or player.get("gamertag") or ""),
+        display_name=as_str(player.get("gamertag")),
+        team_id=as_str((player.get("team") or {}).get("id")),
+        stats=participant_stats(
+            kills=as_int(summary.get("kills")),
+            deaths=as_int(summary.get("deaths")),
+            assists=as_int(summary.get("assists")),
+            score=as_int(core.get("score")),
+        ),
+        raw=player,
+    )
 
 
 class Destiny2Client(TitleClient):

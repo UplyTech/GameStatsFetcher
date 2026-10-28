@@ -779,32 +779,7 @@ class ValorantClient(TitleClient):
                     teams_node.items() if isinstance(teams_node, dict) else []
                 )
             ),
-            participants=tuple(
-                MatchParticipant(
-                    player_id=str(player.get("puuid") or ""),
-                    display_name=(
-                        f"{player.get('name')}#{player.get('tag') or ''}"
-                        if player.get("name")
-                        else None
-                    ),
-                    team_id=as_str(player.get("team") or player.get("teamId")),
-                    character=as_str(player.get("character") or player.get("characterId")),
-                    stats=participant_stats(
-                        kills=_val_stat(player, "kills"),
-                        deaths=_val_stat(player, "deaths"),
-                        assists=_val_stat(player, "assists"),
-                        score=_val_stat(player, "score"),
-                        extra={
-                            "headshots": _val_stat(player, "headshots"),
-                            "bodyshots": _val_stat(player, "bodyshots"),
-                            "legshots": _val_stat(player, "legshots"),
-                            "rank": as_str(player.get("currenttier_patched")),
-                        },
-                    ),
-                    raw=player,
-                )
-                for player in players
-            ),
+            participants=tuple(_valorant_participant(player) for player in players),
             rounds=tuple(
                 MatchRound(
                     index=index,
@@ -982,6 +957,29 @@ class LegendsOfRuneterraClient(_RiotTitleClient):
             )
             for row in board[: self.limit(opts.limit, 100)]
         ]
+
+
+def _valorant_participant(player: dict[str, Any]) -> MatchParticipant:
+    name = player.get("name")
+    return MatchParticipant(
+        player_id=str(player.get("puuid") or ""),
+        display_name=f"{name}#{player.get('tag') or ''}" if name else None,
+        team_id=as_str(player.get("team") or player.get("teamId")),
+        character=as_str(player.get("character") or player.get("characterId")),
+        stats=participant_stats(
+            kills=_val_stat(player, "kills"),
+            deaths=_val_stat(player, "deaths"),
+            assists=_val_stat(player, "assists"),
+            score=_val_stat(player, "score"),
+            extra={
+                "headshots": _val_stat(player, "headshots"),
+                "bodyshots": _val_stat(player, "bodyshots"),
+                "legshots": _val_stat(player, "legshots"),
+                "rank": as_str(player.get("currenttier_patched")),
+            },
+        ),
+        raw=player,
+    )
 
 
 def _val_stat(player: dict[str, Any] | None, key: str) -> int | None:
