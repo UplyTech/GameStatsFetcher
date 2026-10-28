@@ -8,7 +8,7 @@ inputs:
   node-version:
     description: The Node version.
     required: false
-    default: "20"
+    default: "22"
   install:
     description: Run `npm ci`. Set to "false" when only the runtime is needed.
     required: false
@@ -21,7 +21,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+    - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
       with:
         node-version: ${{ inputs.node-version }}
         cache: npm
