@@ -10,7 +10,7 @@ scripts
 .vscode
 .idea
 .tsup
-.eslintrc.cjs
+eslint.config.mjs
 tsconfig.json
 tsup.config.ts
 vitest.config.ts
