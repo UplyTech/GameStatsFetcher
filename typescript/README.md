@@ -2,8 +2,8 @@
 
 > One client for every game that publishes one. 87 titles, 53 real APIs, one set of types.
 
-[![npm version](https://badge.fury.io/js/%40uplytech%2Fgame-stats-fetcher.svg)](https://www.npmjs.com/package/@uplytech/game-stats-fetcher)
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
+[![npm version](https://img.shields.io/npm/v/%40uplytech%2Fgame-stats-fetcher)](https://www.npmjs.com/package/@uplytech/game-stats-fetcher)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](../LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org)
 
 The overview, the coverage table and the design reasoning live in the
