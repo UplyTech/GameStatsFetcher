@@ -293,4 +293,6 @@ npm run registry:check  # fail if it is out of date
 
 ## License
 
-Apache License 2.0. See [LICENSE](../LICENSE) and [NOTICE](../NOTICE). Copyright 2021-present UplyTech.
+Apache License 2.0. See [LICENSE](../LICENSE) and [NOTICE](../NOTICE).
+
+Copyright (c) 2021-present UplyTech. UplyTech has existed as a community since 2021.
