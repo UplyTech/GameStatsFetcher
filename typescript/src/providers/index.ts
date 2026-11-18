@@ -23,7 +23,6 @@ import {
   ClashRoyaleProvider,
 } from "./supercell.js";
 import { WargamingProvider } from "./wargaming.js";
-import { HiRezProvider } from "./hirez.js";
 import { FaceitProvider } from "./faceit.js";
 import { TrackerProvider } from "./tracker.js";
 import { OpenDotaProvider, StratzProvider } from "./dota.js";
@@ -79,7 +78,6 @@ export * from "./bungie.js";
 export * from "./pubg.js";
 export * from "./supercell.js";
 export * from "./wargaming.js";
-export * from "./hirez.js";
 export * from "./faceit.js";
 export * from "./tracker.js";
 export * from "./dota.js";
@@ -111,8 +109,6 @@ export const brawlStars = (rt: Runtime): BrawlStarsProvider =>
   useProvider(rt, "supercell-brawl-stars", (r) => new BrawlStarsProvider(r));
 export const wargaming = (rt: Runtime): WargamingProvider =>
   useProvider(rt, "wargaming", (r) => new WargamingProvider(r));
-export const hirez = (rt: Runtime): HiRezProvider =>
-  useProvider(rt, "hirez", (r) => new HiRezProvider(r));
 export const faceit = (rt: Runtime): FaceitProvider =>
   useProvider(rt, "faceit", (r) => new FaceitProvider(r));
 export const tracker = (rt: Runtime): TrackerProvider =>

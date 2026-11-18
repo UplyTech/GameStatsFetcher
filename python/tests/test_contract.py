@@ -46,7 +46,6 @@ ALL_KEYS = {
     "clashOfClans": "k",
     "brawlStars": "k",
     "wargaming": "k",
-    "hirez": "a:b",
     "faceit": "k",
     "tracker": "k",
     "pandascore": "k",
@@ -206,9 +205,9 @@ class TestCoverageTiers:
         ]
         esports_only = [t for t in TITLES if "resolvePlayer" not in t.capabilities]
 
-        assert len(full) == 27
+        assert len(full) == 25
         assert len(player) == 25
-        assert len(esports_only) == 35
+        assert len(esports_only) == 37
         assert len(full) + len(player) + len(esports_only) == 87
 
     def test_a_title_that_serves_one_match_can_list_them(self) -> None:

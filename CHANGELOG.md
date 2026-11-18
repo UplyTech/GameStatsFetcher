@@ -12,10 +12,21 @@ limit tightened — shows up as a diff in `shared/registry/` and is recorded her
 
 ## [4.0.0] - not released yet
 
-A major release: iRacing now needs OAuth, and the old credential shape stops
-working.
+A major release: iRacing now needs OAuth, and the Hi-Rez provider is gone.
 
 ### Breaking
+
+- **The Hi-Rez provider is removed; SMITE and Paladins are esports-only.** The
+  Hi-Rez API signs every call with MD5 over the developer key, which no honest
+  change can avoid, and Hi-Rez has ended development of SMITE 1 and Paladins.
+  No maintained, freely usable replacement for player data exists: SMITE 2 has
+  no public API, and the only structured SMITE 2 data (the official wiki) is
+  licensed for non-commercial use only. Both titles keep
+  `getEsportsTournaments` (Liquipedia) and `getEarnings` (Esports Earnings).
+  Removed: the `hirez` provider and its factory, `HiRezProvider`,
+  `SmiteClient`, `PaladinsClient`, the `smite` and `paladins` accessors on the
+  client, and the `hirez` key. 52 providers instead of 53; the Full tier drops
+  to 25 titles and Esports only rises to 37.
 
 - **iRacing uses OAuth 2.0 (Authorization Code with PKCE).** iRacing retired the
   legacy `/auth` login with the 2026 Season 1 release on 9 December 2025
@@ -27,6 +38,12 @@ working.
 
 ### Migration
 
+- SMITE and Paladins: replace `client.smite` / `client.paladins` with
+  `client.title("smite")` / `client.title("paladins")`. Player calls
+  (`resolvePlayer`, `getPlayer`, `getPlayerStats`, `getRank`,
+  `getMatchHistory`, `getMatch`, `getLeaderboard`, `getMetadata`) now raise
+  `UnsupportedCapabilityError`. Remove `hirez` from `apiKeys` and `HIREZ_KEY`
+  from your environment.
 - Ask iRacing for a public OAuth client (<auth@iracing.com>, audience
   `data-server`, your exact redirect URI). New registrations are paused at the
   time of writing. Clients with a client secret are not supported.

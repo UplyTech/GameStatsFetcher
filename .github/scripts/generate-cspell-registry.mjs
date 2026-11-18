@@ -2,7 +2,7 @@
 /**
  * Generate the spelling dictionary for everything the registry already knows.
  *
- * 87 title ids, their aliases and display names, and 53 provider ids, key names
+ * 87 title ids, their aliases and display names, and 52 provider ids, key names
  * and labels are all vocabulary this repository invented or inherited, and all
  * of it appears in prose, tests and identifiers. Hand-listing it in
  * cspell.json means a title added next year fails the spelling gate for no

@@ -59,12 +59,10 @@ from .games import (
     MinecraftClient,
     OsuClient,
     Overwatch2Client,
-    PaladinsClient,
     PathOfExileClient,
     PubgClient,
     RainbowSixClient,
     RocketLeagueClient,
-    SmiteClient,
     SplitgateClient,
     StarCraft2Client,
     TeamfightTacticsClient,
@@ -447,16 +445,6 @@ class GameStatsClient:
     def brawl_stars(self) -> BrawlStarsClient:
         """Brawl Stars."""
         return self.title("brawl-stars")  # type: ignore[return-value]
-
-    @property
-    def smite(self) -> SmiteClient:
-        """SMITE."""
-        return self.title("smite")  # type: ignore[return-value]
-
-    @property
-    def paladins(self) -> PaladinsClient:
-        """Paladins."""
-        return self.title("paladins")  # type: ignore[return-value]
 
     @property
     def aoe2(self) -> AgeOfEmpires2Client:

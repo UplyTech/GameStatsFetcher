@@ -54,7 +54,6 @@ const ALL_KEYS: Record<string, string> = {
   clashOfClans: "k",
   brawlStars: "k",
   wargaming: "k",
-  hirez: "a:b",
   faceit: "k",
   tracker: "k",
   pandascore: "k",

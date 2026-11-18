@@ -9,7 +9,7 @@ registries, the client. Every line is reachable from a test with no network, and
 a gap in it is a real gap. Held to 90 %.
 
 **The mapping layer** - 12 provider modules and 11 title-client modules, which
-turn 53 upstream schemas into the canonical model. Line coverage here measures
+turn 52 upstream schemas into the canonical model. Line coverage here measures
 how many payload fixtures somebody wrote, not whether the mapping is right; the
 contract suite walks all 87 titles and every method, and the hostile-payload
 sweep walks them again against ten payloads no mapper was written for. Held to

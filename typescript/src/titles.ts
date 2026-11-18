@@ -714,7 +714,7 @@ const TITLE_LIST = [
   },
 
   // -------------------------------------------------------------------------
-  // Hi-Rez / Supercell / Tencent / Garena / Moonton
+  // Hi-Rez (esports only) / Supercell / Tencent / Garena / Moonton
   // -------------------------------------------------------------------------
   {
     id: "smite",
@@ -724,9 +724,11 @@ const TITLE_LIST = [
     publisher: "Hi-Rez Studios",
     releaseYear: 2014,
     status: "active",
-    providers: ["hirez", "liquipedia", "esports-earnings"],
-    capabilities: [...PLAYER_CAPS, ...ESPORTS_CAPS, "getMetadata"],
-    identifiers: ["name", "accountId", "platform"],
+    // Esports only since 4.0.0: the Hi-Rez player API signs every call with
+    // MD5 and there is no maintained replacement for player data.
+    providers: ["liquipedia", "esports-earnings"],
+    capabilities: [...ESPORTS_CAPS],
+    identifiers: [],
     regions: [],
     platforms: ["steam", "xbox", "playstation", "nintendo"],
   },
@@ -738,9 +740,9 @@ const TITLE_LIST = [
     publisher: "Hi-Rez Studios",
     releaseYear: 2016,
     status: "legacy",
-    providers: ["hirez", "liquipedia", "esports-earnings"],
-    capabilities: [...PLAYER_CAPS, ...ESPORTS_CAPS, "getMetadata"],
-    identifiers: ["name", "accountId", "platform"],
+    providers: ["liquipedia", "esports-earnings"],
+    capabilities: [...ESPORTS_CAPS],
+    identifiers: [],
     regions: [],
     platforms: ["steam", "xbox", "playstation", "nintendo"],
   },

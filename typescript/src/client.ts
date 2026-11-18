@@ -76,7 +76,6 @@ import type {
   ClashOfClansClient,
   ClashRoyaleClient,
 } from "./games/mobile.js";
-import type { PaladinsClient, SmiteClient } from "./games/hirez.js";
 import type {
   AgeOfEmpires2Client,
   AgeOfEmpires4Client,
@@ -407,14 +406,6 @@ export class GameStatsClient {
   /** Brawl Stars. */
   public get brawlStars(): BrawlStarsClient {
     return this.title("brawl-stars") as BrawlStarsClient;
-  }
-  /** SMITE. */
-  public get smite(): SmiteClient {
-    return this.title("smite") as SmiteClient;
-  }
-  /** Paladins. */
-  public get paladins(): PaladinsClient {
-    return this.title("paladins") as PaladinsClient;
   }
   /** Age of Empires II: Definitive Edition. */
   public get aoe2(): AgeOfEmpires2Client {

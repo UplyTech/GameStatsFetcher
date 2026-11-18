@@ -131,9 +131,8 @@ The descriptor is not documentation, it is what the runtime uses:
 | `requiresUserAgent` | requests are refused with no useful message |
 
 Providers whose auth is a session or an OAuth exchange override `authorize()`.
-See `BlizzardProvider` (client credentials), `HiRezProvider` (MD5-signed
-sessions) and `IRacingProvider` (OAuth Authorization Code with PKCE) for the three shapes
-that already exist.
+See `BlizzardProvider` (client credentials) and `IRacingProvider` (OAuth
+Authorization Code with PKCE) for the two shapes that already exist.
 
 ## What belongs in this package
 

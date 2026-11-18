@@ -21,7 +21,6 @@ from .blizzard import (
     Warcraft3Client,
     WorldOfWarcraftClient,
 )
-from .hirez import PaladinsClient, SmiteClient
 from .mobile import BrawlStarsClient, ClashOfClansClient, ClashRoyaleClient
 from .persistent import (
     DiabloThreeClient,
@@ -115,9 +114,6 @@ __all__ = [
     "ClashRoyaleClient",
     "ClashOfClansClient",
     "BrawlStarsClient",
-    # Hi-Rez
-    "SmiteClient",
-    "PaladinsClient",
     # Strategy
     "AgeOfEmpires2Client",
     "AgeOfEmpires4Client",
@@ -180,9 +176,6 @@ _CLIENTS: dict[str, type[TitleClient]] = {
     "clash-royale": ClashRoyaleClient,
     "clash-of-clans": ClashOfClansClient,
     "brawl-stars": BrawlStarsClient,
-    # Hi-Rez
-    "smite": SmiteClient,
-    "paladins": PaladinsClient,
     # Strategy
     "age-of-empires-2": AgeOfEmpires2Client,
     "age-of-empires-4": AgeOfEmpires4Client,

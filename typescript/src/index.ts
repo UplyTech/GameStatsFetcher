@@ -209,7 +209,6 @@ export * from "./games/blizzard.js";
 export * from "./games/shooters.js";
 export * from "./games/rocket-league.js";
 export * from "./games/mobile.js";
-export * from "./games/hirez.js";
 export * from "./games/strategy.js";
 export * from "./games/skill.js";
 export * from "./games/worlds.js";

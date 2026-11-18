@@ -158,7 +158,6 @@ hearthstone
 henrikdev
 heroes
 heroesprofile
-hirez
 hiscores
 hok
 honor

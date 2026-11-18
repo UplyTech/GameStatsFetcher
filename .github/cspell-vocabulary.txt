@@ -13,7 +13,7 @@
 # ---------------------------------------------------------------------------
 # Field names and method names other people's APIs chose.
 #
-# Steam, Hi-Rez, PandaScore, MediaWiki and the rest name their JSON fields in
+# Steam, PandaScore, MediaWiki and the rest name their JSON fields in
 # run-together lowercase. These appear as string literals in the mapping layer
 # and in test fixtures, and they are not ours to rename.
 # ---------------------------------------------------------------------------

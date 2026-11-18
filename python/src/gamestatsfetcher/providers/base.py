@@ -69,7 +69,7 @@ class ProviderClient:
     ) -> list[str]:
         """Split a colon-joined credential such as ``clientId:clientSecret``.
 
-        Blizzard, Abios, osu!, Hi-Rez, iRacing and Toornament all need two or
+        Blizzard, Abios, osu! and Toornament all need two or
         three values, and one option per provider pair would double the size of
         the key mapping for no gain.
         """
@@ -97,7 +97,7 @@ class ProviderClient:
 
         The default covers the four mechanical auth kinds. Providers with a
         session or an OAuth exchange override it - see ``BlizzardProvider`` and
-        ``HiRezProvider``.
+        ``IRacingProvider``.
         """
         auth = self.descriptor.auth
         if auth == "none":
