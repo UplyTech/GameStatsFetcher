@@ -12,6 +12,7 @@ where getting the mapping wrong would be plausible and invisible.
 from __future__ import annotations
 
 import contextlib
+from urllib.parse import urlparse
 
 import pytest
 
@@ -184,7 +185,8 @@ class TestRiot:
 
         await client.lol.resolve_player({"name": "a#b", "region": "kr"})
 
-        assert "asia.api.riotgames.com" in transport.url_containing("by-riot-id")
+        url = urlparse(transport.url_containing("by-riot-id"))
+        assert url.hostname == "asia.api.riotgames.com"
         await client.aclose()
 
     async def test_game_endpoints_use_the_platform_host(self) -> None:
@@ -197,7 +199,8 @@ class TestRiot:
 
         await client.lol.get_player({"name": "a#b", "region": "kr"})
 
-        assert "kr.api.riotgames.com" in transport.url_containing("/lol/summoner/")
+        url = urlparse(transport.url_containing("/lol/summoner/"))
+        assert url.hostname == "kr.api.riotgames.com"
         await client.aclose()
 
     async def test_the_key_is_sent_as_a_header_not_a_query_parameter(self) -> None:

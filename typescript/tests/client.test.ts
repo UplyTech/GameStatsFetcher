@@ -308,12 +308,14 @@ describe("League of Legends end to end", () => {
     const client = new GameStatsClient(testOptions(mock.fetch, { apiKeys: { riot: "k" } }));
     await client.lol.getPlayer({ name: "Hide on bush#KR1", region: "kr" });
 
-    expect(mock.calls.some((url) => url.includes("https://kr.api.riotgames.com/lol/summoner"))).toBe(
-      true,
-    );
-    expect(mock.calls.some((url) => url.includes("https://asia.api.riotgames.com/riot/account"))).toBe(
-      true,
-    );
+    // Parsed rather than substring-matched, so a look-alike host cannot pass.
+    const hits = (host: string, path: string) =>
+      mock.calls.some((url) => {
+        const parsed = new URL(url);
+        return parsed.hostname === host && parsed.pathname.startsWith(path);
+      });
+    expect(hits("kr.api.riotgames.com", "/lol/summoner")).toBe(true);
+    expect(hits("asia.api.riotgames.com", "/riot/account")).toBe(true);
   });
 
   it("rejects a region that is not a Riot platform", async () => {

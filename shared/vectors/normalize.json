@@ -1,6 +1,6 @@
 {
   "formatVersion": 1,
-  "packageVersion": "3.2.0",
+  "packageVersion": "4.0.0",
   "note": "Pure normalisation functions. Both editions must produce these values exactly - permille rounding in particular, because JavaScript rounds halves up and Python's round() is banker's rounding.",
   "num": [
     {

@@ -10,7 +10,7 @@
 import type { RateLimitConfig, RetryConfig } from "./types.js";
 
 /** Package version, mirrored from package.json for the User-Agent. */
-export const VERSION = "3.2.0";
+export const VERSION = "4.0.0";
 
 /** Sent on every request unless the caller overrides it. */
 export const DEFAULT_USER_AGENT = `GameStatsFetcher/${VERSION} (+https://github.com/uplytech/game-stats-fetcher)`;

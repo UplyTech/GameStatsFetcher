@@ -35,7 +35,7 @@ __all__ = [
 ]
 
 #: Package version, mirrored into the User-Agent.
-VERSION: Final = "3.2.0"
+VERSION: Final = "4.0.0"
 
 #: Sent on every request unless the caller overrides it.
 DEFAULT_USER_AGENT: Final = (

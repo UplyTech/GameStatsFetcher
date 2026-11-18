@@ -431,6 +431,16 @@ wrapped everything in. A sweep of 87 titles × 14 methods × 10 payload shapes �
 The original exception is chained, so a stack trace still points at the line
 that actually broke.
 
+## iRacing needs an OAuth client
+
+iRacing retired its password login on 9 December 2025, so this package talks to
+iRacing through OAuth 2.0 with PKCE and never sees a password. The catch: iRacing
+issues OAuth clients only on request (<auth@iracing.com>; ask for a public client), and in November 2026
+new registrations are paused. Whoever runs a deployment has to get that client
+from iRacing first. The flow itself is documented in the
+[TypeScript](typescript/README.md#iracing-oauth-only) and
+[Python](python/README.md#iracing-oauth-only) READMEs.
+
 ## Finding out what a deployment can do
 
 ```typescript

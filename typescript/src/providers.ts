@@ -173,14 +173,14 @@ const PROVIDER_LIST: readonly ProviderDescriptor[] = [
     label: "iRacing Data API",
     kind: "first-party",
     baseUrl: "https://members-ng.iracing.com",
-    auth: "cookie-session",
+    auth: "oauth2-user",
     keyName: "iracing",
-    docsUrl: "https://members-ng.iracing.com/data/doc",
+    docsUrl: "https://oauth.iracing.com/oauth2/book/",
     rps: 1,
     burst: 3,
     requiresUserAgent: true,
     notes:
-      "Pass the credential as `email:password`. The password must be hashed as base64(sha256(password + lowercase(email))), which this package does for you. Responses are S3 links, followed automatically.",
+      "OAuth 2.0 Authorization Code flow with PKCE; the old email/password login was retired on 2025-12-09. Pass the id of a public client iRacing issued (PKCE, no client secret), then run the flow through `iracingAuth()` or resume it with a stored refresh token. iRacing registers clients by request. Responses are S3 links, followed automatically.",
   },
   {
     id: "guild-wars-2",

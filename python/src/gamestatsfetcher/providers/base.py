@@ -81,8 +81,8 @@ class ProviderClient:
                 f'({count} values joined by ":")'
             )
         if len(parts) > count:
-            # Rejoin any overflow into the last part: an iRacing password may
-            # contain a colon, and splitting one off would corrupt it silently.
+            # Rejoin any overflow into the last part: a secret may contain a
+            # colon, and splitting one off would corrupt it silently.
             head = parts[: count - 1]
             head.append(":".join(parts[count - 1 :]))
             return head

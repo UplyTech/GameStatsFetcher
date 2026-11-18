@@ -42,7 +42,7 @@ class Runtime:
     default_ttl_seconds: int
     ttl_overrides: Mapping[str, int]
     #: Scratch space shared across providers, for things worth computing once:
-    #: OAuth tokens, Hi-Rez sessions, iRacing cookies, provider instances.
+    #: OAuth tokens, Hi-Rez sessions, iRacing OAuth state, provider instances.
     state: dict[str, Any] = field(default_factory=dict)
 
 

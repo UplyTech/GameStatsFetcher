@@ -1,6 +1,6 @@
 {
   "formatVersion": 1,
-  "packageVersion": "3.2.0",
+  "packageVersion": "4.0.0",
   "note": "The one status vocabulary, and the provider-capability table. Both editions map every provider's spelling onto the same six values.",
   "capabilityProviders": {
     "getEsportsMatches": [
