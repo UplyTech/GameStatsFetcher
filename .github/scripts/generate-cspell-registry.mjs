@@ -69,7 +69,7 @@ for (const provider of read("providers.json")) {
   add(provider.label);
 }
 
-const body = [...words].sort().join("\n");
+const body = [...words].sort((a, b) => a.localeCompare(b)).join("\n");
 const content = `${HEADER.join("\n")}${body}\n`;
 
 if (process.argv.includes("--check")) {

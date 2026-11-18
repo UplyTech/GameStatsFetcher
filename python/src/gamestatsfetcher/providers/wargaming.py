@@ -207,7 +207,7 @@ class HiRezProvider(ProviderClient):
     @staticmethod
     def _signature(dev_id: str, method: str, auth_key: str, timestamp: str) -> str:
         return hashlib.md5(  # noqa: S324 - Hi-Rez's protocol, not a security choice
-            f"{dev_id}{method}{auth_key}{timestamp}".encode()
+            f"{dev_id}{method}{auth_key}{timestamp}".encode(), usedforsecurity=False
         ).hexdigest()
 
     async def _session(self, game: str) -> str:

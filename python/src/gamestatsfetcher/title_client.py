@@ -257,7 +257,7 @@ class TitleClient:
         if not allowed:
             return value or fallback or ""
         if value is None:
-            chosen = fallback or (allowed[0] if allowed else None)
+            chosen = fallback or allowed[0]
             if not chosen:
                 raise ValidationError(f"{self.title.id} needs a region")
             return chosen

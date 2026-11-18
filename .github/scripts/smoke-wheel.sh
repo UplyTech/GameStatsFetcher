@@ -14,7 +14,7 @@ rm -rf "${consumer}"
 python -m venv "${consumer}"
 
 # Windows runners put the executables in Scripts/, everything else in bin/.
-if [ -x "${consumer}/bin/python" ]; then
+if [[ -x "${consumer}/bin/python" ]]; then
   python_bin="${consumer}/bin/python"
 else
   python_bin="${consumer}/Scripts/python"

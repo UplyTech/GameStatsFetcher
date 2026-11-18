@@ -80,8 +80,8 @@ const CLAIMS = [
   ["python/README.md", "the registry title count", /does not re-declare (\d+) titles/, FACTS.titles],
   ["python/README.md", "the title lookup row", /any of the (\d+), by id or alias/, FACTS.titles],
 
-  ["typescript/README.md", "the summary counts", /(\d+) titles, \d+ real APIs/, FACTS.titles],
-  ["typescript/README.md", "the summary provider count", /\d+ titles, (\d+) real APIs/, FACTS.providers],
+  ["typescript/README.md", "the summary counts", /(\d{1,6}) titles, \d{1,6} real APIs/, FACTS.titles],
+  ["typescript/README.md", "the summary provider count", /\d{1,6} titles, (\d{1,6}) real APIs/, FACTS.providers],
   ["typescript/README.md", "the lookup rationale", /because there are (\d+) and because/, FACTS.titles],
 
   ["python/pyproject.toml", "the package description title count", /normalised across (\d+) titles and \d+ real/, FACTS.titles],
