@@ -158,7 +158,7 @@ describe("provider selection", () => {
     const client = new GameStatsClient(testOptions(mock.fetch));
     await client.title("street-fighter-6").getEsportsTournaments();
 
-    expect(mock.calls.every((url) => url.includes("liquipedia.net"))).toBe(true);
+    expect(mock.calls.every((url) => new URL(url).hostname === "liquipedia.net")).toBe(true);
     expect(mock.countOf("api.start.gg")).toBe(0);
     expect(mock.countOf("pandascore")).toBe(0);
   });
