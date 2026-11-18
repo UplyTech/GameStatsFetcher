@@ -34,7 +34,14 @@ from .esports_data import (
 )
 from .faceit import FACEIT_GAME_IDS, TRACKER_GAME_IDS, FaceitProvider, TrackerProvider
 from .persistent import EveProvider, JagexProvider, RuneScapeGame
-from .racing import BrawlhallaProvider, IRacingProvider, TrackmaniaProvider
+from .racing import (
+    BrawlhallaProvider,
+    IRacingAuthorization,
+    IRacingProvider,
+    IRacingTokens,
+    TrackmaniaProvider,
+    create_pkce_pair,
+)
 from .riot import PLATFORM_TO_CLUSTER, VALORANT_SHARDS, RiotProvider
 from .rocket_league import BallchasingProvider, OctaneProvider
 from .shooters import (
@@ -89,6 +96,10 @@ __all__ = [
     "PLATFORM_TO_CLUSTER",
     "VALORANT_SHARDS",
     "dota_rank_name",
+    # iRacing OAuth
+    "IRacingAuthorization",
+    "IRacingTokens",
+    "create_pkce_pair",
     # Factories
     "steam",
     "riot",

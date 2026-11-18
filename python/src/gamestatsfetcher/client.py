@@ -80,6 +80,7 @@ from .games import (
     dedicated_title_ids,
 )
 from .http import Transport
+from .providers.racing import IRacingProvider
 from .registry import (
     find_provider,
     find_title,
@@ -501,6 +502,15 @@ class GameStatsClient:
     def iracing(self) -> IRacingClient:
         """iRacing."""
         return self.title("iracing")  # type: ignore[return-value]
+
+    def iracing_auth(self) -> IRacingProvider:
+        """The iRacing provider behind :attr:`iracing`, for its OAuth flow.
+
+        iRacing only accepts OAuth: start with ``authorization_url()``, finish
+        with ``exchange_code()``, or resume with ``use_tokens()``. See the
+        README section on iRacing for the whole flow.
+        """
+        return provider_factories.iracing(self.runtime)
 
     @property
     def trackmania(self) -> TrackmaniaClient:

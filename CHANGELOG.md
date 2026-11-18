@@ -10,6 +10,42 @@ limit tightened — shows up as a diff in `shared/registry/` and is recorded her
 
 ## [Unreleased]
 
+## [4.0.0] - not released yet
+
+A major release: iRacing now needs OAuth, and the old credential shape stops
+working.
+
+### Breaking
+
+- **iRacing uses OAuth 2.0 (Authorization Code with PKCE).** iRacing retired the
+  legacy `/auth` login with the 2026 Season 1 release on 9 December 2025
+  ([iRacing support](https://support.iracing.com/support/solutions/articles/31000173894-enabling-or-disabling-legacy-read-only-authentication)),
+  so the `email:password` credential could no longer sign in. The provider no
+  longer hashes or sends a password and no longer holds a session cookie; every
+  Data API call carries a bearer token instead. The registry entry changes from
+  `cookie-session` to `oauth2-user`.
+
+### Migration
+
+- Ask iRacing for an OAuth client (<auth@iracing.com>, audience `data-server`,
+  your exact redirect URI). New registrations are paused at the time of writing.
+- Set `iracing` to the client id, or `clientId:clientSecret` for a confidential
+  client. Remove `email:password`; `IRACING_LOGIN` in `.env.example` is now
+  `IRACING_CLIENT`.
+- Run the flow once: `client.iracingAuth().authorizationUrl(...)` then
+  `exchangeCode(...)` (Python: `client.iracing_auth().authorization_url(...)`,
+  `exchange_code(...)`).
+- Persist the refresh token from `onTokens` / `on_tokens`. Refresh tokens are
+  single use, so store the newest one each time. After a restart, pass it to
+  `useTokens` / `use_tokens`.
+
+### Added
+
+- `iracingAuth()` / `iracing_auth()` on the client, with `authorizationUrl`,
+  `exchangeCode`, `useTokens`, `onTokens` and `refresh`. `createPkcePair` /
+  `create_pkce_pair` and `maskClientSecret` / `mask_client_secret` are exported
+  for applications that run the flow themselves.
+
 ### Changed
 
 - **Node 22.12 or newer** (`engines.node` was `>=20.0.0`). Node 20 is end-of-life, and CI tests on Node 22 and 24 only.

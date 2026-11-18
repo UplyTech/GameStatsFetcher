@@ -292,6 +292,39 @@ Construct **one** and keep it. The cache, the rate limiter and the connection
 pool all live on the client; building one per request throws away the warm cache
 and, worse, the rate-limiter state that keeps a key from being revoked.
 
+### iRacing: OAuth only
+
+iRacing switched its old email-and-password login off with the 2026 Season 1
+release on 9 December 2025. The package now uses OAuth 2.0 (Authorization Code
+with PKCE) and never handles an iRacing password.
+
+**Before you start:** iRacing hands out OAuth clients on request only. Write to
+<auth@iracing.com> and ask for a client with the audience `data-server` and your
+exact redirect URI. As of November 2026 iRacing says it has paused new client
+registrations while it reviews third-party API use, so this can take a while.
+Without a client id the iRacing title cannot work.
+
+```python
+client = GameStatsClient(api_keys={"iracing": "your-client-id"})
+auth = client.iracing_auth()
+
+# 1. Send the user to iRacing. Keep code_verifier and state server-side.
+started = auth.authorization_url("https://your.app/callback")
+
+# 2. On the redirect: compare state, then trade the code for tokens.
+tokens = await auth.exchange_code(code, "https://your.app/callback", started.code_verifier)
+
+# 3. Refresh tokens are single use. Store the newest one every time.
+auth.on_tokens(lambda t: save_refresh_token(t.refresh_token))
+
+# After a restart, resume without the browser step:
+auth.use_tokens(load_refresh_token())
+```
+
+A confidential client passes `clientId:clientSecret`; the secret is masked the
+way iRacing requires before it is sent. Access tokens last about ten minutes and
+are renewed automatically.
+
 ### Caching
 
 In-memory by default — nothing to deploy. Point it at Redis when several

@@ -75,11 +75,44 @@ Credentials that are two or three values are joined with a colon:
 | `osu` | `clientId:clientSecret` |
 | `hirez` | `devId:authKey` |
 | `abios` | `clientId:secret` |
-| `iracing` | `email:password` |
+| `iracing` | `clientId` or `clientId:clientSecret` (OAuth, see below) |
 | `toornament` | `apiKey:clientId:clientSecret` |
 
 `apiKeys` also accepts any other string key, for providers added through
 `registerProvider()`.
+
+### iRacing: OAuth only
+
+iRacing switched its old email-and-password login off with the 2026 Season 1
+release on 9 December 2025. The package now uses OAuth 2.0 (Authorization Code
+with PKCE) and never handles an iRacing password.
+
+**Before you start:** iRacing hands out OAuth clients on request only. Write to
+<auth@iracing.com> and ask for a client with the audience `data-server` and your
+exact redirect URI. As of November 2026 iRacing says it has paused new client
+registrations while it reviews third-party API use, so this can take a while.
+Without a client id the iRacing title cannot work.
+
+```typescript
+const client = new GameStatsClient({ apiKeys: { iracing: "your-client-id" } });
+const auth = client.iracingAuth();
+
+// 1. Send the user to iRacing. Keep codeVerifier and state server-side.
+const started = auth.authorizationUrl("https://your.app/callback");
+
+// 2. On the redirect: compare state, then trade the code for tokens.
+await auth.exchangeCode(code, "https://your.app/callback", started.codeVerifier);
+
+// 3. Refresh tokens are single use. Store the newest one every time.
+auth.onTokens((tokens) => saveRefreshToken(tokens.refreshToken));
+
+// After a restart, resume without the browser step:
+auth.useTokens(loadRefreshToken());
+```
+
+A confidential client passes `clientId:clientSecret`; the secret is masked the
+way iRacing requires before it is sent. Access tokens last about ten minutes and
+are renewed automatically.
 
 ## Two ways to reach a title
 

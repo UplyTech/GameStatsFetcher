@@ -6,67 +6,297 @@
  * API - every other title in that genre is start.gg brackets and nothing else.
  */
 
-import { createHash } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 import { ProviderClient } from "./base.js";
 import type { RequestSpec } from "../http.js";
-import { AuthenticationError, NotFoundError } from "../errors.js";
+import { AuthenticationError, NotFoundError, ValidationError } from "../errors.js";
 import { TTL } from "../constants.js";
 import type { Runtime } from "../runtime.js";
 
+/** iRacing's OAuth server. Documented at https://oauth.iracing.com/oauth2/book/. */
+export const IRACING_AUTHORIZE_URL = "https://oauth.iracing.com/oauth2/authorize";
+export const IRACING_TOKEN_URL = "https://oauth.iracing.com/oauth2/token";
+
+/** The scope the Data API needs. */
+export const IRACING_DATA_SCOPE = "iracing.auth";
+
 /**
- * iRacing Data API.
+ * Renew an access token this long before iRacing says it lapses, so a token
+ * cannot expire between the check and the request that carries it.
+ */
+const EXPIRY_MARGIN_MS = 30_000;
+
+/**
+ * What iRacing's token endpoint hands back.
  *
- * Three things make this the most awkward provider in the package, and all
- * three are handled here so no caller has to know about them:
+ * Refresh tokens are single use: every refresh returns a new one and the old
+ * one stops working. An application that keeps tokens across restarts must
+ * store the newest one - register a listener with
+ * {@link IRacingProvider.onTokens} to be told when it changes.
+ */
+export interface IRacingTokens {
+  readonly accessToken: string;
+  /** Seconds the access token is valid for, counted from when it was issued. */
+  readonly expiresIn: number;
+  readonly refreshToken?: string;
+  readonly refreshTokenExpiresIn?: number;
+  readonly scope?: string;
+}
+
+/**
+ * One started authorization: where to send the user, and what to keep.
  *
- * 1. **The password must be pre-hashed.** iRacing wants
- *    `base64(sha256(password + lowercase(email)))`, not the password.
- * 2. **Auth is a cookie.** `/auth` sets one, and every later call needs it.
- * 3. **Responses are S3 links.** A data endpoint answers `{ link: "https://..." }`
- *    and the actual payload is behind it, so every call is two round trips.
+ * `codeVerifier` and `state` must survive until the redirect comes back,
+ * server-side in the session, not in anything the browser can read.
+ */
+export interface IRacingAuthorization {
+  readonly url: string;
+  readonly codeVerifier: string;
+  readonly state: string;
+}
+
+/** Called with every new token pair. */
+export type IRacingTokenListener = (tokens: IRacingTokens) => void | Promise<void>;
+
+/**
+ * A PKCE pair using `S256`.
+ *
+ * The verifier is 64 random bytes in base64url (86 characters, inside the
+ * 43-128 that RFC 7636 allows). The challenge is the unpadded base64url
+ * SHA-256 of it.
+ */
+export function createPkcePair(): { codeVerifier: string; codeChallenge: string } {
+  const codeVerifier = randomBytes(64).toString("base64url");
+  const codeChallenge = createHash("sha256").update(codeVerifier).digest("base64url");
+  return { codeVerifier, codeChallenge };
+}
+
+/**
+ * The masked form iRacing's token endpoint expects for a client secret.
+ *
+ * iRacing asks for `base64(sha256(secret + lowercase(trim(clientId))))` so that
+ * the plain secret never shows up in a request log. Only confidential clients
+ * have a secret; a public client using PKCE never calls this.
+ */
+export function maskClientSecret(clientSecret: string, clientId: string): string {
+  const normalizedId = clientId.trim().toLowerCase();
+  return createHash("sha256")
+    .update(clientSecret + normalizedId)
+    .digest("base64");
+}
+
+function asSeconds(value: unknown, fallback: number): number {
+  const parsed = typeof value === "number" ? value : Number(value);
+  return Number.isFinite(parsed) ? Math.max(Math.trunc(parsed), 0) : fallback;
+}
+
+function asText(value: unknown): string | undefined {
+  return typeof value === "string" && value !== "" ? value : undefined;
+}
+
+/**
+ * iRacing Data API, authenticated with OAuth 2.0.
+ *
+ * iRacing retired the old `/auth` login (email plus a hashed password) with
+ * the 2026 Season 1 release on 9 December 2025. This provider uses the OAuth
+ * Authorization Code flow with PKCE instead and never sees a password:
+ *
+ * 1. `apiKeys.iracing` is the client id iRacing issued, or
+ *    `clientId:clientSecret` for a confidential client.
+ * 2. {@link authorizationUrl} starts the flow, {@link exchangeCode} finishes
+ *    it. An application that already holds a refresh token passes it to
+ *    {@link useTokens} instead.
+ * 3. Access tokens last about ten minutes and are renewed from the refresh
+ *    token on demand. The refresh token rotates on every renewal, and
+ *    {@link onTokens} reports each new one.
+ *
+ * Data endpoints still answer `{ link: "https://..." }` with the payload behind
+ * a pre-signed S3 URL, so every call is two round trips.
  */
 export class IRacingProvider extends ProviderClient {
+  private accessToken: string | undefined;
+  private accessExpiresAt = 0;
+  private refreshToken: string | undefined;
+  private readonly listeners: IRacingTokenListener[] = [];
+  /** The renewal in flight, shared so a refresh token is never spent twice. */
+  private pending: Promise<IRacingTokens> | undefined;
+
   constructor(runtime: Runtime) {
     super("iracing", runtime);
   }
 
-  /** The hash iRacing expects in place of the password. */
-  private encodePassword(email: string, password: string): string {
-    return createHash("sha256")
-      .update(password + email.toLowerCase())
-      .digest("base64");
+  /** The client id, and the secret when this is a confidential client. */
+  private client(): { clientId: string; clientSecret: string | undefined } {
+    const raw = this.requireKey();
+    const separator = raw.indexOf(":");
+    const clientId = separator === -1 ? raw : raw.slice(0, separator);
+    const clientSecret = separator === -1 ? "" : raw.slice(separator + 1);
+    if (!clientId) {
+      throw new ValidationError('apiKeys.iracing must be "clientId" or "clientId:clientSecret"');
+    }
+    return { clientId, clientSecret: clientSecret || undefined };
   }
 
-  /** Authenticate and hold the session cookie. */
-  private async sessionCookie(): Promise<string> {
-    const [email, password] = this.requireKeyParts(2, "email:password");
-    return this.memo("cookie", 30 * 60 * 1_000, async () => {
-      const response = await this.runtime.fetch(`${this.descriptor.baseUrl}/auth`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "User-Agent": this.runtime.userAgent,
-        },
-        body: JSON.stringify({
-          email,
-          password: this.encodePassword(email as string, password as string),
-        }),
-      });
-      if (!response.ok) {
-        throw new AuthenticationError(this.id, `auth returned ${response.status}`);
-      }
-      const cookies = response.headers.getSetCookie?.() ?? [];
-      const cookie = cookies.map((entry) => entry.split(";")[0]).join("; ");
-      if (!cookie) {
-        throw new AuthenticationError(this.id, "auth succeeded but set no session cookie");
-      }
-      return cookie;
+  /**
+   * Start the Authorization Code flow.
+   *
+   * Send the user to `url`. iRacing redirects back to `redirectUri` with `code`
+   * and `state`; check that the state matches, then pass the code and the
+   * `codeVerifier` to {@link exchangeCode}. The redirect URI must be registered
+   * with iRacing and match exactly.
+   */
+  public authorizationUrl(
+    redirectUri: string,
+    options: { state?: string; scope?: string } = {},
+  ): IRacingAuthorization {
+    const { clientId } = this.client();
+    const { codeVerifier, codeChallenge } = createPkcePair();
+    const state = options.state ?? randomBytes(24).toString("base64url");
+    const query = new URLSearchParams({
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      response_type: "code",
+      code_challenge: codeChallenge,
+      code_challenge_method: "S256",
+      state,
+      scope: options.scope ?? IRACING_DATA_SCOPE,
     });
+    return { url: `${IRACING_AUTHORIZE_URL}?${query.toString()}`, codeVerifier, state };
+  }
+
+  /** Finish the flow: trade the authorization code for tokens. */
+  public async exchangeCode(
+    code: string,
+    redirectUri: string,
+    codeVerifier: string,
+  ): Promise<IRacingTokens> {
+    return this.single(() =>
+      this.tokenRequest({
+        grant_type: "authorization_code",
+        code,
+        redirect_uri: redirectUri,
+        code_verifier: codeVerifier,
+      }),
+    );
+  }
+
+  /**
+   * Resume with tokens stored from an earlier session.
+   *
+   * Without `accessToken` the first request renews one from the refresh token.
+   * `expiresIn` counts from now.
+   */
+  public useTokens(
+    refreshToken: string,
+    options: { accessToken?: string; expiresIn?: number } = {},
+  ): void {
+    this.refreshToken = refreshToken;
+    this.accessToken = options.accessToken;
+    this.accessExpiresAt =
+      options.accessToken && options.expiresIn
+        ? Date.now() + options.expiresIn * 1_000 - EXPIRY_MARGIN_MS
+        : 0;
+  }
+
+  /** Be told about every new token pair, to persist the rotated refresh token. */
+  public onTokens(listener: IRacingTokenListener): void {
+    this.listeners.push(listener);
+  }
+
+  /** Renew the access token now, whether or not it has expired. */
+  public async refresh(): Promise<IRacingTokens> {
+    return this.single(() => this.refreshNow());
+  }
+
+  /** Run one token request at a time; callers arriving meanwhile share it. */
+  private async single(task: () => Promise<IRacingTokens>): Promise<IRacingTokens> {
+    while (this.pending) {
+      await this.pending.catch(() => undefined);
+    }
+    const running = task();
+    this.pending = running;
+    try {
+      return await running;
+    } finally {
+      if (this.pending === running) this.pending = undefined;
+    }
+  }
+
+  private async refreshNow(): Promise<IRacingTokens> {
+    if (!this.refreshToken) {
+      throw new AuthenticationError(
+        this.id,
+        "no iRacing token yet - run the OAuth flow (authorizationUrl, exchangeCode) " +
+          "or pass a stored refresh token to useTokens()",
+      );
+    }
+    return this.tokenRequest({ grant_type: "refresh_token", refresh_token: this.refreshToken });
+  }
+
+  /** POST to the token endpoint and keep what comes back. */
+  private async tokenRequest(form: Record<string, string>): Promise<IRacingTokens> {
+    const { clientId, clientSecret } = this.client();
+    const fields: Record<string, string> = { ...form, client_id: clientId };
+    if (clientSecret) fields.client_secret = maskClientSecret(clientSecret, clientId);
+
+    const response = await this.runtime.http.send<Record<string, unknown> | null>(
+      this.id,
+      IRACING_TOKEN_URL,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(fields).toString(),
+      },
+    );
+    const accessToken = asText(response?.access_token);
+    if (!response || !accessToken) {
+      throw new AuthenticationError(this.id, "token endpoint returned no access_token");
+    }
+
+    const expiresIn = asSeconds(response.expires_in, 600);
+    const refreshToken = asText(response.refresh_token) ?? this.refreshToken;
+    const scope = asText(response.scope);
+    const tokens: IRacingTokens = {
+      accessToken,
+      expiresIn,
+      ...(refreshToken === undefined ? {} : { refreshToken }),
+      ...(response.refresh_token_expires_in === undefined
+        ? {}
+        : { refreshTokenExpiresIn: asSeconds(response.refresh_token_expires_in, 0) }),
+      ...(scope === undefined ? {} : { scope }),
+    };
+    this.accessToken = accessToken;
+    this.accessExpiresAt = Date.now() + expiresIn * 1_000 - EXPIRY_MARGIN_MS;
+    this.refreshToken = refreshToken;
+    for (const listener of this.listeners) await listener(tokens);
+    return tokens;
+  }
+
+  /**
+   * A current access token, renewed if it has lapsed.
+   *
+   * Serialised, because refresh tokens are single use: two requests renewing at
+   * once would spend the same token twice, and iRacing would refuse the second.
+   */
+  private async bearer(): Promise<string> {
+    while (this.pending) {
+      await this.pending.catch(() => undefined);
+    }
+    if (this.accessToken && Date.now() < this.accessExpiresAt) return this.accessToken;
+    const tokens = await this.single(async () => {
+      // Another caller may have renewed while this one waited for its turn.
+      if (this.accessToken && Date.now() < this.accessExpiresAt) {
+        return { accessToken: this.accessToken, expiresIn: 0 };
+      }
+      return this.refreshNow();
+    });
+    return tokens.accessToken;
   }
 
   protected override async authorize(spec: RequestSpec): Promise<RequestSpec> {
-    const cookie = await this.sessionCookie();
-    return { ...spec, headers: { Cookie: cookie, ...spec.headers } };
+    this.client(); // a missing key is MissingCredentialError, before any call
+    const token = await this.bearer();
+    return { ...spec, headers: { Authorization: `Bearer ${token}`, ...spec.headers } };
   }
 
   /**
@@ -80,7 +310,7 @@ export class IRacingProvider extends ProviderClient {
       query: query as RequestSpec["query"],
     });
     if (first && typeof first.link === "string") {
-      // The S3 link is pre-signed and must not carry the session cookie.
+      // The S3 link is pre-signed and must not carry the bearer token.
       return this.runtime.http.send<T>(this.id, first.link, { method: "GET" });
     }
     return first as unknown as T;

@@ -75,8 +75,8 @@ export abstract class ProviderClient {
         `apiKeys.${this.descriptor.keyName} must be "${labels}" (${count} values joined by ":")`,
       );
     }
-    // Rejoin any overflow into the last part: an iRacing password may contain a
-    // colon, and splitting one off would corrupt it silently.
+    // Rejoin any overflow into the last part: a secret may contain a colon,
+    // and splitting one off would corrupt it silently.
     if (parts.length > count) {
       const head = parts.slice(0, count - 1);
       head.push(parts.slice(count - 1).join(":"));

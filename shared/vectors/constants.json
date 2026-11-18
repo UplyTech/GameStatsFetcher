@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
-  "packageVersion": "3.2.0",
+  "packageVersion": "4.0.0",
   "note": "Values that must not drift between the editions. A TTL that differs means two deployments show a rank of a different age for the same player.",
-  "version": "3.2.0",
+  "version": "4.0.0",
   "ttl": {
     "metadata": 3600,
     "resolvePlayer": 86400,
@@ -41,5 +41,5 @@
     "rps": 5,
     "burst": 10
   },
-  "defaultUserAgent": "GameStatsFetcher/3.2.0 (+https://github.com/uplytech/game-stats-fetcher)"
+  "defaultUserAgent": "GameStatsFetcher/4.0.0 (+https://github.com/uplytech/game-stats-fetcher)"
 }

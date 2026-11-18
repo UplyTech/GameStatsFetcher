@@ -452,6 +452,16 @@ export class GameStatsClient {
   public get iracing(): IRacingClient {
     return this.title("iracing") as IRacingClient;
   }
+  /**
+   * The iRacing provider behind {@link iracing}, for its OAuth flow.
+   *
+   * iRacing only accepts OAuth: start with `authorizationUrl()`, finish with
+   * `exchangeCode()`, or resume with `useTokens()`. See the README section on
+   * iRacing for the whole flow.
+   */
+  public iracingAuth(): providerFactories.IRacingProvider {
+    return providerFactories.iracing(this.runtime);
+  }
   /** Trackmania. */
   public get trackmania(): TrackmaniaClient {
     return this.title("trackmania") as TrackmaniaClient;

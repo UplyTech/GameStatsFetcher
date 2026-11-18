@@ -132,7 +132,7 @@ The descriptor is not documentation, it is what the runtime uses:
 
 Providers whose auth is a session or an OAuth exchange override `authorize()`.
 See `BlizzardProvider` (client credentials), `HiRezProvider` (MD5-signed
-sessions) and `IRacingProvider` (hashed password, cookie) for the three shapes
+sessions) and `IRacingProvider` (OAuth Authorization Code with PKCE) for the three shapes
 that already exist.
 
 ## What belongs in this package
