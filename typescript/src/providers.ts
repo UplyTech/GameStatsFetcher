@@ -180,7 +180,7 @@ const PROVIDER_LIST: readonly ProviderDescriptor[] = [
     burst: 3,
     requiresUserAgent: true,
     notes:
-      "OAuth 2.0 Authorization Code flow with PKCE; the old email/password login was retired on 2025-12-09. Pass the client id iRacing issued (or `clientId:clientSecret` for a confidential client), then run the flow through `iracingAuth()` or resume it with a stored refresh token. iRacing registers clients by request. Responses are S3 links, followed automatically.",
+      "OAuth 2.0 Authorization Code flow with PKCE; the old email/password login was retired on 2025-12-09. Pass the id of a public client iRacing issued (PKCE, no client secret), then run the flow through `iracingAuth()` or resume it with a stored refresh token. iRacing registers clients by request. Responses are S3 links, followed automatically.",
   },
   {
     id: "guild-wars-2",

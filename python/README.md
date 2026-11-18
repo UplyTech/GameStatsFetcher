@@ -321,9 +321,9 @@ auth.on_tokens(lambda t: save_refresh_token(t.refresh_token))
 auth.use_tokens(load_refresh_token())
 ```
 
-A confidential client passes `clientId:clientSecret`; the secret is masked the
-way iRacing requires before it is sent. Access tokens last about ten minutes and
-are renewed automatically.
+Ask for a *public* client: PKCE replaces the client secret, and clients with a
+secret are not supported. Access tokens last about ten minutes and are renewed
+automatically.
 
 ### Caching
 

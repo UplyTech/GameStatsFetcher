@@ -71,20 +71,6 @@ export function createPkcePair(): { codeVerifier: string; codeChallenge: string 
   return { codeVerifier, codeChallenge };
 }
 
-/**
- * The masked form iRacing's token endpoint expects for a client secret.
- *
- * iRacing asks for `base64(sha256(secret + lowercase(trim(clientId))))` so that
- * the plain secret never shows up in a request log. Only confidential clients
- * have a secret; a public client using PKCE never calls this.
- */
-export function maskClientSecret(clientSecret: string, clientId: string): string {
-  const normalizedId = clientId.trim().toLowerCase();
-  return createHash("sha256")
-    .update(clientSecret + normalizedId)
-    .digest("base64");
-}
-
 function asSeconds(value: unknown, fallback: number): number {
   const parsed = typeof value === "number" ? value : Number(value);
   return Number.isFinite(parsed) ? Math.max(Math.trunc(parsed), 0) : fallback;
@@ -101,8 +87,9 @@ function asText(value: unknown): string | undefined {
  * the 2026 Season 1 release on 9 December 2025. This provider uses the OAuth
  * Authorization Code flow with PKCE instead and never sees a password:
  *
- * 1. `apiKeys.iracing` is the client id iRacing issued, or
- *    `clientId:clientSecret` for a confidential client.
+ * 1. `apiKeys.iracing` is the id of a *public* client iRacing issued. Clients
+ *    with a secret are not supported: PKCE does the job a secret would, and
+ *    iRacing would want that secret hashed before it is sent.
  * 2. {@link authorizationUrl} starts the flow, {@link exchangeCode} finishes
  *    it. An application that already holds a refresh token passes it to
  *    {@link useTokens} instead.
@@ -118,23 +105,22 @@ export class IRacingProvider extends ProviderClient {
   private accessExpiresAt = 0;
   private refreshToken: string | undefined;
   private readonly listeners: IRacingTokenListener[] = [];
-  /** The renewal in flight, shared so a refresh token is never spent twice. */
-  private pending: Promise<IRacingTokens> | undefined;
+  /** Token requests run one after another, so a refresh token is never spent twice. */
+  private queue: Promise<unknown> = Promise.resolve();
 
   constructor(runtime: Runtime) {
     super("iracing", runtime);
   }
 
-  /** The client id, and the secret when this is a confidential client. */
-  private client(): { clientId: string; clientSecret: string | undefined } {
-    const raw = this.requireKey();
-    const separator = raw.indexOf(":");
-    const clientId = separator === -1 ? raw : raw.slice(0, separator);
-    const clientSecret = separator === -1 ? "" : raw.slice(separator + 1);
-    if (!clientId) {
-      throw new ValidationError('apiKeys.iracing must be "clientId" or "clientId:clientSecret"');
+  /** The OAuth client id. */
+  private client(): string {
+    const clientId = this.requireKey().trim();
+    if (!clientId || clientId.includes(":")) {
+      throw new ValidationError(
+        "apiKeys.iracing must be the client id of a public iRacing OAuth client (PKCE, no client secret)",
+      );
     }
-    return { clientId, clientSecret: clientSecret || undefined };
+    return clientId;
   }
 
   /**
@@ -149,7 +135,7 @@ export class IRacingProvider extends ProviderClient {
     redirectUri: string,
     options: { state?: string; scope?: string } = {},
   ): IRacingAuthorization {
-    const { clientId } = this.client();
+    const clientId = this.client();
     const { codeVerifier, codeChallenge } = createPkcePair();
     const state = options.state ?? randomBytes(24).toString("base64url");
     const query = new URLSearchParams({
@@ -208,18 +194,12 @@ export class IRacingProvider extends ProviderClient {
     return this.single(() => this.refreshNow());
   }
 
-  /** Run one token request at a time; callers arriving meanwhile share it. */
-  private async single(task: () => Promise<IRacingTokens>): Promise<IRacingTokens> {
-    while (this.pending) {
-      await this.pending.catch(() => undefined);
-    }
-    const running = task();
-    this.pending = running;
-    try {
-      return await running;
-    } finally {
-      if (this.pending === running) this.pending = undefined;
-    }
+  /** Run token requests one at a time, in the order they were asked for. */
+  private single(task: () => Promise<IRacingTokens>): Promise<IRacingTokens> {
+    const running = this.queue.then(task);
+    // The queue must survive a failed request, or every later one would fail too.
+    this.queue = running.catch(() => undefined);
+    return running;
   }
 
   private async refreshNow(): Promise<IRacingTokens> {
@@ -235,9 +215,7 @@ export class IRacingProvider extends ProviderClient {
 
   /** POST to the token endpoint and keep what comes back. */
   private async tokenRequest(form: Record<string, string>): Promise<IRacingTokens> {
-    const { clientId, clientSecret } = this.client();
-    const fields: Record<string, string> = { ...form, client_id: clientId };
-    if (clientSecret) fields.client_secret = maskClientSecret(clientSecret, clientId);
+    const fields: Record<string, string> = { ...form, client_id: this.client() };
 
     const response = await this.runtime.http.send<Record<string, unknown> | null>(
       this.id,
@@ -268,7 +246,10 @@ export class IRacingProvider extends ProviderClient {
     this.accessToken = accessToken;
     this.accessExpiresAt = Date.now() + expiresIn * 1_000 - EXPIRY_MARGIN_MS;
     this.refreshToken = refreshToken;
-    for (const listener of this.listeners) await listener(tokens);
+    await this.listeners.reduce<Promise<void>>(
+      (previous, listener) => previous.then(() => listener(tokens)),
+      Promise.resolve(),
+    );
     return tokens;
   }
 
@@ -279,9 +260,6 @@ export class IRacingProvider extends ProviderClient {
    * once would spend the same token twice, and iRacing would refuse the second.
    */
   private async bearer(): Promise<string> {
-    while (this.pending) {
-      await this.pending.catch(() => undefined);
-    }
     if (this.accessToken && Date.now() < this.accessExpiresAt) return this.accessToken;
     const tokens = await this.single(async () => {
       // Another caller may have renewed while this one waited for its turn.

@@ -27,11 +27,11 @@ working.
 
 ### Migration
 
-- Ask iRacing for an OAuth client (<auth@iracing.com>, audience `data-server`,
-  your exact redirect URI). New registrations are paused at the time of writing.
-- Set `iracing` to the client id, or `clientId:clientSecret` for a confidential
-  client. Remove `email:password`; `IRACING_LOGIN` in `.env.example` is now
-  `IRACING_CLIENT`.
+- Ask iRacing for a public OAuth client (<auth@iracing.com>, audience
+  `data-server`, your exact redirect URI). New registrations are paused at the
+  time of writing. Clients with a client secret are not supported.
+- Set `iracing` to the client id. Remove `email:password`; `IRACING_LOGIN` in
+  `.env.example` is now `IRACING_CLIENT`.
 - Run the flow once: `client.iracingAuth().authorizationUrl(...)` then
   `exchangeCode(...)` (Python: `client.iracing_auth().authorization_url(...)`,
   `exchange_code(...)`).
@@ -43,8 +43,7 @@ working.
 
 - `iracingAuth()` / `iracing_auth()` on the client, with `authorizationUrl`,
   `exchangeCode`, `useTokens`, `onTokens` and `refresh`. `createPkcePair` /
-  `create_pkce_pair` and `maskClientSecret` / `mask_client_secret` are exported
-  for applications that run the flow themselves.
+  `create_pkce_pair` is exported for applications that run the flow themselves.
 
 ### Changed
 

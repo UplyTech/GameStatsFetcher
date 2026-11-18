@@ -25,12 +25,10 @@ from gamestatsfetcher import (
     AuthenticationError,
     GameStatsClient,
     MissingCredentialError,
+    ValidationError,
 )
 from gamestatsfetcher.providers import IRacingTokens, create_pkce_pair
-from gamestatsfetcher.providers.racing import (
-    IRACING_TOKEN_URL,
-    mask_client_secret,
-)
+from gamestatsfetcher.providers.racing import IRACING_TOKEN_URL
 
 TOKEN = {
     "access_token": "access-1",
@@ -73,14 +71,9 @@ class TestPkce:
         assert 43 <= len(verifier) <= 128
 
     def test_pairs_are_not_reused(self) -> None:
-        assert create_pkce_pair()[0] != create_pkce_pair()[0]
-
-    def test_client_secret_mask_matches_the_documented_formula(self) -> None:
-        # base64(sha256(secret + lowercase(trim(client_id))))
-        expected = base64.b64encode(
-            hashlib.sha256(b"the-secret" + b"my-client").digest()
-        ).decode()
-        assert mask_client_secret("the-secret", "  My-Client ") == expected
+        first, _ = create_pkce_pair()
+        second, _ = create_pkce_pair()
+        assert first != second
 
 
 class TestAuthorizationUrl:
@@ -100,7 +93,8 @@ class TestAuthorizationUrl:
         assert query["response_type"] == "code"
         assert query["code_challenge_method"] == "S256"
         assert query["scope"] == "iracing.auth"
-        assert query["state"] == "xyz" == started.state
+        assert query["state"] == "xyz"
+        assert started.state == "xyz"
         expected = (
             base64.urlsafe_b64encode(hashlib.sha256(started.code_verifier.encode()).digest())
             .decode()
@@ -112,13 +106,22 @@ class TestAuthorizationUrl:
         client, _ = client_with([])
         first = client.iracing_auth().authorization_url("https://app.example/cb")
         second = client.iracing_auth().authorization_url("https://app.example/cb")
-        assert first.state and second.state and first.state != second.state
+        assert first.state
+        assert second.state
+        assert first.state != second.state
 
     def test_without_a_client_id_names_the_missing_option(self) -> None:
         transport = MockTransport([])
-        client = GameStatsClient(**client_options(transport))
+        auth = GameStatsClient(**client_options(transport)).iracing_auth()
         with pytest.raises(MissingCredentialError):
-            client.iracing_auth().authorization_url("https://app.example/cb")
+            auth.authorization_url("https://app.example/cb")
+
+    def test_a_client_secret_is_refused(self) -> None:
+        # Public clients only: PKCE replaces the secret.
+        client, _ = client_with([], key="my-client:a-secret")
+        auth = client.iracing_auth()
+        with pytest.raises(ValidationError, match="public"):
+            auth.authorization_url("https://app.example/cb")
 
 
 class TestTokenExchange:
@@ -148,20 +151,11 @@ class TestTokenExchange:
         assert tokens.scope == "iracing.auth"
         assert seen == [tokens]
 
-    async def test_a_confidential_client_sends_the_masked_secret(self) -> None:
-        client, transport = client_with(
-            [Route(match="/oauth2/token", body=TOKEN)], key="my-client:the-secret"
-        )
-        await client.iracing_auth().exchange_code("c", "https://app.example/cb", "v")
-        form = form_of(transport, 0)
-        assert form["client_id"] == "my-client"
-        assert form["client_secret"] == mask_client_secret("the-secret", "my-client")
-        assert "the-secret" not in (transport.bodies[0] or "")
-
     async def test_a_token_response_without_access_token_is_an_auth_error(self) -> None:
         client, _ = client_with([Route(match="/oauth2/token", body={"error": "x"})])
+        auth = client.iracing_auth()
         with pytest.raises(AuthenticationError):
-            await client.iracing_auth().exchange_code("c", "https://app.example/cb", "v")
+            await auth.exchange_code("c", "https://app.example/cb", "v")
 
     async def test_async_listeners_are_awaited(self) -> None:
         client, _ = client_with([Route(match="/oauth2/token", body=TOKEN)])

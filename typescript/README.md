@@ -75,7 +75,7 @@ Credentials that are two or three values are joined with a colon:
 | `osu` | `clientId:clientSecret` |
 | `hirez` | `devId:authKey` |
 | `abios` | `clientId:secret` |
-| `iracing` | `clientId` or `clientId:clientSecret` (OAuth, see below) |
+| `iracing` | `clientId` of a public OAuth client (see below) |
 | `toornament` | `apiKey:clientId:clientSecret` |
 
 `apiKeys` also accepts any other string key, for providers added through
@@ -110,9 +110,9 @@ auth.onTokens((tokens) => saveRefreshToken(tokens.refreshToken));
 auth.useTokens(loadRefreshToken());
 ```
 
-A confidential client passes `clientId:clientSecret`; the secret is masked the
-way iRacing requires before it is sent. Access tokens last about ten minutes and
-are renewed automatically.
+Ask for a *public* client: PKCE replaces the client secret, and clients with a
+secret are not supported. Access tokens last about ten minutes and are renewed
+automatically.
 
 ## Two ways to reach a title
 

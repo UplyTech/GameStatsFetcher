@@ -34,7 +34,6 @@ __all__ = [
     "IRacingTokens",
     "TrackmaniaProvider",
     "create_pkce_pair",
-    "mask_client_secret",
 ]
 
 
@@ -93,18 +92,6 @@ def create_pkce_pair() -> tuple[str, str]:
     return verifier, challenge
 
 
-def mask_client_secret(client_secret: str, client_id: str) -> str:
-    """The masked form iRacing's token endpoint expects for a client secret.
-
-    iRacing asks for ``base64(sha256(secret + lowercase(trim(client_id))))`` so
-    that the plain secret never shows up in a request log. Only confidential
-    clients have a secret; a public client using PKCE never calls this.
-    """
-    normalized_id = client_id.strip().lower()
-    digest = hashlib.sha256(f"{client_secret}{normalized_id}".encode()).digest()
-    return base64.b64encode(digest).decode("ascii")
-
-
 def _as_seconds(value: Any, default: int) -> int:
     try:
         return max(int(value), 0)
@@ -130,8 +117,9 @@ class IRacingProvider(ProviderClient):
     the 2026 Season 1 release on 9 December 2025. This provider uses the OAuth
     Authorization Code flow with PKCE instead and never sees a password:
 
-    1. ``api_keys["iracing"]`` is the client id iRacing issued, or
-       ``clientId:clientSecret`` for a confidential client.
+    1. ``api_keys["iracing"]`` is the id of a *public* client iRacing issued.
+       Clients with a secret are not supported: PKCE does the job a secret
+       would, and iRacing would want that secret hashed before it is sent.
     2. :meth:`authorization_url` starts the flow, :meth:`exchange_code` finishes
        it. An application that already holds a refresh token passes it to
        :meth:`use_tokens` instead.
@@ -155,14 +143,15 @@ class IRacingProvider(ProviderClient):
     # OAuth flow
     # -----------------------------------------------------------------------
 
-    def _client(self) -> tuple[str, str | None]:
-        """The client id, and the secret when this is a confidential client."""
-        client_id, _, client_secret = self.require_key().partition(":")
-        if not client_id:
+    def _client(self) -> str:
+        """The OAuth client id."""
+        client_id = self.require_key().strip()
+        if not client_id or ":" in client_id:
             raise ValidationError(
-                'api_keys.iracing must be "clientId" or "clientId:clientSecret"'
+                "api_keys.iracing must be the client id of a public iRacing OAuth "
+                "client (PKCE, no client secret)"
             )
-        return client_id, client_secret or None
+        return client_id
 
     def authorization_url(
         self,
@@ -178,7 +167,7 @@ class IRacingProvider(ProviderClient):
         code and the ``code_verifier`` to :meth:`exchange_code`. The redirect
         URI must be registered with iRacing and match exactly.
         """
-        client_id, _ = self._client()
+        client_id = self._client()
         verifier, challenge = create_pkce_pair()
         chosen_state = state or secrets.token_urlsafe(24)
         query = urlencode(
@@ -258,10 +247,7 @@ class IRacingProvider(ProviderClient):
 
     async def _token_request(self, form: dict[str, str]) -> IRacingTokens:
         """POST to the token endpoint and keep what comes back."""
-        client_id, client_secret = self._client()
-        fields = {**form, "client_id": client_id}
-        if client_secret:
-            fields["client_secret"] = mask_client_secret(client_secret, client_id)
+        fields = {**form, "client_id": self._client()}
         response = await self.runtime.http.send(
             self.id,
             IRACING_TOKEN_URL,

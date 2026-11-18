@@ -12,13 +12,8 @@
 import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import { GameStatsClient } from "../src/client.js";
-import { AuthenticationError, MissingCredentialError } from "../src/errors.js";
-import {
-  IRACING_TOKEN_URL,
-  createPkcePair,
-  maskClientSecret,
-  type IRacingTokens,
-} from "../src/providers/racing.js";
+import { AuthenticationError, MissingCredentialError, ValidationError } from "../src/errors.js";
+import { IRACING_TOKEN_URL, createPkcePair, type IRacingTokens } from "../src/providers/racing.js";
 import { mockFetch, testOptions, type Route } from "./helpers.js";
 
 const TOKEN = {
@@ -50,7 +45,7 @@ const hostOf = (url: string): string => new URL(url).hostname;
 
 const s256 = (value: string): string => createHash("sha256").update(value).digest("base64url");
 
-describe("PKCE and secret masking", () => {
+describe("PKCE", () => {
   it("derives the challenge as the S256 of the verifier", () => {
     const { codeVerifier, codeChallenge } = createPkcePair();
     expect(codeChallenge).toBe(s256(codeVerifier));
@@ -62,10 +57,6 @@ describe("PKCE and secret masking", () => {
     expect(createPkcePair().codeVerifier).not.toBe(createPkcePair().codeVerifier);
   });
 
-  it("masks a client secret with the documented formula", () => {
-    const expected = createHash("sha256").update("the-secret" + "my-client").digest("base64");
-    expect(maskClientSecret("the-secret", "  My-Client ")).toBe(expected);
-  });
 });
 
 describe("authorizationUrl", () => {
@@ -98,6 +89,13 @@ describe("authorizationUrl", () => {
     const second = client.iracingAuth().authorizationUrl("https://app.example/cb");
     expect(first.state).not.toBe("");
     expect(first.state).not.toBe(second.state);
+  });
+
+  it("refuses a client secret: public clients only", () => {
+    const { client } = clientWith([], "my-client:a-secret");
+    expect(() => client.iracingAuth().authorizationUrl("https://app.example/cb")).toThrow(
+      ValidationError,
+    );
   });
 
   it("names the missing option without a client id", () => {
@@ -138,18 +136,6 @@ describe("token exchange", () => {
       scope: "iracing.auth",
     });
     expect(seen).toEqual([tokens]);
-  });
-
-  it("sends the masked secret for a confidential client", async () => {
-    const { client, mock } = clientWith(
-      [{ match: "/oauth2/token", body: TOKEN }],
-      "my-client:the-secret",
-    );
-    await client.iracingAuth().exchangeCode("c", "https://app.example/cb", "v");
-    const form = formOf(mock, 0);
-    expect(form.client_id).toBe("my-client");
-    expect(form.client_secret).toBe(maskClientSecret("the-secret", "my-client"));
-    expect(String(mock.inits[0]?.body)).not.toContain("the-secret");
   });
 
   it("treats a response without access_token as an auth error", async () => {

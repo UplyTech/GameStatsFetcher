@@ -685,7 +685,7 @@ export interface ApiKeys {
   readonly apex?: string;
   /** Brawlhalla API key. */
   readonly brawlhalla?: string;
-  /** iRacing OAuth client id, or `clientId:clientSecret` for a confidential client. */
+  /** iRacing OAuth client id (a public client: PKCE, no secret). */
   readonly iracing?: string;
   /** trackmania.io key. */
   readonly trackmania?: string;
