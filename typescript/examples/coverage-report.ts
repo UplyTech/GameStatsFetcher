@@ -61,7 +61,7 @@ for (const capability of capabilities) {
 
 heading("By genre");
 
-const genres = [...new Set(titles.map((title) => title.genre))].sort() as Genre[];
+const genres = [...new Set(titles.map((title) => title.genre))].sort((a, b) => a.localeCompare(b)) as Genre[];
 for (const genre of genres) {
   const inGenre = client.byGenre(genre);
   const withPlayers = inGenre.filter((title) => title.capabilities.includes("resolvePlayer"));

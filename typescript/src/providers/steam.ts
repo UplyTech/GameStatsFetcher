@@ -113,7 +113,7 @@ export class SteamProvider extends ProviderClient {
    * accepted too, because that is what users paste.
    */
   public async resolveVanityUrl(vanity: string, titleId: string): Promise<string> {
-    const segment = vanity.replace(/^.*steamcommunity\.com\/id\//, "").replace(/\/+$/, "");
+    const segment = vanitySegment(vanity);
     return this.cached(
       ["vanity", segment.toLowerCase()],
       "resolvePlayer",
@@ -301,4 +301,14 @@ export class SteamProvider extends ProviderClient {
       return response?.result?.heroes ?? [];
     });
   }
+}
+
+const VANITY_MARKER = "steamcommunity.com/id/";
+
+/** The vanity name from a bare name or a pasted profile URL, without trailing slashes. */
+function vanitySegment(vanity: string): string {
+  const at = vanity.lastIndexOf(VANITY_MARKER);
+  let segment = at === -1 ? vanity : vanity.slice(at + VANITY_MARKER.length);
+  while (segment.endsWith("/")) segment = segment.slice(0, -1);
+  return segment;
 }

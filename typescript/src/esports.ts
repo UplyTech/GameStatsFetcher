@@ -680,7 +680,7 @@ export class EsportsLayer {
       prizePoolMinor: parsePrizePool(str(row.prizepool)),
       prizePoolCurrency: parsePrizeCurrency(str(row.prizepool)),
       region: str(row.region),
-      online: typeof row.live_supported === "boolean" ? null : null,
+      online: null,
       providerId: "pandascore",
       raw: row,
     };

@@ -15,8 +15,8 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const manifest = JSON.parse(readFileSync(join(root, "typescript", "package.json"), "utf8"));
 const declared = new Set(Object.keys(manifest.dependencies ?? {}));
 
-const added = [...declared].filter((name) => !AGREED.has(name)).sort();
-const removed = [...AGREED].filter((name) => !declared.has(name)).sort();
+const added = [...declared].filter((name) => !AGREED.has(name)).sort((a, b) => a.localeCompare(b));
+const removed = [...AGREED].filter((name) => !declared.has(name)).sort((a, b) => a.localeCompare(b));
 
 if (added.length > 0) {
   console.error(

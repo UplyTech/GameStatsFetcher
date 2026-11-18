@@ -30,7 +30,7 @@ runs:
     - if: inputs.install == 'true'
       shell: bash
       working-directory: typescript
-      run: npm ci
+      run: npm ci --ignore-scripts
 
     - if: inputs.build == 'true'
       shell: bash

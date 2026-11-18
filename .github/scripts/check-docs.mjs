@@ -70,7 +70,7 @@ function typescriptImports(source) {
       from.startsWith("../src");
     if (!ours) continue;
     for (const part of match[1].split(",")) {
-      const name = part.split(/\s+as\s+/)[0].replace(/^type\s+/, "").trim();
+      const name = part.split(/\sas\s/)[0].replace(/^type\s+/, "").trim();
       if (name) names.add(name);
     }
   }
@@ -87,7 +87,7 @@ function pythonImports(source) {
   for (const match of source.matchAll(pattern)) {
     const body = match[3] ?? match[4] ?? "";
     for (const part of body.split(",")) {
-      const name = part.split(/\s+as\s+/)[0].trim();
+      const name = part.split(/\sas\s/)[0].trim();
       // A star import names nothing, and a trailing comment is not an
       // identifier.
       if (name && name !== "*" && /^[A-Za-z_]\w*$/.test(name)) names.add(name);

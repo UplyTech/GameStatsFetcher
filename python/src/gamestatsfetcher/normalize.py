@@ -14,6 +14,7 @@ Every function here has a counterpart in the TypeScript edition, and
 
 from __future__ import annotations
 
+import math
 from collections.abc import Iterable, Mapping, Sequence
 from datetime import datetime, timezone
 from typing import Any, TypeVar, overload
@@ -64,7 +65,7 @@ def num(value: Any) -> float | int | None:
             parsed = float(value)
         except (TypeError, ValueError):
             return None
-    if parsed != parsed or parsed in (float("inf"), float("-inf")):
+    if math.isnan(parsed) or parsed in (float("inf"), float("-inf")):
         return None
     # Keep integers integral: 4 must not come back as 4.0 and print as "4.0".
     return int(parsed) if parsed.is_integer() else parsed
@@ -108,7 +109,7 @@ def ts(value: Any) -> int | None:
         return None
 
     if isinstance(value, (int, float)):
-        if value != value or value <= 0:
+        if (isinstance(value, float) and math.isnan(value)) or value <= 0:
             return None
         return round(value * 1_000) if value < _MILLISECOND_THRESHOLD else round(value)
 
