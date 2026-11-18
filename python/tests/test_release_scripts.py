@@ -12,7 +12,9 @@ SCRIPTS = Path(__file__).resolve().parents[2] / ".github" / "scripts"
 
 
 def _load(name: str) -> ModuleType:
-    spec = importlib.util.spec_from_file_location(name.replace("-", "_"), SCRIPTS / f"{name}.py")
+    spec = importlib.util.spec_from_file_location(
+        name.replace("-", "_"), SCRIPTS / f"{name}.py"
+    )
     assert spec is not None
     assert spec.loader is not None
     module = importlib.util.module_from_spec(spec)
@@ -47,7 +49,7 @@ def test_path_outside_workspace_is_refused(
 def test_relative_traversal_is_refused(
     script: ModuleType, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.delenv("GITHUB_WORKSPACE", raising=False)
+    monkeypatch.setenv("GITHUB_WORKSPACE", "")
     monkeypatch.chdir(tmp_path)
     with pytest.raises(SystemExit):
         script.resolve_within_workspace("../../etc")
@@ -71,4 +73,6 @@ def test_manifest_writes_checksums(tmp_path: Path, monkeypatch: pytest.MonkeyPat
     monkeypatch.setattr("sys.argv", ["release-manifest.py", str(release)])
     assert manifest.main() == 0
     sums = (release / "SHA256SUMS").read_text(encoding="utf-8")
-    assert sums.startswith("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad  a.whl")
+    assert sums.startswith(
+        "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad  a.whl"
+    )
