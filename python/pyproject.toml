@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "uplytech-game-stats-fetcher"
 version = "4.0.0"
-description = "One client for every esports title. Players, ranks, matches, leaderboards and the professional circuit behind them - normalised across 87 titles and 53 real game APIs."
+description = "One client for every esports title. Players, ranks, matches, leaderboards and the professional circuit behind them - normalised across 87 titles and 52 real game APIs."
 readme = "README.md"
 license = "Apache-2.0"
 license-files = ["LICENSE", "NOTICE"]

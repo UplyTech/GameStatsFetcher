@@ -155,20 +155,6 @@ const PROVIDER_LIST: readonly ProviderDescriptor[] = [
       "One application id, several hosts: worldoftanks.eu/.com/.asia and worldofwarships.*. The host encodes both the game and the region.",
   },
   {
-    id: "hirez",
-    label: "Hi-Rez Studios API",
-    kind: "first-party",
-    baseUrl: "https://api.smitegame.com/smiteapi.svc",
-    auth: "signed-session",
-    keyName: "hirez",
-    docsUrl: "https://www.hirezstudios.com/developers",
-    rps: 2,
-    burst: 5,
-    requiresUserAgent: false,
-    notes:
-      "Pass the credential as `devId:authKey`. Every call needs an MD5 signature and an open session; both are handled here. 7500 calls/day.",
-  },
-  {
     id: "iracing",
     label: "iRacing Data API",
     kind: "first-party",

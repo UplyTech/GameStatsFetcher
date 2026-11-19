@@ -50,7 +50,6 @@ import {
 } from "./shooters.js";
 import { RocketLeagueClient } from "./rocket-league.js";
 import { BrawlStarsClient, ClashOfClansClient, ClashRoyaleClient } from "./mobile.js";
-import { PaladinsClient, SmiteClient } from "./hirez.js";
 import {
   AgeOfEmpires2Client,
   AgeOfEmpires4Client,
@@ -78,7 +77,6 @@ export * from "./blizzard.js";
 export * from "./shooters.js";
 export * from "./rocket-league.js";
 export * from "./mobile.js";
-export * from "./hirez.js";
 export * from "./strategy.js";
 export * from "./skill.js";
 export * from "./worlds.js";
@@ -131,10 +129,6 @@ const CLIENTS: Readonly<Record<string, TitleClientFactory>> = {
   "clash-royale": ClashRoyaleClient,
   "clash-of-clans": ClashOfClansClient,
   "brawl-stars": BrawlStarsClient,
-
-  // Hi-Rez
-  smite: SmiteClient,
-  paladins: PaladinsClient,
 
   // Strategy
   "age-of-empires-2": AgeOfEmpires2Client,

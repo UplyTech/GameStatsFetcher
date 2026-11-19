@@ -1,7 +1,7 @@
 {
   "formatVersion": 1,
   "packageVersion": "4.0.0",
-  "count": 53,
+  "count": 52,
   "esportsCapabilities": {
     "getEsportsMatches": [
       "pandascore",
@@ -203,24 +203,6 @@
       "titles": [
         "world-of-tanks",
         "world-of-warships"
-      ]
-    },
-    {
-      "id": "hirez",
-      "label": "Hi-Rez Studios API",
-      "kind": "first-party",
-      "baseUrl": "https://api.smitegame.com/smiteapi.svc",
-      "auth": "signed-session",
-      "optionalAuth": false,
-      "keyName": "hirez",
-      "docsUrl": "https://www.hirezstudios.com/developers",
-      "rps": 2,
-      "burst": 5,
-      "requiresUserAgent": false,
-      "notes": "Pass the credential as `devId:authKey`. Every call needs an MD5 signature and an open session; both are handled here. 7500 calls/day.",
-      "titles": [
-        "smite",
-        "paladins"
       ]
     },
     {

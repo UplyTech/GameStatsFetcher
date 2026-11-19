@@ -1,6 +1,6 @@
 # @uplytech/game-stats-fetcher
 
-> One client for every game that publishes one. 87 titles, 53 real APIs, one set of types.
+> One client for every game that publishes one. 87 titles, 52 real APIs, one set of types.
 
 [![npm version](https://img.shields.io/npm/v/%40uplytech%2Fgame-stats-fetcher)](https://www.npmjs.com/package/@uplytech/game-stats-fetcher)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](../LICENSE)
@@ -73,7 +73,6 @@ Credentials that are two or three values are joined with a colon:
 |---|---|
 | `blizzard` | `clientId:clientSecret` |
 | `osu` | `clientId:clientSecret` |
-| `hirez` | `devId:authKey` |
 | `abios` | `clientId:secret` |
 | `iracing` | `clientId` of a public OAuth client (see below) |
 | `toornament` | `apiKey:clientId:clientSecret` |

@@ -63,7 +63,7 @@ export abstract class ProviderClient {
   /**
    * Split a colon-joined credential such as `clientId:clientSecret`.
    *
-   * Blizzard, Abios, osu!, Hi-Rez, iRacing and Toornament all need two or three
+   * Blizzard, Abios, osu! and Toornament all need two or three
    * values, and one option per provider pair would double the size of
    * {@link ApiKeys} for no gain.
    */
@@ -94,7 +94,7 @@ export abstract class ProviderClient {
    *
    * The default covers the four mechanical auth kinds. Providers with a session
    * or an OAuth exchange override it - see `BlizzardProvider` and
-   * `HiRezProvider`.
+   * `IRacingProvider`.
    */
   protected async authorize(spec: RequestSpec): Promise<RequestSpec> {
     switch (this.descriptor.auth) {

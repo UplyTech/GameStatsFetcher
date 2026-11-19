@@ -651,8 +651,6 @@ export interface ApiKeys {
   readonly brawlStars?: string;
   /** Wargaming application id. developers.wargaming.net */
   readonly wargaming?: string;
-  /** Hi-Rez dev id and auth key, joined by a colon. */
-  readonly hirez?: string;
   /** FACEIT server-side API key. developers.faceit.com */
   readonly faceit?: string;
   /** Tracker Network key. tracker.gg/developers */

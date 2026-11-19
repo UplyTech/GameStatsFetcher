@@ -1,31 +1,21 @@
-"""Wargaming.net Public API and the Hi-Rez Studios API.
+"""Wargaming.net Public API.
 
-Two publishers left over from the first-party set, sharing this module because
-neither is large enough to justify its own and both have one memorable quirk:
-
-* **Wargaming** answers a *failure* with HTTP 200 and
-  ``{"status": "error", ...}``, so the envelope has to be unwrapped by hand.
-  The host encodes both the game and the region: ``api.worldoftanks.eu`` and
-  ``api.worldofwarships.asia`` are the same API with different data behind it.
-* **Hi-Rez** signs every call with an MD5 of ``devId + method + authKey +
-  timestamp`` and needs an open session that lapses after 15 minutes. MD5 here
-  is their protocol, not a security choice of this package: the signature
-  identifies the caller and protects nothing.
+Wargaming answers a *failure* with HTTP 200 and ``{"status": "error", ...}``,
+so the envelope has to be unwrapped by hand. The host encodes both the game and
+the region: ``api.worldoftanks.eu`` and ``api.worldofwarships.asia`` are the
+same API with different data behind it.
 """
 
 from __future__ import annotations
 
-import hashlib
-from datetime import datetime, timezone
 from typing import Any
 
 from ..constants import TTL
-from ..errors import AuthenticationError, NotFoundError, ParseError, ValidationError
-from ..http import RequestSpec
+from ..errors import NotFoundError, ParseError, ValidationError
 from ..runtime import Runtime
 from .base import ProviderClient
 
-__all__ = ["WargamingProvider", "HiRezProvider"]
+__all__ = ["WargamingProvider"]
 
 
 # ---------------------------------------------------------------------------
@@ -167,175 +157,4 @@ class WargamingProvider(ProviderClient):
             title_id,
             TTL["metadata"],
             fetch,
-        )
-
-
-# ---------------------------------------------------------------------------
-# Hi-Rez
-# ---------------------------------------------------------------------------
-
-_GAME_HOSTS = {
-    "smite": "https://api.smitegame.com/smiteapi.svc",
-    "paladins": "https://api.paladins.com/paladinsapi.svc",
-}
-
-
-class HiRezProvider(ProviderClient):
-    """SMITE and Paladins.
-
-    Sessions are memoised for 12 minutes - short of the 15-minute expiry, so a
-    request never goes out with a session that lapsed while it was queued.
-    """
-
-    def __init__(self, runtime: Runtime) -> None:
-        super().__init__("hirez", runtime)
-
-    async def authorize(self, spec: RequestSpec) -> RequestSpec:
-        """Hi-Rez signs the URL itself, so the generic authoriser adds nothing.
-
-        Overridden rather than left to raise, because ``authorize`` runs for
-        every request and the signing happens in :meth:`_call`, where the method
-        name is known.
-        """
-        return spec
-
-    @staticmethod
-    def _timestamp() -> str:
-        """``yyyyMMddHHmmss`` in UTC, the only format accepted."""
-        return datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
-
-    @staticmethod
-    def _signature(dev_id: str, method: str, auth_key: str, timestamp: str) -> str:
-        return hashlib.md5(  # noqa: S324 - Hi-Rez's protocol, not a security choice
-            f"{dev_id}{method}{auth_key}{timestamp}".encode()
-        ).hexdigest()
-
-    async def _session(self, game: str) -> str:
-        """Open a session, or reuse the one from the last twelve minutes."""
-        dev_id, auth_key = self.require_key_parts(2, "devId:authKey")
-
-        async def fetch() -> str:
-            timestamp = self._timestamp()
-            signature = self._signature(dev_id, "createsession", auth_key, timestamp)
-            url = f"{_GAME_HOSTS[game]}/createsessionJson/{dev_id}/{signature}/{timestamp}"
-            response = await self.runtime.http.send(self.id, url, RequestSpec())
-            session = (response or {}).get("session_id")
-            if not session:
-                message = (response or {}).get("ret_msg", "no session_id returned")
-                raise AuthenticationError(self.id, f"createsession failed: {message}")
-            return str(session)
-
-        return await self.memo(f"session:{game}", 12 * 60 * 1_000, fetch)
-
-    async def _call(self, game: str, method: str, params: list[Any] | None = None) -> Any:
-        """Call one method.
-
-        The path is ``/{method}Json/{devId}/{signature}/{session}/{timestamp}/{...}``
-        and the parameter order is fixed per method, which is why callers pass an
-        ordered list rather than a mapping.
-        """
-        from urllib.parse import quote
-
-        dev_id, auth_key = self.require_key_parts(2, "devId:authKey")
-        session = await self._session(game)
-        timestamp = self._timestamp()
-        signature = self._signature(dev_id, method, auth_key, timestamp)
-        suffix = (
-            "/" + "/".join(quote(str(param), safe="") for param in params) if params else ""
-        )
-        url = (
-            f"{_GAME_HOSTS[game]}/{method}Json/{dev_id}/{signature}"
-            f"/{session}/{timestamp}{suffix}"
-        )
-        return await self.runtime.http.send(self.id, url, RequestSpec())
-
-    async def get_data_used(self, game: str) -> list[dict[str, Any]]:
-        """Whether the API is up, and how many calls today's key has left."""
-        return self.rows(await self._call(game, "getdataused") or [])
-
-    async def get_player(self, game: str, player: str) -> dict[str, Any]:
-        """Player by in-game name or by player id."""
-        title_id = "smite" if game == "smite" else "paladins"
-
-        async def fetch() -> dict[str, Any]:
-            rows = await self._call(game, "getplayer", [player])
-            if not rows:
-                raise NotFoundError(self.id, f'player "{player}"', title_id)
-            return dict(rows[0])
-
-        return await self.cached(
-            [game, "player", player.lower()], "getPlayer", title_id, TTL["player"], fetch
-        )
-
-    async def get_player_id_by_name(self, game: str, name: str) -> list[dict[str, Any]]:
-        """Resolve a name to player ids across platforms.
-
-        A console player and a PC player can share a name, so this returns every
-        match and the caller picks - guessing would silently show the wrong
-        person.
-        """
-        return self.rows(await self._call(game, "getplayeridbyname", [name]) or [])
-
-    async def get_match_history(self, game: str, player_id: str) -> list[dict[str, Any]]:
-        """Recent matches. Hi-Rez returns roughly the last 50."""
-        title_id = "smite" if game == "smite" else "paladins"
-
-        async def fetch() -> list[dict[str, Any]]:
-            return self.rows(await self._call(game, "getmatchhistory", [player_id]) or [])
-
-        return await self.cached(
-            [game, "history", player_id],
-            "getMatchHistory",
-            title_id,
-            TTL["matchHistory"],
-            fetch,
-        )
-
-    async def get_match_details(self, game: str, match_id: str) -> list[dict[str, Any]]:
-        """Full detail for one match."""
-        title_id = "smite" if game == "smite" else "paladins"
-
-        async def fetch() -> list[dict[str, Any]]:
-            rows = await self._call(game, "getmatchdetails", [match_id])
-            if not rows:
-                raise NotFoundError(self.id, f"match {match_id}", title_id)
-            return list(rows)
-
-        return await self.cached(
-            [game, "match", match_id], "getMatch", title_id, TTL["match"], fetch
-        )
-
-    async def get_player_character_ranks(
-        self, game: str, player_id: str
-    ) -> list[dict[str, Any]]:
-        """Per-god or per-champion career statistics."""
-        method = "getgodranks" if game == "smite" else "getchampionranks"
-        return self.rows(await self._call(game, method, [player_id]) or [])
-
-    async def get_characters(self, game: str) -> list[dict[str, Any]]:
-        """The god or champion list, for turning ids into names."""
-        title_id = "smite" if game == "smite" else "paladins"
-        method = "getgods" if game == "smite" else "getchampions"
-
-        async def fetch() -> list[dict[str, Any]]:
-            return self.rows(await self._call(game, method, [1]) or [])
-
-        return await self.cached(
-            [game, "characters"], "getMetadata", title_id, TTL["metadata"], fetch
-        )
-
-    async def get_league_leaderboard(
-        self, game: str, queue_id: int, tier: int, season: int
-    ) -> list[dict[str, Any]]:
-        """The ranked leaderboard for a queue and tier."""
-        return self.rows(
-            await self._call(game, "getleagueleaderboard", [queue_id, tier, season]) or []
-        )
-
-    async def get_match_ids_by_queue(
-        self, game: str, queue_id: int, date: str, hour: str
-    ) -> list[dict[str, Any]]:
-        """Matches played in a queue - the esports spectator feed."""
-        return self.rows(
-            await self._call(game, "getmatchidsbyqueue", [queue_id, date, hour]) or []
         )

@@ -66,7 +66,7 @@ class TestShape:
     def test_the_advertised_counts(self) -> None:
         # The README, the badges and the package description all state these.
         assert title_count() == 87
-        assert len(PROVIDERS) == 53
+        assert len(PROVIDERS) == 52
 
     def test_ids_are_unique(self) -> None:
         assert len({t.id for t in TITLES}) == len(TITLES)

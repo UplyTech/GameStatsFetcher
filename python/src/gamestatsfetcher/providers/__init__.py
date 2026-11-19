@@ -73,7 +73,7 @@ from .supercell import (
     ClashOfClansProvider,
     ClashRoyaleProvider,
 )
-from .wargaming import HiRezProvider, WargamingProvider
+from .wargaming import WargamingProvider
 from .worlds import (
     AlbionProvider,
     GuildWars2Provider,
@@ -110,7 +110,6 @@ __all__ = [
     "clash_of_clans",
     "brawl_stars",
     "wargaming",
-    "hirez",
     "faceit",
     "tracker",
     "opendota",
@@ -200,10 +199,6 @@ def brawl_stars(runtime: Runtime) -> BrawlStarsProvider:
 
 def wargaming(runtime: Runtime) -> WargamingProvider:
     return use_provider(runtime, "wargaming", WargamingProvider)
-
-
-def hirez(runtime: Runtime) -> HiRezProvider:
-    return use_provider(runtime, "hirez", HiRezProvider)
 
 
 def faceit(runtime: Runtime) -> FaceitProvider:

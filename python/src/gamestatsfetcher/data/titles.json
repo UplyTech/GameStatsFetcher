@@ -1627,27 +1627,14 @@
       "releaseYear": 2014,
       "status": "active",
       "providers": [
-        "hirez",
         "liquipedia",
         "esports-earnings"
       ],
       "capabilities": [
-        "resolvePlayer",
-        "getPlayer",
-        "getPlayerStats",
-        "getRank",
-        "getMatchHistory",
-        "getMatch",
-        "getLeaderboard",
         "getEsportsTournaments",
-        "getEarnings",
-        "getMetadata"
+        "getEarnings"
       ],
-      "identifiers": [
-        "name",
-        "accountId",
-        "platform"
-      ],
+      "identifiers": [],
       "regions": [],
       "platforms": [
         "steam",
@@ -1655,7 +1642,7 @@
         "playstation",
         "nintendo"
       ],
-      "dedicatedClient": true
+      "dedicatedClient": false
     },
     {
       "id": "paladins",
@@ -1666,27 +1653,14 @@
       "releaseYear": 2016,
       "status": "legacy",
       "providers": [
-        "hirez",
         "liquipedia",
         "esports-earnings"
       ],
       "capabilities": [
-        "resolvePlayer",
-        "getPlayer",
-        "getPlayerStats",
-        "getRank",
-        "getMatchHistory",
-        "getMatch",
-        "getLeaderboard",
         "getEsportsTournaments",
-        "getEarnings",
-        "getMetadata"
+        "getEarnings"
       ],
-      "identifiers": [
-        "name",
-        "accountId",
-        "platform"
-      ],
+      "identifiers": [],
       "regions": [],
       "platforms": [
         "steam",
@@ -1694,7 +1668,7 @@
         "playstation",
         "nintendo"
       ],
-      "dedicatedClient": true
+      "dedicatedClient": false
     },
     {
       "id": "clash-royale",

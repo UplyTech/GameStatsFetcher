@@ -211,7 +211,7 @@ class TestRegistryPassThrough:
     def test_the_filters_reach_the_registry(self) -> None:
         client = offline()
         assert len(client.titles()) == client.title_count() == 87
-        assert len(client.providers()) == 53
+        assert len(client.providers()) == 52
         assert client.search("dota")[0].id == "dota2"
         assert {t.id for t in client.by_genre("moba")} >= {"dota2"}
         assert client.title("lol").title in client.by_capability("getRank")
@@ -222,7 +222,7 @@ class TestRegistryPassThrough:
         dedicated = set(client.dedicated_titles())
         assert "cs2" in dedicated
         assert "tekken-8" not in dedicated
-        assert len(dedicated) == 54
+        assert len(dedicated) == 52
 
     def test_raw_exposes_the_provider_factories(self) -> None:
         # The escape hatch for endpoints the canonical model does not model.
@@ -333,8 +333,6 @@ class TestTitleShortcuts:
         "clash_royale": "clash-royale",
         "clash_of_clans": "clash-of-clans",
         "brawl_stars": "brawl-stars",
-        "smite": "smite",
-        "paladins": "paladins",
         "aoe2": "age-of-empires-2",
         "aoe4": "age-of-empires-4",
         "coh3": "company-of-heroes-3",

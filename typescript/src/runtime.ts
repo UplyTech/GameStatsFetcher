@@ -40,7 +40,7 @@ export interface Runtime {
   readonly ttlOverrides: Readonly<Record<string, number>>;
   /**
    * Scratch space shared across providers, for things worth computing once:
-   * OAuth tokens, Hi-Rez sessions, iRacing OAuth state.
+   * OAuth tokens, iRacing OAuth state.
    */
   readonly state: Map<string, unknown>;
 }
