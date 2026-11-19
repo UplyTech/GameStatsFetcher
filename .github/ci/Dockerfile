@@ -8,3 +8,14 @@ COPY --from=node /usr/local/bin/node /usr/local/bin/node
 COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
 RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
  && ln -s ../lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
+
+# Run as an unprivileged user (Sonar docker:S6471). uid 1001 is the GitHub
+# runner's own user, so files written into the bind-mounted work tree stay
+# owned by the runner. Python packages go into a venv the user owns instead of
+# the system site-packages.
+RUN useradd --uid 1001 --create-home --shell /bin/bash ci \
+ && python -m venv /opt/venv \
+ && chown -R ci:ci /opt/venv
+ENV PATH=/opt/venv/bin:$PATH \
+    VIRTUAL_ENV=/opt/venv
+USER ci
